@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Produits — Business Explained</title>
+    <meta name="description" content="Catalogue de produits: eBooks, Checklists et Outils. Filtres par marque et catégorie." />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="announcement">
+      <div class="container announcement-inner">
+        <span class="badge">ultimate offer</span>
+        <span>All Products Special — 247€</span>
+      </div>
+    </div>
+
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="/" aria-label="Accueil">
+          <span class="brand-logo" aria-hidden="true">B</span>
+          <span class="brand-text">Business Explained</span>
+        </a>
+        <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Ouvrir le menu">
+          <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+        </button>
+        <nav id="primary-nav" class="nav" aria-label="Navigation principale">
+          <ul>
+            <li><a href="./products.html" class="active">Products</a></li>
+            <li><a href="./about.html">About us</a></li>
+            <li><a href="./blog.html">Blog</a></li>
+            <li class="has-dropdown">
+              <a href="./support.html">Support</a>
+              <div class="dropdown" role="menu" aria-label="Support submenu">
+                <ul>
+                  <li><a href="./support.html">Contact Us</a></li>
+                  <li><a href="./faq.html">FAQs</a></li>
+                </ul>
+              </div>
+            </li>
+            
+          </ul>
+        </nav>
+        <div class="header-actions">
+          <form class="search" role="search"><input type="search" placeholder="Search" /></form>
+          <a class="icon-link" href="#" aria-label="Account">👤</a>
+          <button class="icon-link cart-button" data-cart-open aria-label="Cart">🛒<span class="cart-badge">0</span></button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Offer banner card -->
+    <section class="offer-banner">
+      <div class="container">
+        <div class="offer-card">
+          <div class="offer-media">
+            <img src="https://images.unsplash.com/photo-1545239351-1141bd82e8a6?w=1200&q=80&auto=format&fit=crop" alt="All Products Special" />
+          </div>
+          <div class="offer-copy">
+            <div class="badge red">ultimate offer</div>
+            <h1>All Products Special</h1>
+            <div class="offer-price"><strong>247€</strong> <s>297€</s></div>
+            <p>You get all eBooks, Checklists and Tools!</p>
+            <a class="btn btn-primary add-to-cart" data-id="pack" data-name="All Products Special" data-price="247">Get all products for 247€</a>
+            <ul class="offer-perks">
+              <li>Risk-free Purchase: 14 days refund</li>
+              <li>Safe and Secure Checkout</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <main class="shop-layout">
+      <div class="container shop-grid">
+        <!-- Sidebar filters -->
+        <aside class="filters" aria-label="Filtres">
+          <div class="filter-card">
+            <div class="filter-search"><input type="search" id="q" placeholder="Search for products" /></div>
+          </div>
+          <div class="filter-card">
+            <h3>Brand</h3>
+            <ul class="filter-list" id="brand">
+              <li><label><input type="checkbox" value="Business Explained" checked> Business Explained <span class="count">36</span></label></li>
+              <li><label><input type="checkbox" value="Elevate Sheets"> Elevate Sheets <span class="count">16</span></label></li>
+              <li><label><input type="checkbox" value="Success Blueprints"> Success Blueprints <span class="count">11</span></label></li>
+              <li><label><input type="checkbox" value="The BizSheets"> The BizSheets <span class="count">9</span></label></li>
+            </ul>
+          </div>
+          <div class="filter-card">
+            <h3>Category</h3>
+            <ul class="filter-list" id="category">
+              <li><label><input type="checkbox" value="Management eBooks"> Management eBooks <span class="count">26</span></label></li>
+              <li><label><input type="checkbox" value="Marketing eBooks" checked> Marketing eBooks <span class="count">11</span></label></li>
+              <li><label><input type="checkbox" value="HR eBooks"> HR eBooks <span class="count">8</span></label></li>
+              <li><label><input type="checkbox" value="Finance eBooks"> Finance eBooks <span class="count">5</span></label></li>
+              <li><label><input type="checkbox" value="Technology eBooks"> Technology eBooks <span class="count">4</span></label></li>
+              <li><label><input type="checkbox" value="Project management eBooks"> Project management eBooks <span class="count">5</span></label></li>
+              <li><label><input type="checkbox" value="Checklists and Sheets"> Checklists and Sheets <span class="count">15</span></label></li>
+              <li><label><input type="checkbox" value="Bundles and Packs"> Bundles and Packs <span class="count">4</span></label></li>
+            </ul>
+          </div>
+          <div class="filter-card">
+            <h3>Special Offers</h3>
+            <ul class="filter-list">
+              <li><label><input type="checkbox" value="Discount"> Discount <span class="count">24</span></label></li>
+              <li><label><input type="checkbox" value="Ultimate Offer"> Ultimate Offer <span class="count">2</span></label></li>
+            </ul>
+          </div>
+        </aside>
+
+        <!-- Products grid -->
+        <section class="shop-products" aria-label="Liste des produits">
+          <header class="shop-header">
+            <h2>Marketing eBooks</h2>
+            <p><small>Showing generic example data — prices may vary</small></p>
+          </header>
+
+          <div class="shop-grid-3" id="productGrid">
+            <!-- Example products; structure mirrors your index cards, with sale styles -->
+            <article class="product-card" data-id="t1" data-name="Top-Tier Management Explained" data-price="69">
+              <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=900&q=80&auto=format&fit=crop" alt="Top-Tier Management Explained" />
+              <div class="product-body">
+                <h3>Top-Tier Management Explained</h3>
+                <div class="price-range">$69–$247</div>
+                <div class="product-meta"><span class="price">69€</span><button class="btn btn-primary add-to-cart">Add</button></div>
+              </div>
+            </article>
+
+            <article class="product-card" data-id="o1" data-name="Organizational Management Explained" data-price="49">
+              <img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=900&q=80&auto=format&fit=crop" alt="Organizational Management Explained" />
+              <div class="product-body">
+                <h3>Organizational Management Explained</h3>
+                <div class="price-range">$49–$247</div>
+                <div class="product-meta"><span class="price">49€</span><button class="btn btn-primary add-to-cart">Add</button></div>
+              </div>
+            </article>
+
+            <article class="product-card" data-id="c1" data-name="Consulting Management Explained" data-price="49">
+              <img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=900&q=80&auto=format&fit=crop" alt="Consulting Management Explained" />
+              <div class="product-body">
+                <h3>Consulting Management Explained</h3>
+                <div class="price-range">$49–$247</div>
+                <div class="product-meta"><span class="price">49€</span><button class="btn btn-primary add-to-cart">Add</button></div>
+              </div>
+            </article>
+
+            <article class="product-card" data-id="b1" data-name="Business Development Explained" data-price="49">
+              <img src="https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=900&q=80&auto=format&fit=crop" alt="Business Development Explained" />
+              <div class="product-body">
+                <h3>Business Development Explained</h3>
+                <div class="price-range">$49–$247</div>
+                <div class="product-meta"><span class="price">49€</span><button class="btn btn-primary add-to-cart">Add</button></div>
+              </div>
+            </article>
+
+            <article class="product-card" data-id="m1" data-name="Marketing Frameworks Explained" data-price="49">
+              <img src="https://images.unsplash.com/photo-1513475382585-d06e58bcb0ea?w=900&q=80&auto=format&fit=crop" alt="Marketing Frameworks Explained" />
+              <div class="product-body">
+                <h3>Marketing Frameworks Explained</h3>
+                <div class="price-range">$49–$247</div>
+                <div class="product-meta"><span class="price">49€</span><button class="btn btn-primary add-to-cart">Add</button></div>
+              </div>
+            </article>
+
+            <article class="product-card" data-id="ca1" data-name="Competitive Advantage Explained" data-price="49">
+              <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=900&q=80&auto=format&fit=crop" alt="Competitive Advantage Explained" />
+              <div class="product-body">
+                <h3>Competitive Advantage Explained</h3>
+                <div class="price-range">$49–$247</div>
+                <div class="product-meta"><span class="price">49€</span><button class="btn btn-primary add-to-cart">Add</button></div>
+              </div>
+            </article>
+
+            <article class="product-card sale" data-id="s1" data-name="Sales Strategies Explained" data-price="49" data-original="99">
+              <span class="ribbon">Discount</span>
+              <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=900&q=80&auto=format&fit=crop" alt="Sales Strategies Explained" />
+              <div class="product-body">
+                <h3>Sales Strategies Explained</h3>
+                <div class="price-range">$49–$247</div>
+                <div class="product-meta"><span class="price">49€ <s>99€</s></span><button class="btn btn-primary add-to-cart">Add</button></div>
+              </div>
+            </article>
+
+            <article class="product-card sale" data-id="sm1" data-name="Strategic Management Explained" data-price="49" data-original="59">
+              <span class="ribbon">Discount</span>
+              <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=900&q=80&auto=format&fit=crop" alt="Strategic Management Explained" />
+              <div class="product-body">
+                <h3>Strategic Management Explained</h3>
+                <div class="price-range">$49–$247</div>
+                <div class="product-meta"><span class="price">49€ <s>59€</s></span><button class="btn btn-primary add-to-cart">Add</button></div>
+              </div>
+            </article>
+
+            <article class="product-card" data-id="pim1" data-name="Process Improvement Strategies Explained" data-price="29">
+              <img src="https://images.unsplash.com/photo-1520975682031-ae4ce9a1ebff?w=900&q=80&auto=format&fit=crop" alt="Process Improvement Strategies Explained" />
+              <div class="product-body">
+                <h3>Process Improvement Strategies Explained</h3>
+                <div class="price-range">$29–$247</div>
+                <div class="product-meta"><span class="price">29€</span><button class="btn btn-primary add-to-cart">Add</button></div>
+              </div>
+            </article>
+
+            <article class="product-card" data-id="pm1" data-name="Project Management Explained" data-price="29">
+              <img src="https://images.unsplash.com/photo-1487017159836-4e23ece2e4cf?w=900&q=80&auto=format&fit=crop" alt="Project Management Explained" />
+              <div class="product-body">
+                <h3>Project Management Explained</h3>
+                <div class="price-range">$29–$247</div>
+                <div class="product-meta"><span class="price">29€</span><button class="btn btn-primary add-to-cart">Add</button></div>
+              </div>
+            </article>
+
+            <article class="product-card" data-id="hr1" data-name="Human Resources Explained" data-price="29">
+              <img src="https://images.unsplash.com/photo-1555431189-0fabf2667795?w=900&q=80&auto=format&fit=crop" alt="Human Resources Explained" />
+              <div class="product-body">
+                <h3>Human Resources Explained</h3>
+                <div class="price-range">$29–$247</div>
+                <div class="product-meta"><span class="price">29€</span><button class="btn btn-primary add-to-cart">Add</button></div>
+              </div>
+            </article>
+          </div>
+
+          <!-- Pagination -->
+          <nav class="pagination" aria-label="Pagination">
+            <a class="page" href="#">1</a>
+            <a class="page" href="#">2</a>
+            <a class="page" href="#">3</a>
+            <a class="page" href="#">4</a>
+            <a class="page" href="#">5</a>
+            <a class="page" href="#">6</a>
+          </nav>
+        </section>
+      </div>
+    </main>
+
+    <!-- Cart drawer reused -->
+    <aside class="cart-drawer" aria-label="Panier" aria-hidden="true">
+      <div class="cart-header"><h3>Panier</h3><button class="btn" data-cart-close>Close</button></div>
+      <div class="cart-items" role="list"></div>
+      <div class="cart-footer"><div class="cart-total"><span>Total</span><strong class="total-amount">0€</strong></div><button class="btn btn-primary" data-checkout>Payer</button></div>
+    </aside>
+
+    <footer class="site-footer" aria-label="Footer">
+      <div class="container footer-top">
+        <div class="footer-brand">
+          <a class="brand" href="#top"><span class="brand-mark">◆</span><span class="brand-text">Business Explained</span></a>
+          <p class="small">Bold. Insightful. Accessible.</p>
+          <p class="small">hello@business-explained.com</p>
+        </div>
+        <div class="footer-links">
+          <nav aria-label="Products">
+            <ul>
+              <li><strong>Products</strong></li>
+              <li><a href="#">Management eBooks</a></li>
+              <li><a href="#">Marketing eBooks</a></li>
+              <li><a href="#">HR eBooks</a></li>
+              <li><a href="#">Finance eBooks</a></li>
+              <li><a href="#">Technology eBooks</a></li>
+              <li><a href="#">Checklists and Sheets</a></li>
+              <li><a href="#">Bundles and Packs</a></li>
+            </ul>
+          </nav>
+        </div>
+        <div class="footer-links">
+          <nav aria-label="Pages">
+            <ul>
+              <li><strong>Pages</strong></li>
+              <li><a href="./index.html">Home</a></li>
+              <li><a href="./about.html">About us</a></li>
+              <li><a href="./blog.html">Blog</a></li>
+              <li><a href="#">Cart</a></li>
+              <li><a href="#">Account</a></li>
+              <li><a href="#">Sign in</a></li>
+              <li><a href="#">Register</a></li>
+              <li><a href="#">Your products</a></li>
+              <li><a href="#">Manage account</a></li>
+            </ul>
+          </nav>
+        </div>
+        <div class="footer-links">
+          <nav aria-label="Legal and Support">
+            <ul>
+              <li><strong>Legal documents</strong></li>
+              <li><a href="#">Terms of service</a></li>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Refund policy</a></li>
+              <li><a href="#">Disclaimer</a></li>
+              <li><strong>Support</strong></li>
+              <li><a href="./support.html">Contact Us</a></li>
+              <li><a href="./faq.html">FAQs</a></li>
+              <li><a href="#">Refund Request</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+      <div class="container footer-bottom">
+        <p class="small">© <span id="year"></span>, Business Explained</p>
+        <ul class="social"><li><a href="#">LinkedIn</a></li><li><a href="#">Twitter</a></li><li><a href="#">YouTube</a></li></ul>
+      </div>
+    </footer>
+
+    <script src="./script.js" defer></script>
+  </body>
+</html>

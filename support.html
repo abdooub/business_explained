@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Support — Business Explained</title>
+    <meta name="description" content="How can we help you today? Contact our support team using the form." />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="announcement">
+      <div class="container announcement-inner">
+        <span class="badge">Support</span>
+        <span>How can we help you today?</span>
+      </div>
+    </div>
+
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="./index.html">
+          <span class="brand-logo" aria-hidden="true">B</span>
+          <span class="brand-text">Business Explained</span>
+        </a>
+        <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Open menu">
+          <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+        </button>
+        <nav id="primary-nav" class="nav" aria-label="Main navigation">
+          <ul>
+            <li><a href="./products.html">Products</a></li>
+            <li><a href="./about.html">About us</a></li>
+            <li><a href="./blog.html">Blog</a></li>
+            <li class="has-dropdown">
+              <a href="./support.html" class="active">Support</a>
+              <div class="dropdown" role="menu" aria-label="Support submenu">
+                <ul>
+                  <li><a href="./support.html">Contact Us</a></li>
+                  <li><a href="./faq.html">FAQs</a></li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+        </nav>
+        <div class="header-actions">
+          <form class="search" role="search"><input type="search" placeholder="Search" /></form>
+          <a class="icon-link" href="#" aria-label="Account">👤</a>
+          <button class="icon-link cart-button" data-cart-open aria-label="Cart">🛒<span class="cart-badge">0</span></button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Purple hero like reference -->
+    <section class="hero hero-gradient" role="region" aria-label="Support">
+      <div class="container hero-inner">
+        <div class="hero-copy">
+          <h1>How can we help you today? 👋</h1>
+          <p>To get in touch fill out the form below.</p>
+        </div>
+        <div class="hero-media">
+          <img src="https://images.unsplash.com/photo-1604014237800-1c9102c8f6d4?w=1200&q=80&auto=format&fit=crop" alt="Support illustration" />
+        </div>
+      </div>
+    </section>
+
+    <main class="container" style="padding:32px 20px 60px;">
+      <div class="card" style="max-width:860px; margin:-60px auto 0; border-radius:16px; box-shadow: var(--shadow-2); overflow:hidden;">
+        <div class="card-body" style="padding:20px;">
+          <form id="support-form" class="newsletter-form" style="display:grid; grid-template-columns:1fr 1fr; gap:12px;" novalidate>
+            <div style="grid-column:span 1; display:grid; gap:6px;">
+              <label for="firstName">First name*</label>
+              <input id="firstName" name="firstName" required />
+            </div>
+            <div style="grid-column:span 1; display:grid; gap:6px;">
+              <label for="lastName">Last name*</label>
+              <input id="lastName" name="lastName" required />
+            </div>
+            <div style="grid-column:span 2; display:grid; gap:6px;">
+              <label for="emailSupport">Email address*</label>
+              <input id="emailSupport" name="email" type="email" required />
+            </div>
+            <div style="grid-column:span 2; display:grid; gap:6px;">
+              <label for="subject">Subject*</label>
+              <input id="subject" name="subject" required />
+            </div>
+            <div style="grid-column:span 2; display:grid; gap:6px;">
+              <label for="message">Message*</label>
+              <textarea id="message" name="message" rows="6" required></textarea>
+            </div>
+            <div style="grid-column:span 2; display:flex; gap:10px; align-items:center;">
+              <button class="btn btn-primary" type="submit">Submit</button>
+              <p class="form-hint" id="support-hint" role="status" aria-live="polite"></p>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <section style="margin:28px auto 0; max-width:860px; display:grid; gap:8px;">
+        <p>Our team will get back to you ASAP.</p>
+        <p><strong>Bold. Insightful. Accessible.</strong></p>
+      </section>
+    </main>
+
+    <footer class="site-footer" aria-label="Footer">
+      <div class="container footer-top">
+        <div class="footer-brand">
+          <a class="brand" href="#top"><span class="brand-mark">◆</span><span class="brand-text">Business Explained</span></a>
+          <p class="small">Independent resources on business, strategy and productivity.</p>
+        </div>
+        <div class="footer-links">
+          <nav aria-label="Footer columns">
+            <ul>
+              <li><strong>Products</strong></li>
+              <li><a href="#">Management eBooks</a></li>
+              <li><a href="#">Marketing eBooks</a></li>
+              <li><a href="#">HR eBooks</a></li>
+              <li><a href="#">Finance eBooks</a></li>
+              <li><a href="#">Technology eBooks</a></li>
+              <li><a href="#">Checklists and Sheets</a></li>
+              <li><a href="#">Bundles and Packs</a></li>
+            </ul>
+          </nav>
+        </div>
+        <div class="footer-links">
+          <nav aria-label="Footer pages">
+            <ul>
+              <li><strong>Pages</strong></li>
+              <li><a href="./index.html">Home</a></li>
+              <li><a href="#">About us</a></li>
+              <li><a href="./index.html#articles">Blog</a></li>
+              <li><a href="#">Cart</a></li>
+              <li><a href="#">Account</a></li>
+              <li><a href="#">Sign in</a></li>
+              <li><a href="#">Register</a></li>
+              <li><a href="#">Your products</a></li>
+              <li><a href="#">Manage account</a></li>
+            </ul>
+          </nav>
+        </div>
+        <div class="footer-links">
+          <nav aria-label="Footer legal">
+            <ul>
+              <li><strong>Legal documents</strong></li>
+              <li><a href="#">Terms of service</a></li>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Refund policy</a></li>
+              <li><a href="#">Disclaimer</a></li>
+              <li><strong>Support</strong></li>
+              <li><a href="./support.html">Contact Us</a></li>
+              <li><a href="#">FAQs</a></li>
+              <li><a href="#">Refund Request</a></li>
+              <li><strong>Find Us On</strong></li>
+              <li><a href="#">LinkedIn</a></li>
+              <li><a href="#">Twitter</a></li>
+              <li><a href="#">YouTube</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+      <div class="container footer-bottom">
+        <p class="small">hello@business-explained.com</p>
+        <p class="small">© <span id="year"></span>, Business Explained</p>
+      </div>
+    </footer>
+
+    <script src="./script.js" defer></script>
+  </body>
+</html>

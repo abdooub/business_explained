@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Blog — Business Explained</title>
+    <meta name="description" content="Insights on strategy, marketing, operations, and productivity." />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="announcement">
+      <div class="container announcement-inner">
+        <span class="badge">Blog</span>
+        <span>Read our latest articles</span>
+      </div>
+    </div>
+
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="./index.html">
+          <span class="brand-logo" aria-hidden="true">B</span>
+          <span class="brand-text">Business Explained</span>
+        </a>
+        <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Open menu">
+          <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+        </button>
+        <nav id="primary-nav" class="nav" aria-label="Main navigation">
+          <ul>
+            <li><a href="./products.html">Products</a></li>
+            <li><a href="./about.html">About us</a></li>
+            <li><a href="./blog.html" class="active">Blog</a></li>
+            <li class="has-dropdown">
+              <a href="./support.html">Support</a>
+              <div class="dropdown" role="menu" aria-label="Support submenu">
+                <ul>
+                  <li><a href="./support.html">Contact Us</a></li>
+                  <li><a href="./faq.html">FAQs</a></li>
+                </ul>
+              </div>
+            </li>
+            
+          </ul>
+        </nav>
+        <div class="header-actions">
+          <form class="search" role="search"><input type="search" placeholder="Search" /></form>
+          <a class="icon-link" href="#" aria-label="Account">👤</a>
+          <button class="icon-link cart-button" data-cart-open aria-label="Cart">🛒<span class="cart-badge">0</span></button>
+        </div>
+      </div>
+    </header>
+
+    <main class="container" style="padding:40px 20px 60px;">
+      <header class="section-header">
+        <h1>Latest articles</h1>
+        <p>Short, actionable reads.</p>
+      </header>
+
+      <div class="card-grid">
+        <article class="card">
+          <a class="card-media" href="#"><img src="https://images.unsplash.com/photo-1551281044-8d8a6c80afad?w=800&q=80&auto=format&fit=crop" alt="Whiteboard notes" /></a>
+          <div class="card-body">
+            <a class="chip" href="#">Strategy</a>
+            <h3><a href="#">A simple framework to prioritize bets</a></h3>
+            <p>Evaluate impact, effort, and risk before committing.</p>
+            <div class="card-meta"><span>6 min</span><span>•</span><time datetime="2025-10-01">Oct 2025</time></div>
+          </div>
+        </article>
+        <article class="card">
+          <a class="card-media" href="#"><img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=800&q=80&auto=format&fit=crop" alt="Team around laptop" /></a>
+          <div class="card-body">
+            <a class="chip" href="#">Productivity</a>
+            <h3><a href="#">Personal sprints: execute in short cycles</a></h3>
+            <p>Block your week to stay focused without burnout.</p>
+            <div class="card-meta"><span>4 min</span><span>•</span><time datetime="2025-09-20">Sep 2025</time></div>
+          </div>
+        </article>
+        <article class="card">
+          <a class="card-media" href="#"><img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800&q=80&auto=format&fit=crop" alt="Conference stage" /></a>
+          <div class="card-body">
+            <a class="chip" href="#">Marketing</a>
+            <h3><a href="#">Positioning: say less, convince more</a></h3>
+            <p>Refine your message to capture attention.</p>
+            <div class="card-meta"><span>7 min</span><span>•</span><time datetime="2025-08-10">Aug 2025</time></div>
+          </div>
+        </article>
+      </div>
+    </main>
+
+    <aside class="cart-drawer" aria-label="Cart" aria-hidden="true">
+      <div class="cart-header"><h3>Cart</h3><button class="btn" data-cart-close>Close</button></div>
+      <div class="cart-items" role="list"></div>
+      <div class="cart-footer"><div class="cart-total"><span>Total</span><strong class="total-amount">$0</strong></div><button class="btn btn-primary" data-checkout>Checkout</button></div>
+    </aside>
+
+    <footer class="site-footer" aria-label="Footer">
+      <div class="container footer-top">
+        <div class="footer-brand">
+          <a class="brand" href="#top"><span class="brand-mark">◆</span><span class="brand-text">Business Explained</span></a>
+          <p class="small">Bold. Insightful. Accessible.</p>
+          <p class="small">hello@business-explained.com</p>
+        </div>
+        <div class="footer-links">
+          <nav aria-label="Products">
+            <ul>
+              <li><strong>Products</strong></li>
+              <li><a href="#">Management eBooks</a></li>
+              <li><a href="#">Marketing eBooks</a></li>
+              <li><a href="#">HR eBooks</a></li>
+              <li><a href="#">Finance eBooks</a></li>
+              <li><a href="#">Technology eBooks</a></li>
+              <li><a href="#">Checklists and Sheets</a></li>
+              <li><a href="#">Bundles and Packs</a></li>
+            </ul>
+          </nav>
+        </div>
+        <div class="footer-links">
+          <nav aria-label="Pages">
+            <ul>
+              <li><strong>Pages</strong></li>
+              <li><a href="./index.html">Home</a></li>
+              <li><a href="./about.html">About us</a></li>
+              <li><a href="./blog.html">Blog</a></li>
+              <li><a href="#">Cart</a></li>
+              <li><a href="#">Account</a></li>
+              <li><a href="#">Sign in</a></li>
+              <li><a href="#">Register</a></li>
+              <li><a href="#">Your products</a></li>
+              <li><a href="#">Manage account</a></li>
+            </ul>
+          </nav>
+        </div>
+        <div class="footer-links">
+          <nav aria-label="Legal and Support">
+            <ul>
+              <li><strong>Legal documents</strong></li>
+              <li><a href="#">Terms of service</a></li>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Refund policy</a></li>
+              <li><a href="#">Disclaimer</a></li>
+              <li><strong>Support</strong></li>
+              <li><a href="./support.html">Contact Us</a></li>
+              <li><a href="./faq.html">FAQs</a></li>
+              <li><a href="#">Refund Request</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+      <div class="container footer-bottom">
+        <p class="small">© <span id="year"></span>, Business Explained</p>
+        <ul class="social"><li><a href="#">LinkedIn</a></li><li><a href="#">Twitter</a></li><li><a href="#">YouTube</a></li></ul>
+      </div>
+    </footer>
+
+    <script src="./script.js" defer></script>
+  </body>
+</html>

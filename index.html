@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <!--
+      Site vitrine inspiré de la mise en page de business-explained.com, sans copier le contenu.
+      Technologies: HTML, CSS, JavaScript. Design épuré, responsive, SEO-friendly.
+    -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- SEO de base -->
+    <title>Business Explained — Idées, Stratégies et Productivité</title>
+    <meta name="description" content="Ressources claires et modernes sur le business, la stratégie et la productivité. Articles, guides et inspirations pour progresser au quotidien." />
+    <link rel="canonical" href="https://example.com/" />
+
+    <!-- Open Graph / Twitter -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Business Explained" />
+    <meta property="og:title" content="Business Explained — Idées, Stratégies et Productivité" />
+    <meta property="og:description" content="Ressources claires et modernes sur le business, la stratégie et la productivité." />
+    <meta property="og:image" content="https://images.unsplash.com/photo-1556761175-b413da4baf72?w=1200&q=80&auto=format&fit=crop" />
+    <meta property="og:url" content="https://example.com/" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Business Explained — Idées, Stratégies et Productivité" />
+    <meta name="twitter:description" content="Ressources claires et modernes sur le business, la stratégie et la productivité." />
+    <meta name="twitter:image" content="https://images.unsplash.com/photo-1556761175-b413da4baf72?w=1200&q=80&auto=format&fit=crop" />
+
+    <!-- Couleurs du navigateur -->
+    <meta name="theme-color" content="#4210d1" />
+
+    <!-- Police moderne -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS principal -->
+    <link rel="stylesheet" href="./styles.css" />
+
+    <!-- Données structurées (Organization) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Business Explained",
+        "url": "https://example.com/",
+        "logo": "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=256&q=80&auto=format&fit=crop"
+      }
+    </script>
+  </head>
+  <body>
+    <!-- Bandeau d'annonce -->
+    <div class="announcement" role="region" aria-label="Promotion">
+      <div class="container announcement-inner">
+        <span class="badge">Offre limitée</span>
+        <span class="announcement-text">Pack complet — prix le plus bas aujourd’hui</span>
+        <span class="timer" aria-live="polite">00h 29m 36s</span>
+      </div>
+    </div>
+
+    <!-- En-tête de navigation -->
+    <header class="site-header" id="top">
+      <div class="container header-inner">
+        <a class="brand" href="#top" aria-label="Accueil Business Explained">
+          <span class="brand-logo" aria-hidden="true">B</span>
+          <span class="brand-text">Business Explained</span>
+        </a>
+
+        <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Ouvrir le menu">
+          <span class="bar" aria-hidden="true"></span>
+          <span class="bar" aria-hidden="true"></span>
+          <span class="bar" aria-hidden="true"></span>
+        </button>
+
+        <nav id="primary-nav" class="nav" aria-label="Main navigation">
+          <ul>
+            <li><a href="./products.html">Products</a></li>
+            <li><a href="./about.html">About us</a></li>
+            <li><a href="./blog.html">Blog</a></li>
+            <li class="has-dropdown">
+              <a href="./support.html">Support</a>
+              <div class="dropdown" role="menu" aria-label="Support submenu">
+                <ul>
+                  <li><a href="./support.html">Contact Us</a></li>
+                  <li><a href="./faq.html">FAQs</a></li>
+                </ul>
+              </div>
+            </li>
+            
+          </ul>
+        </nav>
+
+        <div class="header-actions">
+          <form class="search" role="search" aria-label="Search" action="#" method="get">
+            <input type="search" name="q" placeholder="Search for products" autocomplete="off" />
+          </form>
+          <a class="icon-link" href="#" aria-label="Account">👤</a>
+          <button class="icon-link cart-button" aria-label="Open cart" data-cart-open>
+            🛒
+            <span class="cart-badge" aria-live="polite">0</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero hero-gradient" role="region" aria-label="Introduction">
+      <div class="container hero-inner">
+        <div class="hero-copy">
+          <h1>Business eBooks, Checklists and Tools</h1>
+          <p>Your place to upgrade business skills in the digital age.</p>
+          <div class="hero-cta">
+            <a class="btn btn-primary" href="./products.html">View products</a>
+            <a class="btn btn-ghost" href="#articles">Browse the blog</a>
+          </div>
+        </div>
+        <div class="hero-media">
+          <img
+            src="https://images.unsplash.com/photo-1544717305-996b815c338c?w=1200&q=80&auto=format&fit=crop"
+            srcset="
+              https://images.unsplash.com/photo-1544717305-996b815c338c?w=700&q=80&auto=format&fit=crop 700w,
+              https://images.unsplash.com/photo-1544717305-996b815c338c?w=1000&q=80&auto=format&fit=crop 1000w,
+              https://images.unsplash.com/photo-1544717305-996b815c338c?w=1400&q=80&auto=format&fit=crop 1400w
+            "
+            sizes="(max-width: 900px) 100vw, 560px"
+            alt="Illustration colorée liée au travail en équipe"
+            loading="eager"
+            decoding="async"
+          />
+        </div>
+      </div>
+
+      <!-- Panneau de crédibilité -->
+      <div class="trust-panel" aria-label="Marques de confiance">
+        <div class="container trust-inner">
+          <div class="trust-card">
+            <span class="trust-item">Brand One</span>
+            <span class="trust-item">Brand Two</span>
+            <span class="trust-item">Brand Three</span>
+            <span class="trust-item">Brand Four</span>
+            <span class="trust-item">Brand Five</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    
+
+    <!-- Panier (drawer) -->
+    <aside class="cart-drawer" aria-label="Panier" aria-hidden="true">
+      <div class="cart-header">
+        <h3>Panier</h3>
+        <button class="btn" data-cart-close>Fermer</button>
+      </div>
+      <div class="cart-items" role="list"></div>
+      <div class="cart-footer">
+        <div class="cart-total">
+          <span>Total</span>
+          <strong class="total-amount">$0</strong>
+        </div>
+        <button class="btn btn-primary" data-checkout>Payer</button>
+      </div>
+    </aside>
+    
+
+    
+
+    <!-- Footer -->
+    <footer class="site-footer" aria-label="Footer">
+      <div class="container footer-top">
+        <div class="footer-brand">
+          <a class="brand" href="#top"><span class="brand-mark">◆</span><span class="brand-text">Business Explained</span></a>
+          <p class="small">Bold. Insightful. Accessible.</p>
+          <p class="small">hello@business-explained.com</p>
+        </div>
+        <div class="footer-links">
+          <nav aria-label="Products">
+            <ul>
+              <li><strong>Products</strong></li>
+              <li><a href="#">Management eBooks</a></li>
+              <li><a href="#">Marketing eBooks</a></li>
+              <li><a href="#">HR eBooks</a></li>
+              <li><a href="#">Finance eBooks</a></li>
+              <li><a href="#">Technology eBooks</a></li>
+              <li><a href="#">Checklists and Sheets</a></li>
+              <li><a href="#">Bundles and Packs</a></li>
+            </ul>
+          </nav>
+        </div>
+        <div class="footer-links">
+          <nav aria-label="Pages">
+            <ul>
+              <li><strong>Pages</strong></li>
+              <li><a href="./index.html">Home</a></li>
+              <li><a href="./about.html">About us</a></li>
+              <li><a href="./blog.html">Blog</a></li>
+              <li><a href="#">Cart</a></li>
+              <li><a href="#">Account</a></li>
+              <li><a href="#">Sign in</a></li>
+              <li><a href="#">Register</a></li>
+              <li><a href="#">Your products</a></li>
+              <li><a href="#">Manage account</a></li>
+            </ul>
+          </nav>
+        </div>
+        <div class="footer-links">
+          <nav aria-label="Legal and Support">
+            <ul>
+              <li><strong>Legal documents</strong></li>
+              <li><a href="#">Terms of service</a></li>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Refund policy</a></li>
+              <li><a href="#">Disclaimer</a></li>
+              <li><strong>Support</strong></li>
+              <li><a href="./support.html">Contact Us</a></li>
+              <li><a href="./faq.html">FAQs</a></li>
+              <li><a href="#">Refund Request</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+      <div class="container footer-bottom">
+        <p class="small">© <span id="year"></span>, Business Explained</p>
+        <ul class="social"><li><a href="#">LinkedIn</a></li><li><a href="#">Twitter</a></li><li><a href="#">YouTube</a></li></ul>
+      </div>
+    </footer>
+
+    <!-- JS -->
+    <script src="./script.js" defer></script>
+  </body>
+</html>
