@@ -244,11 +244,10 @@
       })
         .then((r) => r.json())
         .then((d) => {
+          const defaultLinks = [
+            'https://drive.google.com/file/d/1HE7TU8Rq6aCNyS959zI3vck5-h4fC5uD/view?usp=drive_link'
+          ];
           if (d?.ok) {
-            const defaultLinks = [
-              'https://drive.google.com/file/d/1HE7TU8Rq6aCNyS959zI3vck5-h4fC5uD/view?usp=drive_link'
-            ];
-            // If cart still exists, try to present per-item grouping; otherwise show one group
             const items = (Array.isArray(cart) && cart.length)
               ? cart.map((it) => ({ name: it.name || 'Produit', qty: it.qty || 1, links: defaultLinks }))
               : [{ name: 'Achat PayPal', qty: 1, links: defaultLinks }];
@@ -257,7 +256,8 @@
             saveCart();
             renderCart();
           } else {
-            showDownloadModalFromItems([]);
+            // Fallback: still present the default download link to match Stripe UX
+            showDownloadModalFromItems([{ name: 'Achat PayPal', qty: 1, links: defaultLinks }]);
           }
         })
         .catch(() => showDownloadModalFromItems(null))
