@@ -55,17 +55,26 @@
     const style = document.createElement('style');
     style.id = 'confirmation-modal-styles';
     style.textContent = `
-    .modal{display:flex;position:fixed;z-index:999;left:0;top:0;width:100%;height:100%;background-color:rgba(0,0,0,.5);backdrop-filter:blur(2px);align-items:center;justify-content:center}
+    .modal{display:flex;position:fixed;z-index:9999;left:0;top:0;width:100%;height:100%;background-color:rgba(11,11,20,.55);backdrop-filter:blur(2px);align-items:center;justify-content:center}
     .modal[hidden]{display:none}
-    .modal-content{background:linear-gradient(90deg,#ffffff,#f8f8ff);padding:24px;border-radius:12px;box-shadow:0 10px 25px rgba(0,0,0,.2);width:min(92vw,540px);animation:fadeInScale .25s ease-in-out}
+    .modal-content{background:#fff;padding:24px 22px;border-radius:14px;box-shadow:0 20px 50px rgba(0,0,0,.25);width:min(92vw,640px);animation:fadeInScale .25s ease-in-out;border:1px solid rgba(0,0,0,.06)}
     @keyframes fadeInScale{0%{opacity:0;transform:scale(.96)}100%{opacity:1;transform:scale(1)}}
-    .modal-content h2{margin:0 0 6px}
-    .close-btn{float:right;font-size:20px;cursor:pointer;border:0;background:transparent}
-    .download-card{background:#f5f6ff;border-radius:12px;padding:14px;margin:14px 0}
-    .download-card .line{display:flex;align-items:center;justify-content:space-between;gap:10px}
-    .download-card small{display:block;margin-top:6px;color:#555}
-    .download-btn{display:inline-block;text-align:center;padding:10px 14px;border-radius:8px;background:#6c47ff;color:#fff;text-decoration:none}
-    .trust-text{font-size:12px;color:#777;margin-top:8px}
+    .modal-header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+    .modal-title{margin:0;font-size:20px;display:flex;align-items:center;gap:8px}
+    .modal-title .icon{display:inline-flex;width:22px;height:22px;align-items:center;justify-content:center;background:#e9f8ef;color:#0baa5b;border-radius:999px;font-size:14px}
+    .close-btn{font-size:18px;cursor:pointer;border:0;background:transparent;line-height:1;padding:6px;border-radius:8px}
+    .close-btn:hover{background:#f4f4f7}
+    .download-list{display:grid;gap:12px;margin:10px 0 6px}
+    .download-card{background:#fafaff;border-radius:12px;padding:14px;border:1px solid #eef;box-shadow:0 1px 0 rgba(0,0,0,.03)}
+    .download-card .line{display:flex;align-items:center;justify-content:space-between;gap:14px}
+    .download-card .name{font-weight:600}
+    .download-card small{display:block;margin-top:6px;color:#666}
+    .btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 14px;border-radius:10px;border:1px solid #e5e7eb;background:#fff;color:#111;text-decoration:none;cursor:pointer}
+    .btn:hover{background:#f7f7fb}
+    .btn-primary{background:#6c47ff;border-color:#6c47ff;color:#fff}
+    .btn-primary:hover{background:#5a38f0;border-color:#5a38f0}
+    .modal-footer{display:flex;justify-content:space-between;align-items:center;margin-top:14px;gap:10px;flex-wrap:wrap}
+    .trust-text{font-size:12px;color:#69707d;margin-top:6px}
     `;
     document.head.appendChild(style);
   }
@@ -77,14 +86,27 @@
     const modal = document.createElement('div');
     modal.id = 'confirmationModal';
     modal.className = 'modal';
+    modal.tabIndex = -1;
     const content = document.createElement('div');
     content.className = 'modal-content';
+    const header = document.createElement('div');
+    header.className = 'modal-header';
+    const title = document.createElement('h2');
+    title.className = 'modal-title';
+    const icon = document.createElement('span');
+    icon.className = 'icon';
+    icon.textContent = '✓';
+    const titleText = document.createElement('span');
+    titleText.textContent = 'Achat confirmé';
+    title.appendChild(icon);
+    title.appendChild(titleText);
     const closeBtn = document.createElement('button');
     closeBtn.className = 'close-btn';
+    closeBtn.setAttribute('aria-label', 'Fermer');
     closeBtn.textContent = '✕';
-    closeBtn.onclick = () => modal.remove();
-    const h2 = document.createElement('h2');
-    h2.textContent = '✅ Achat confirmé !';
+    closeBtn.onclick = () => document.body.removeChild(modal);
+    header.appendChild(title);
+    header.appendChild(closeBtn);
     const p = document.createElement('p');
     if (items === null) {
       p.textContent = 'Erreur lors de la récupération des liens. Vérifiez votre email ou contactez le support.';
@@ -92,26 +114,29 @@
       p.textContent = 'Merci pour votre confiance. Voici vos liens de téléchargement sécurisés :';
     }
 
-    content.appendChild(closeBtn);
-    content.appendChild(h2);
+    content.appendChild(header);
     content.appendChild(p);
 
     const listWrap = document.createElement('div');
+    listWrap.className = 'download-list';
+    const allLinks = [];
     if (Array.isArray(items) && items.length) {
       items.forEach((it) => {
         const card = document.createElement('div');
         card.className = 'download-card';
         const line = document.createElement('div');
         line.className = 'line';
-        const name = document.createElement('strong');
+        const name = document.createElement('span');
+        name.className = 'name';
         name.textContent = `${it.name || 'Produit'} (x${it.qty || 1})`;
         const primary = document.createElement('a');
         const href = (it.links && it.links[0]) || '#';
+        if (href && href !== '#') allLinks.push(href);
         primary.href = href;
         primary.target = '_blank';
         primary.rel = 'noopener';
-        primary.className = 'download-btn';
-        primary.textContent = '📥 Télécharger';
+        primary.className = 'btn btn-primary';
+        primary.textContent = 'Télécharger';
         line.appendChild(name);
         line.appendChild(primary);
         card.appendChild(line);
@@ -122,12 +147,40 @@
       });
     }
     content.appendChild(listWrap);
+    const footer = document.createElement('div');
+    footer.className = 'modal-footer';
+    const left = document.createElement('div');
+    const copy = document.createElement('button');
+    copy.className = 'btn';
+    copy.textContent = 'Copier tous les liens';
+    copy.onclick = async () => {
+      try { await navigator.clipboard.writeText(allLinks.join('\n')); copy.textContent = 'Copié !'; setTimeout(()=>copy.textContent='Copier tous les liens',1500);} catch(_){}
+    };
+    const open = document.createElement('button');
+    open.className = 'btn';
+    open.textContent = 'Ouvrir tous';
+    open.onclick = () => { allLinks.forEach((l)=>{ try{ if(l) window.open(l,'_blank','noopener'); }catch(_){} }); };
+    left.appendChild(copy);
+    left.appendChild(document.createTextNode(' '));
+    left.appendChild(open);
+    const ok = document.createElement('button');
+    ok.className = 'btn btn-primary';
+    ok.textContent = 'Terminer';
+    ok.onclick = () => document.body.removeChild(modal);
+    footer.appendChild(left);
+    footer.appendChild(ok);
     const trust = document.createElement('p');
     trust.className = 'trust-text';
     trust.innerHTML = '🔒 Vos fichiers sont hébergés en toute sécurité. En cas de problème, contactez-nous à <a href="mailto:support@business-explained.com">support@business-explained.com</a>';
+    content.appendChild(footer);
     content.appendChild(trust);
     modal.appendChild(content);
     document.body.appendChild(modal);
+    // backdrop click & ESC
+    modal.addEventListener('click', (e)=>{ if(e.target===modal){ document.body.removeChild(modal); }});
+    document.addEventListener('keydown', function onEsc(ev){ if(ev.key==='Escape'){ try{document.body.removeChild(modal);}catch(_){} document.removeEventListener('keydown', onEsc); } });
+    // focus first action
+    setTimeout(()=> ok.focus(), 0);
   }
 
       // Requête vers l’API locale
