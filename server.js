@@ -74,7 +74,15 @@ app.post('/api/create-checkout-session', async (req, res) => {
 
     return res.json({ ok: true, url: session.url });
   } catch (e) {
-    return res.status(500).json({ ok: false, message: 'Erreur Stripe' });
+    console.error('Stripe error:', e);
+    const err = {
+      message: 'Erreur Stripe',
+      error: e?.message || 'Unknown error',
+      type: e?.type,
+      code: e?.code,
+      raw: e?.raw?.message,
+    };
+    return res.status(500).json({ ok: false, ...err });
   }
 });
 

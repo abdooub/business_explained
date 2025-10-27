@@ -12,6 +12,9 @@
     });
   }
 
+  // API base: use same-origin by default; in local dev when serving static on 5173, target Express API on 3000
+  const apiBase = (location.hostname === 'localhost' && location.port === '5173') ? 'http://localhost:3000' : '';
+
   function attachSearch() {
     const input = document.getElementById('q');
     if (!input) return;
@@ -49,7 +52,7 @@
 
       // Requête vers l’API locale
       if (hint) hint.textContent = 'Inscription en cours…';
-      fetch('/api/subscribe', {
+      fetch(apiBase + '/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email })
@@ -182,7 +185,7 @@
       renderCart();
     });
     checkoutBtn?.addEventListener('click', () => {
-      fetch('/api/create-checkout-session', {
+      fetch(apiBase + '/api/create-checkout-session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ items: cart })
@@ -193,9 +196,28 @@
             window.location.assign(d.url);
             return;
           }
-          alert(d?.message || 'Impossible d’initier le paiement.');
+          console.error('Stripe checkout error', d);
+          alert((d?.message || 'Impossible d’initier le paiement.') + (d?.error ? `\n${d.error}` : ''));
         })
         .catch(() => alert('Erreur lors de la création de la session de paiement.'));
+    });
+
+    const paypalBtn = document.querySelector('[data-checkout-paypal]');
+    paypalBtn?.addEventListener('click', () => {
+      fetch(apiBase + '/api/paypal/create-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items: cart })
+      })
+        .then((r) => r.json())
+        .then((d) => {
+          if (d?.url) {
+            window.location.assign(d.url);
+            return;
+          }
+          alert(d?.message || 'Impossible de démarrer le paiement PayPal');
+        })
+        .catch(() => alert('Erreur PayPal.'));
     });
   }
 
@@ -206,6 +228,34 @@
   attachAnyAddToCart();
   attachCartHandlers();
   attachSearch();
+
+  // Handle PayPal return (token in query)
+  (function handlePaypalReturn() {
+    try {
+      const qp = new URLSearchParams(location.search);
+      const token = qp.get('token') || qp.get('orderID');
+      const pp = qp.get('pp');
+      if (!token && !pp) return;
+      fetch(apiBase + '/api/paypal/capture-order?token=' + encodeURIComponent(token || ''), { method: 'POST' })
+        .then((r) => r.json())
+        .then((d) => {
+          if (d?.ok) {
+            alert('Paiement PayPal confirmé. Merci!');
+            cart = [];
+            saveCart();
+            renderCart();
+            const url = new URL(location.href);
+            url.searchParams.delete('token');
+            url.searchParams.delete('pp');
+            url.searchParams.delete('ppc');
+            history.replaceState({}, '', url);
+          } else {
+            alert(d?.message || 'Impossible de confirmer le paiement PayPal');
+          }
+        })
+        .catch(() => alert('Erreur de confirmation PayPal'));
+    } catch (_) {}
+  })();
 
   // Support form submission
   const supportForm = document.getElementById('support-form');
@@ -225,7 +275,7 @@
         return;
       }
       if (hint) hint.textContent = 'Sending…';
-      fetch('/api/support', {
+      fetch(apiBase + '/api/support', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
