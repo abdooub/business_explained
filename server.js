@@ -2,6 +2,8 @@
 const path = require('path');
 const express = require('express');
 const Stripe = require('stripe');
+const paypalCreate = require('./api/paypal/create-order');
+const paypalCapture = require('./api/paypal/capture-order');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -46,6 +48,10 @@ app.post('/api/checkout', (req, res) => {
   }
 });
 
+// PayPal endpoints (reuse serverless handlers for local dev)
+app.post('/api/paypal/create-order', (req, res) => paypalCreate(req, res));
+app.post('/api/paypal/capture-order', (req, res) => paypalCapture(req, res));
+
 // Stripe Checkout endpoint
 app.post('/api/create-checkout-session', async (req, res) => {
   try {
@@ -53,23 +59,30 @@ app.post('/api/create-checkout-session', async (req, res) => {
     const items = Array.isArray(req.body?.items) ? req.body.items : [];
     if (!items.length) return res.status(400).json({ ok: false, message: 'Panier vide' });
 
-    const line_items = items.map((it) => ({
-      price_data: {
-        currency: 'eur',
-        product_data: { name: String(it.name || it.id || 'Product') },
-        unit_amount: Math.round(Number(it.price || 0) * 100),
-      },
-      quantity: Number(it.qty || 1),
-    }));
+    const line_items = items.map((it) => {
+      const qty = Number(it.qty || 1);
+      const priceId = it.priceId || it.price; // allow passing Stripe Price ID in price or priceId
+      if (typeof priceId === 'string' && priceId.startsWith('price_')) {
+        return { price: priceId, quantity: qty };
+      }
+      return {
+        price_data: {
+          currency: 'eur',
+          product_data: { name: String(it.name || it.id || 'Product') },
+          unit_amount: Math.round(Number(it.price || 0) * 100),
+        },
+        quantity: qty,
+      };
+    });
 
     const origin = `${req.protocol}://${req.get('host')}`;
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       payment_method_types: ['card'],
       line_items,
-      success_url: `${origin}/products.html?success=1`,
-      cancel_url: `${origin}/products.html?canceled=1`,
       allow_promotion_codes: true,
+      success_url: req.body?.success_url || `${origin}/products.html?success=1`,
+      cancel_url: req.body?.cancel_url || `${origin}/products.html?canceled=1`,
     });
 
     return res.json({ ok: true, url: session.url });

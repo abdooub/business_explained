@@ -19,23 +19,30 @@ module.exports = async function handler(req, res) {
       return;
     }
 
-    const line_items = items.map((it) => ({
-      price_data: {
-        currency: 'eur',
-        product_data: { name: String(it.name || it.id || 'Product') },
-        unit_amount: Math.round(Number(it.price || 0) * 100),
-      },
-      quantity: Number(it.qty || 1),
-    }));
+    const line_items = items.map((it) => {
+      const qty = Number(it.qty || 1);
+      const priceId = it.priceId || it.price; // allow passing Stripe Price ID in price or priceId
+      if (typeof priceId === 'string' && priceId.startsWith('price_')) {
+        return { price: priceId, quantity: qty };
+      }
+      return {
+        price_data: {
+          currency: 'eur',
+          product_data: { name: String(it.name || it.id || 'Product') },
+          unit_amount: Math.round(Number(it.price || 0) * 100),
+        },
+        quantity: qty,
+      };
+    });
 
     const origin = `${req.headers['x-forwarded-proto'] || 'https'}://${req.headers.host}`;
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       payment_method_types: ['card'],
       line_items,
-      success_url: `${origin}/products.html?success=1`,
-      cancel_url: `${origin}/products.html?canceled=1`,
       allow_promotion_codes: true,
+      success_url: req.body?.success_url || `${origin}/products.html?success=1`,
+      cancel_url: req.body?.cancel_url || `${origin}/products.html?canceled=1`,
     });
 
     res.json({ ok: true, url: session.url });
