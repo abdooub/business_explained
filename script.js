@@ -50,6 +50,86 @@
         return;
       }
 
+  function ensurePrettyModalStyles() {
+    if (document.getElementById('confirmation-modal-styles')) return;
+    const style = document.createElement('style');
+    style.id = 'confirmation-modal-styles';
+    style.textContent = `
+    .modal{display:flex;position:fixed;z-index:999;left:0;top:0;width:100%;height:100%;background-color:rgba(0,0,0,.5);backdrop-filter:blur(2px);align-items:center;justify-content:center}
+    .modal[hidden]{display:none}
+    .modal-content{background:linear-gradient(90deg,#ffffff,#f8f8ff);padding:24px;border-radius:12px;box-shadow:0 10px 25px rgba(0,0,0,.2);width:min(92vw,540px);animation:fadeInScale .25s ease-in-out}
+    @keyframes fadeInScale{0%{opacity:0;transform:scale(.96)}100%{opacity:1;transform:scale(1)}}
+    .modal-content h2{margin:0 0 6px}
+    .close-btn{float:right;font-size:20px;cursor:pointer;border:0;background:transparent}
+    .download-card{background:#f5f6ff;border-radius:12px;padding:14px;margin:14px 0}
+    .download-card .line{display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .download-card small{display:block;margin-top:6px;color:#555}
+    .download-btn{display:inline-block;text-align:center;padding:10px 14px;border-radius:8px;background:#6c47ff;color:#fff;text-decoration:none}
+    .trust-text{font-size:12px;color:#777;margin-top:8px}
+    `;
+    document.head.appendChild(style);
+  }
+
+  function showPrettyConfirmationModal(items) {
+    ensurePrettyModalStyles();
+    const existing = document.getElementById('confirmationModal');
+    if (existing) existing.remove();
+    const modal = document.createElement('div');
+    modal.id = 'confirmationModal';
+    modal.className = 'modal';
+    const content = document.createElement('div');
+    content.className = 'modal-content';
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'close-btn';
+    closeBtn.textContent = '✕';
+    closeBtn.onclick = () => modal.remove();
+    const h2 = document.createElement('h2');
+    h2.textContent = '✅ Achat confirmé !';
+    const p = document.createElement('p');
+    if (items === null) {
+      p.textContent = 'Erreur lors de la récupération des liens. Vérifiez votre email ou contactez le support.';
+    } else {
+      p.textContent = 'Merci pour votre confiance. Voici vos liens de téléchargement sécurisés :';
+    }
+
+    content.appendChild(closeBtn);
+    content.appendChild(h2);
+    content.appendChild(p);
+
+    const listWrap = document.createElement('div');
+    if (Array.isArray(items) && items.length) {
+      items.forEach((it) => {
+        const card = document.createElement('div');
+        card.className = 'download-card';
+        const line = document.createElement('div');
+        line.className = 'line';
+        const name = document.createElement('strong');
+        name.textContent = `${it.name || 'Produit'} (x${it.qty || 1})`;
+        const primary = document.createElement('a');
+        const href = (it.links && it.links[0]) || '#';
+        primary.href = href;
+        primary.target = '_blank';
+        primary.rel = 'noopener';
+        primary.className = 'download-btn';
+        primary.textContent = '📥 Télécharger';
+        line.appendChild(name);
+        line.appendChild(primary);
+        card.appendChild(line);
+        const sm = document.createElement('small');
+        sm.textContent = 'Lien valide pendant 7 jours';
+        card.appendChild(sm);
+        listWrap.appendChild(card);
+      });
+    }
+    content.appendChild(listWrap);
+    const trust = document.createElement('p');
+    trust.className = 'trust-text';
+    trust.innerHTML = '🔒 Vos fichiers sont hébergés en toute sécurité. En cas de problème, contactez-nous à <a href="mailto:support@business-explained.com">support@business-explained.com</a>';
+    content.appendChild(trust);
+    modal.appendChild(content);
+    document.body.appendChild(modal);
+  }
+
       // Requête vers l’API locale
       if (hint) hint.textContent = 'Inscription en cours…';
       fetch(apiBase + '/api/subscribe', {
@@ -283,17 +363,17 @@
         .then((r) => r.json())
         .then((d) => {
           if (d?.ok && Array.isArray(d.items)) {
-            showDownloadModalFromItems(d.items);
+            showPrettyConfirmationModal(d.items);
             // try to send receipt email silently
             fetch(apiBase + '/api/send-receipt?session_id=' + encodeURIComponent(sid), { method: 'POST' }).catch(() => {});
             cart = [];
             saveCart();
             renderCart();
           } else {
-            showDownloadModalFromItems([]);
+            showPrettyConfirmationModal([]);
           }
         })
-        .catch(() => showDownloadModalFromItems(null))
+        .catch(() => showPrettyConfirmationModal(null))
         .finally(() => {
           const url = new URL(location.href);
           url.searchParams.delete('success');
