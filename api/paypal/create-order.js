@@ -36,7 +36,11 @@ module.exports = async function handler(req, res) {
     }
     const { access_token } = await tokenResp.json();
 
-    const origin = `${req.headers['x-forwarded-proto'] || 'https'}://${req.headers.host}`;
+    const host = req.headers.host || '';
+    const forwardedProto = req.headers['x-forwarded-proto'];
+    const isLocal = /^(localhost|127\.0\.0\.1)(:|$)/i.test(host);
+    const proto = isLocal ? (req.protocol || 'http') : (forwardedProto || 'https');
+    const origin = `${proto}://${host}`;
 
     const orderResp = await fetch(base + '/v2/checkout/orders', {
       method: 'POST',
