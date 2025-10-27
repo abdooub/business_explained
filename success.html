@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Thank you — Downloads</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css" />
+    <style>
+      .downloads { display:grid; gap:12px; max-width:800px; margin: 28px auto; }
+      .downloads a { word-break: break-all; }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="/products.html"><span class="brand-logo" aria-hidden="true">B</span><span class="brand-text">Business Explained</span></a>
+      </div>
+    </header>
+
+    <main class="container" style="padding:40px 20px 60px;">
+      <header class="section-header"><h1>Thank you! Your downloads are ready</h1></header>
+      <p id="status">Loading your order…</p>
+      <section id="downloads" class="downloads" aria-live="polite"></section>
+      <p><a class="btn" href="/products.html">Back to products</a></p>
+    </main>
+
+    <script>
+      (async function(){
+        const qp = new URLSearchParams(location.search);
+        const sessionId = qp.get('session_id');
+        const statusEl = document.getElementById('status');
+        const box = document.getElementById('downloads');
+        if (!sessionId) {
+          statusEl.textContent = 'Missing session_id in URL';
+          return;
+        }
+        try {
+          const res = await fetch('/api/order-links?session_id=' + encodeURIComponent(sessionId));
+          const data = await res.json();
+          if (!res.ok || !data?.ok) throw new Error(data?.message || 'Could not load order');
+          statusEl.textContent = '';
+          if (!data.items?.length) {
+            box.innerHTML = '<p>No items found in this order.</p>';
+            return;
+          }
+          data.items.forEach(it => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            const inner = document.createElement('div');
+            inner.className = 'card-body';
+            inner.innerHTML = `<h3>${it.name} <small>(x${it.qty})</small></h3>`;
+            const list = document.createElement('ul');
+            (it.links || []).forEach((href, idx) => {
+              const li = document.createElement('li');
+              li.innerHTML = `<a class="btn btn-primary" href="${href}" target="_blank" rel="noopener">Download ${idx+1}</a>`;
+              list.appendChild(li);
+            });
+            inner.appendChild(list);
+            card.appendChild(inner);
+            box.appendChild(card);
+          });
+        } catch (e) {
+          statusEl.textContent = 'Error: ' + (e?.message || e);
+        }
+      })();
+    </script>
+  </body>
+</html>

@@ -4,6 +4,8 @@ const express = require('express');
 const Stripe = require('stripe');
 const paypalCreate = require('./api/paypal/create-order');
 const paypalCapture = require('./api/paypal/capture-order');
+const orderLinks = require('./api/order-links');
+const sendReceipt = require('./api/send-receipt');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -51,6 +53,8 @@ app.post('/api/checkout', (req, res) => {
 // PayPal endpoints (reuse serverless handlers for local dev)
 app.post('/api/paypal/create-order', (req, res) => paypalCreate(req, res));
 app.post('/api/paypal/capture-order', (req, res) => paypalCapture(req, res));
+app.get('/api/order-links', (req, res) => orderLinks(req, res));
+app.post('/api/send-receipt', (req, res) => sendReceipt(req, res));
 
 // Stripe Checkout endpoint
 app.post('/api/create-checkout-session', async (req, res) => {
@@ -81,7 +85,7 @@ app.post('/api/create-checkout-session', async (req, res) => {
       payment_method_types: ['card'],
       line_items,
       allow_promotion_codes: true,
-      success_url: req.body?.success_url || `${origin}/products.html?success=1`,
+      success_url: req.body?.success_url || `${origin}/success.html?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: req.body?.cancel_url || `${origin}/products.html?canceled=1`,
     });
 

@@ -257,6 +257,40 @@
     } catch (_) {}
   })();
 
+  // Handle Stripe success (success=1 & session_id in query)
+  (function handleStripeSuccess() {
+    try {
+      const qp = new URLSearchParams(location.search);
+      const success = qp.get('success');
+      const sid = qp.get('session_id');
+      if (success !== '1' || !sid) return;
+      fetch(apiBase + '/api/order-links?session_id=' + encodeURIComponent(sid))
+        .then((r) => r.json())
+        .then((d) => {
+          if (d?.ok && Array.isArray(d.items)) {
+            const links = d.items.flatMap((it) => it.links || []);
+            if (links.length) {
+              alert('Merci pour votre achat!\nVos liens de téléchargement:\n\n' + links.join('\n'));
+            } else {
+              alert('Paiement confirmé. Aucun lien trouvé pour cette commande.');
+            }
+            cart = [];
+            saveCart();
+            renderCart();
+          } else {
+            alert(d?.message || 'Paiement confirmé, mais impossible de récupérer les liens.');
+          }
+        })
+        .catch(() => alert('Erreur lors de la récupération des liens d\'achat.'))
+        .finally(() => {
+          const url = new URL(location.href);
+          url.searchParams.delete('success');
+          url.searchParams.delete('session_id');
+          history.replaceState({}, '', url);
+        });
+    } catch (_) {}
+  })();
+
   // Support form submission
   const supportForm = document.getElementById('support-form');
   if (supportForm) {
