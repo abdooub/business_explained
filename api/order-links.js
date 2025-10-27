@@ -45,11 +45,16 @@ module.exports = async function handler(req, res) {
     // Get purchased line items
     const lineItems = await stripe.checkout.sessions.listLineItems(sessionId, { limit: 100 });
 
-    const items = (lineItems?.data || []).map((li) => {
+    let items = (lineItems?.data || []).map((li) => {
       const name = li.description || li.price?.product || 'Product';
       const links = LINK_MAP[name] || DEFAULT_LINKS;
       return { name, qty: li.quantity || 1, links };
     });
+
+    // Fallback: if Stripe returned no line items, still return default links
+    if (!items.length) {
+      items = [{ name: 'Order', qty: 1, links: DEFAULT_LINKS }];
+    }
 
     res.json({ ok: true, items });
   } catch (e) {
