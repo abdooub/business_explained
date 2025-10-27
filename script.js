@@ -233,27 +233,42 @@
   (function handlePaypalReturn() {
     try {
       const qp = new URLSearchParams(location.search);
-      const token = qp.get('token') || qp.get('orderID');
-      const pp = qp.get('pp');
-      if (!token && !pp) return;
-      fetch(apiBase + '/api/paypal/capture-order?token=' + encodeURIComponent(token || ''), { method: 'POST' })
+      const p = qp.get('pp');
+      const token = qp.get('token');
+      const payer = qp.get('PayerID');
+      if (p !== '1' || !token || !payer) return;
+      fetch(apiBase + '/api/paypal/capture-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token, payer })
+      })
         .then((r) => r.json())
         .then((d) => {
           if (d?.ok) {
-            alert('Paiement PayPal confirmé. Merci!');
+            const defaultLinks = [
+              'https://drive.google.com/file/d/1HE7TU8Rq6aCNyS959zI3vck5-h4fC5uD/view?usp=drive_link'
+            ];
+            // If cart still exists, try to present per-item grouping; otherwise show one group
+            const items = (Array.isArray(cart) && cart.length)
+              ? cart.map((it) => ({ name: it.name || 'Produit', qty: it.qty || 1, links: defaultLinks }))
+              : [{ name: 'Achat PayPal', qty: 1, links: defaultLinks }];
+            showDownloadModalFromItems(items);
             cart = [];
             saveCart();
             renderCart();
-            const url = new URL(location.href);
-            url.searchParams.delete('token');
-            url.searchParams.delete('pp');
-            url.searchParams.delete('ppc');
-            history.replaceState({}, '', url);
           } else {
-            alert(d?.message || 'Impossible de confirmer le paiement PayPal');
+            showDownloadModalFromItems([]);
           }
         })
-        .catch(() => alert('Erreur de confirmation PayPal'));
+        .catch(() => showDownloadModalFromItems(null))
+        .finally(() => {
+          const url = new URL(location.href);
+          url.searchParams.delete('pp');
+          url.searchParams.delete('token');
+          url.searchParams.delete('PayerID');
+          url.searchParams.delete('ppc');
+          history.replaceState({}, '', url);
+        });
     } catch (_) {}
   })();
 
