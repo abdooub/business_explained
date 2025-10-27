@@ -411,7 +411,18 @@
       const qp = new URLSearchParams(location.search);
       const success = qp.get('success');
       const sid = qp.get('session_id');
-      if (success !== '1' || !sid) return;
+      if (success !== '1') return;
+      // Fallback: if session_id is missing (old success_url), still show default download link
+      if (!sid) {
+        const defaultLinks = [
+          'https://drive.google.com/file/d/1HE7TU8Rq6aCNyS959zI3vck5-h4fC5uD/view?usp=drive_link'
+        ];
+        showPrettyConfirmationModal([{ name: 'Achat (Stripe)', qty: 1, links: defaultLinks }]);
+        const url = new URL(location.href);
+        url.searchParams.delete('success');
+        history.replaceState({}, '', url);
+        return;
+      }
       fetch(apiBase + '/api/order-links?session_id=' + encodeURIComponent(sid))
         .then((r) => r.json())
         .then((d) => {
