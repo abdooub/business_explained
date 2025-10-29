@@ -81,7 +81,6 @@
         links_html: linksHtml,
         order_ref: (meta && meta.orderRef) || '' ,
         store_name: 'Business Explained',
-        payment_method: (meta && meta.paymentMethod) || '',
         // For the user's custom single-link template
         customer_name: customerName,
         download_link: firstLink
@@ -288,10 +287,16 @@
         buyerEmailInput?.focus();
         return;
       }
+      try { localStorage.setItem('stripePending', '1'); } catch (_) {}
+      const origin = location.origin;
       fetch(apiBase + '/api/create-checkout-session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ items: cart })
+        body: JSON.stringify({
+          items: cart,
+          success_url: origin + '/success.html?success=1&session_id={CHECKOUT_SESSION_ID}',
+          cancel_url: origin + '/products.html?canceled=1'
+        })
       })
         .then((r) => r.json())
         .then((d) => {
@@ -313,6 +318,7 @@
         buyerEmailInput?.focus();
         return;
       }
+      try { localStorage.setItem('paypalPending', '1'); } catch (_) {}
       fetch(apiBase + '/api/paypal/create-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -345,8 +351,8 @@
       const qp = new URLSearchParams(location.search);
       const token = qp.get('token');
       const payer = qp.get('PayerID');
-      // Capture if PayPal returned with token & PayerID, even if 'pp' flag is missing
-      if (!token || !payer) return;
+      // Capture if PayPal returned with token (PayerID may be absent with Orders V2)
+      if (!token) return;
       fetch(apiBase + '/api/paypal/capture-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -363,7 +369,7 @@
               : [{ name: 'Achat PayPal', qty: 1, links: defaultLinks }];
             showPrettyConfirmationModal(items);
             const email = getBuyerEmail();
-            if (email) sendDownloadsViaEmailJS(email, items, { orderRef: 'PAYPAL', paymentMethod: 'PayPal' });
+            if (email) sendDownloadsViaEmailJS(email, items, { orderRef: 'PAYPAL' });
             cart = [];
             saveCart();
             renderCart();
@@ -385,7 +391,51 @@
           url.searchParams.delete('PayerID');
           url.searchParams.delete('ppc');
           history.replaceState({}, '', url);
+          try { localStorage.removeItem('paypalPending'); } catch (_) {}
         });
+    } catch (_) {}
+  })();
+
+  // Fallback: if coming back from PayPal without expected params, still show links and redirect
+  (function handlePaypalReferrerFallback() {
+    try {
+      const pending = (localStorage.getItem('paypalPending') === '1');
+      if (!pending && (!document.referrer || !/paypal\.com/i.test(document.referrer))) return;
+      const qp = new URLSearchParams(location.search);
+      if (qp.get('token') || qp.get('PayerID')) return; // normal handler will run
+      const defaultLinks = [
+        'https://drive.google.com/file/d/1hHlcsfOf0w6QjxY2_CLp8kkfu0OBRWyT/view?usp=drive_link'
+      ];
+      const items = (Array.isArray(cart) && cart.length)
+        ? cart.map((it) => ({ name: it.name || 'Produit', qty: it.qty || 1, links: defaultLinks }))
+        : [{ name: 'Achat PayPal', qty: 1, links: defaultLinks }];
+      showPrettyConfirmationModal(items);
+      const email = getBuyerEmail();
+      if (email) sendDownloadsViaEmailJS(email, items, { orderRef: 'PAYPAL' });
+      try { window.location.assign('/success.html?paypal=1'); } catch (_) {}
+      try { localStorage.removeItem('paypalPending'); } catch (_) {}
+    } catch (_) {}
+  })();
+
+  // Stripe fallback: if we returned from Stripe without expected params (rare), still show default link
+  (function handleStripeReferrerFallback() {
+    try {
+      const pending = (localStorage.getItem('stripePending') === '1');
+      const qp = new URLSearchParams(location.search);
+      const hasSid = !!qp.get('session_id');
+      const hasSuccess = qp.get('success') === '1';
+      if (hasSid || hasSuccess) return;
+      if (!pending && (!document.referrer || !/stripe\.com/i.test(document.referrer))) return;
+      const defaultLinks = [
+        'https://drive.google.com/file/d/1hHlcsfOf0w6QjxY2_CLp8kkfu0OBRWyT/view?usp=drive_link'
+      ];
+      const items = (Array.isArray(cart) && cart.length)
+        ? cart.map((it) => ({ name: it.name || 'Produit', qty: it.qty || 1, links: defaultLinks }))
+        : [{ name: 'Achat (Stripe)', qty: 1, links: defaultLinks }];
+      showPrettyConfirmationModal(items);
+      const email = getBuyerEmail();
+      if (email) sendDownloadsViaEmailJS(email, items, { orderRef: 'STRIPE_FALLBACK' });
+      try { localStorage.removeItem('stripePending'); } catch (_) {}
     } catch (_) {}
   })();
 
@@ -395,7 +445,8 @@
       const qp = new URLSearchParams(location.search);
       const success = qp.get('success');
       const sid = qp.get('session_id');
-      if (success !== '1') return;
+      // Proceed if we have a session_id, even if 'success' flag is missing
+      if (!sid && success !== '1') return;
       // Fallback: if session_id is missing (old success_url), still show default download link
       if (!sid) {
         const defaultLinks = [
@@ -415,7 +466,7 @@
             // try to send receipt email silently
             fetch(apiBase + '/api/send-receipt?session_id=' + encodeURIComponent(sid), { method: 'POST' }).catch(() => {});
             const email = getBuyerEmail();
-            if (email) sendDownloadsViaEmailJS(email, d.items, { orderRef: sid, paymentMethod: 'Stripe' });
+            if (email) sendDownloadsViaEmailJS(email, d.items, { orderRef: sid });
             cart = [];
             saveCart();
             renderCart();

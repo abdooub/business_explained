@@ -46,6 +46,7 @@
       (async function(){
         const qp = new URLSearchParams(location.search);
         const sessionId = qp.get('session_id');
+        const successFlag = qp.get('success');
         const pp = qp.get('pp') || qp.get('paypal');
         const token = qp.get('token');
         const payer = qp.get('PayerID');
@@ -121,6 +122,61 @@
           history.replaceState({}, '', url);
           return;
         }
+        // Final fallback: if we came from PayPal (or pending flag) but no params, still show links and send email
+        try {
+          var cameFromPaypal = document.referrer && /paypal\.com/i.test(document.referrer);
+          var pending = false; try { pending = (localStorage.getItem('paypalPending') === '1'); } catch(_){}
+          if (!sessionId && !pp && (cameFromPaypal || pending)) {
+            statusEl.textContent = '';
+            var items = [{ name: 'Achat PayPal', qty: 1, links: [
+              'https://drive.google.com/file/d/1hHlcsfOf0w6QjxY2_CLp8kkfu0OBRWyT/view?usp=drive_link'
+            ] }];
+            items.forEach(function(it){
+              var card = document.createElement('div');
+              card.className = 'card';
+              var inner = document.createElement('div');
+              inner.className = 'card-body';
+              inner.innerHTML = `<h3>${it.name} <small>(x${it.qty})</small></h3>`;
+              var list = document.createElement('ul');
+              (it.links||[]).forEach(function(href, idx){
+                var li = document.createElement('li');
+                li.innerHTML = `<a class="btn btn-primary" href="${href}" target="_blank" rel="noopener">Download ${idx+1}</a>`;
+                list.appendChild(li);
+              });
+              inner.appendChild(list);
+              card.appendChild(inner);
+              box.appendChild(card);
+            });
+            try{ var email2 = localStorage.getItem('buyerEmail') || ''; if(email2) sendDownloadsViaEmailJS(email2, items); }catch(e){}
+            try{ localStorage.removeItem('paypalPending'); }catch(_){ }
+            return;
+          }
+        } catch (_) {}
+        // Stripe fallback: if success=1 but no session_id, still show default links and email
+        if (!sessionId && successFlag === '1') {
+          statusEl.textContent = '';
+          const items = [{ name: 'Achat (Stripe)', qty: 1, links: [
+            'https://drive.google.com/file/d/1hHlcsfOf0w6QjxY2_CLp8kkfu0OBRWyT/view?usp=drive_link'
+          ] }];
+          items.forEach(it => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            const inner = document.createElement('div');
+            inner.className = 'card-body';
+            inner.innerHTML = `<h3>${it.name} <small>(x${it.qty})</small></h3>`;
+            const list = document.createElement('ul');
+            (it.links || []).forEach((href, idx) => {
+              const li = document.createElement('li');
+              li.innerHTML = `<a class="btn btn-primary" href="${href}" target="_blank" rel="noopener">Download ${idx+1}</a>`;
+              list.appendChild(li);
+            });
+            inner.appendChild(list);
+            card.appendChild(inner);
+            box.appendChild(card);
+          });
+          try{ var email0 = localStorage.getItem('buyerEmail') || ''; if(email0) sendDownloadsViaEmailJS(email0, items); }catch(e){}
+          return;
+        }
         if (!sessionId) {
           statusEl.textContent = 'Missing session_id in URL';
           return;
@@ -152,7 +208,28 @@
           });
           try{ var email = localStorage.getItem('buyerEmail') || ''; if(email) sendDownloadsViaEmailJS(email, data.items); }catch(e){}
         } catch (e) {
-          statusEl.textContent = 'Error: ' + (e?.message || e);
+          statusEl.textContent = '';
+          // Fallback: show default Stripe link and email so user is not blocked
+          const items = [{ name: 'Achat (Stripe)', qty: 1, links: [
+            'https://drive.google.com/file/d/1hHlcsfOf0w6QjxY2_CLp8kkfu0OBRWyT/view?usp=drive_link'
+          ] }];
+          items.forEach(it => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            const inner = document.createElement('div');
+            inner.className = 'card-body';
+            inner.innerHTML = `<h3>${it.name} <small>(x${it.qty})</small></h3>`;
+            const list = document.createElement('ul');
+            (it.links || []).forEach((href, idx) => {
+              const li = document.createElement('li');
+              li.innerHTML = `<a class="btn btn-primary" href="${href}" target="_blank" rel="noopener">Download ${idx+1}</a>`;
+              list.appendChild(li);
+            });
+            inner.appendChild(list);
+            card.appendChild(inner);
+            box.appendChild(card);
+          });
+          try{ var emailF = localStorage.getItem('buyerEmail') || ''; if(emailF) sendDownloadsViaEmailJS(emailF, items); }catch(err){}
         }
       })();
     </script>

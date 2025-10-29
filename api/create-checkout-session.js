@@ -35,13 +35,17 @@ module.exports = async function handler(req, res) {
       };
     });
 
-    const origin = `${req.headers['x-forwarded-proto'] || 'https'}://${req.headers.host}`;
+    const host = req.headers.host;
+    const fwd = req.headers['x-forwarded-proto'];
+    const isLocal = /^(localhost|127\.0\.0\.1)(:|$)/i.test(host || '');
+    const proto = isLocal ? (req.protocol || 'http') : (fwd || 'https');
+    const origin = `${proto}://${host}`;
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       payment_method_types: ['card'],
       line_items,
       allow_promotion_codes: true,
-      success_url: req.body?.success_url || `${origin}/products.html?success=1&session_id={CHECKOUT_SESSION_ID}`,
+      success_url: req.body?.success_url || `${origin}/success.html?success=1&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: req.body?.cancel_url || `${origin}/products.html?canceled=1`,
     });
 
