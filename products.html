@@ -9,6 +9,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+      window.EMAILJS_CONFIG = {
+        serviceId: 'service_c25bo6c',
+        templateId: 'template_mi7mbfn',
+        publicKey: '9rCrKbba27RcCm_L8'
+      };
+    </script>
   </head>
   <body>
     <div class="announcement">
@@ -240,7 +248,9 @@
     <aside class="cart-drawer" aria-label="Panier" aria-hidden="true">
       <div class="cart-header"><h3>Panier</h3><button class="btn" data-cart-close>Close</button></div>
       <div class="cart-items" role="list"></div>
-      <div class="cart-footer"><div class="cart-total"><span>Total</span><strong class="total-amount">0€</strong></div><div style="display:grid; gap:8px;"><button class="btn btn-primary" data-checkout>Payer (Stripe)</button><button class="btn" data-checkout-paypal>Payer avec PayPal</button></div></div>
+      <div class="cart-footer"><div class="cart-total"><span>Total</span><strong class="total-amount">0€</strong></div><div style="display:grid; gap:8px;">
+          <input id="buyer-email" type="email" placeholder="Votre email pour recevoir les liens" style="padding:10px;border:1px solid #e5e7eb;border-radius:8px;" />
+          <button class="btn btn-primary" data-checkout>Payer (Stripe)</button><button class="btn" data-checkout-paypal>Payer avec PayPal</button></div></div>
     </aside>
 
     <footer class="site-footer" aria-label="Footer">
@@ -302,6 +312,6 @@
       </div>
     </footer>
 
-    <script src="./script.js?v=10" defer></script>
+    <script src="./script.js?v=11" defer></script>
   </body>
 </html>

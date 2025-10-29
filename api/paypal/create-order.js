@@ -57,7 +57,7 @@ module.exports = async function handler(req, res) {
           }
         ],
         application_context: {
-          return_url: `${origin}/products.html?pp=1`,
+          return_url: `${origin}/success.html?paypal=1`,
           cancel_url: `${origin}/products.html?ppc=1`,
           brand_name: 'Business Explained',
           shipping_preference: 'NO_SHIPPING',

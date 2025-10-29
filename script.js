@@ -14,6 +14,94 @@
 
   // API base: use same-origin by default; in local dev when serving static on 5173, target Express API on 3000
   const apiBase = (location.hostname === 'localhost' && location.port === '5173') ? 'http://localhost:3000' : '';
+  const buyerEmailInput = document.getElementById('buyer-email');
+  const isValidEmail = (s) => /\S+@\S+\.\S+/.test(String(s || '').trim());
+  const getBuyerEmail = () => {
+    try { return buyerEmailInput?.value?.trim() || localStorage.getItem('buyerEmail') || ''; } catch (_) { return buyerEmailInput?.value?.trim() || ''; }
+  };
+  if (buyerEmailInput) {
+    try { const saved = localStorage.getItem('buyerEmail'); if (saved) buyerEmailInput.value = saved; } catch (_) {}
+    buyerEmailInput.addEventListener('input', () => {
+      try { localStorage.setItem('buyerEmail', buyerEmailInput.value.trim()); } catch (_) {}
+      updateCheckoutButtons();
+    });
+  }
+
+  function toDirectLink(url) {
+    try {
+      if (!url) return url;
+      // Format: https://drive.google.com/file/d/FILE_ID/view?... -> https://drive.google.com/uc?export=download&id=FILE_ID
+      const m = String(url).match(/https?:\/\/drive\.google\.com\/file\/d\/([^/]+)\//i);
+      if (m && m[1]) return `https://drive.google.com/uc?export=download&id=${m[1]}`;
+      // Format: https://drive.google.com/open?id=FILE_ID
+      const u = new URL(url);
+      if (u.hostname.includes('drive.google.com') && u.searchParams.get('id')) {
+        return `https://drive.google.com/uc?export=download&id=${u.searchParams.get('id')}`;
+      }
+      return url;
+    } catch (_) { return url; }
+  }
+
+  function sendDownloadsViaEmailJS(to, items, meta) {
+    try {
+      if (!to || !/\S+@\S+\.\S+/.test(to)) return;
+      const cfg = (window.EMAILJS_CONFIG || {});
+      if (!window.emailjs || !cfg.serviceId || !cfg.templateId || !cfg.publicKey) return;
+      try { window.emailjs.init(cfg.publicKey); } catch (_) {}
+      const allLinks = [];
+      const summary = Array.isArray(items) ? items.map((it) => {
+        (it.links || []).forEach((l) => allLinks.push(toDirectLink(l)));
+        return `${it.name || 'Produit'} x${it.qty || 1}`;
+      }).join(', ') : '';
+      const linksHtml = Array.isArray(items)
+        ? items.map((it) => {
+            const name = it.name || 'Produit';
+            const qty = it.qty || 1;
+            const buttons = (it.links || [])
+              .map((href, idx) => {
+                const dl = toDirectLink(href);
+                return `<a href="${dl}" target="_blank" rel="noopener" style="display:inline-block;margin:6px 8px 0 0;padding:10px 14px;background:#6c47ff;color:#ffffff;text-decoration:none;border-radius:8px;">Télécharger ${idx + 1}</a>`;
+              })
+              .join('');
+            return `<div style="margin:10px 0 14px 0;padding:12px;border:1px solid #eee;border-radius:10px;background:#fafaff;">
+                      <div style="font-weight:600;margin-bottom:6px;">${name} <span style="opacity:.7;">(x${qty})</span></div>
+                      <div>${buttons}</div>
+                    </div>`;
+          })
+        .join('')
+        : '';
+      const customerName = (meta && meta.customerName)
+        || (to && String(to).split('@')[0])
+        || 'Customer';
+      const firstLink = allLinks[0] || '';
+      const templateParams = {
+        to_email: to,
+        items_summary: summary,
+        links_text: allLinks.join('\n'),
+        links_html: linksHtml,
+        order_ref: (meta && meta.orderRef) || '' ,
+        store_name: 'Business Explained',
+        // For the user's custom single-link template
+        customer_name: customerName,
+        download_link: firstLink
+      };
+      console.log('[EmailJS] Sending with params:', templateParams);
+      window.emailjs
+        .send(cfg.serviceId, cfg.templateId, templateParams)
+        .then((res) => {
+          console.log('[EmailJS] Sent OK:', res);
+        })
+        .catch((err) => {
+          console.error('[EmailJS] Send failed:', err);
+          try {
+            if (!window.__emailjsWarned) {
+              window.__emailjsWarned = true;
+              alert('Email non envoyé par EmailJS. Vérifiez la configuration du template et la console pour les détails.');
+            }
+          } catch (_) {}
+        });
+    } catch (_) {}
+  }
 
   function attachSearch() {
     const input = document.getElementById('q');
@@ -50,139 +138,6 @@
         return;
       }
 
-  function ensurePrettyModalStyles() {
-    if (document.getElementById('confirmation-modal-styles')) return;
-    const style = document.createElement('style');
-    style.id = 'confirmation-modal-styles';
-    style.textContent = `
-    .modal{display:flex;position:fixed;z-index:9999;left:0;top:0;width:100%;height:100%;background-color:rgba(11,11,20,.55);backdrop-filter:blur(2px);align-items:center;justify-content:center}
-    .modal[hidden]{display:none}
-    .modal-content{background:#fff;padding:24px 22px;border-radius:14px;box-shadow:0 20px 50px rgba(0,0,0,.25);width:min(92vw,640px);animation:fadeInScale .25s ease-in-out;border:1px solid rgba(0,0,0,.06)}
-    @keyframes fadeInScale{0%{opacity:0;transform:scale(.96)}100%{opacity:1;transform:scale(1)}}
-    .modal-header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
-    .modal-title{margin:0;font-size:20px;display:flex;align-items:center;gap:8px}
-    .modal-title .icon{display:inline-flex;width:22px;height:22px;align-items:center;justify-content:center;background:#e9f8ef;color:#0baa5b;border-radius:999px;font-size:14px}
-    .close-btn{font-size:18px;cursor:pointer;border:0;background:transparent;line-height:1;padding:6px;border-radius:8px}
-    .close-btn:hover{background:#f4f4f7}
-    .download-list{display:grid;gap:12px;margin:10px 0 6px}
-    .download-card{background:#fafaff;border-radius:12px;padding:14px;border:1px solid #eef;box-shadow:0 1px 0 rgba(0,0,0,.03)}
-    .download-card .line{display:flex;align-items:center;justify-content:space-between;gap:14px}
-    .download-card .name{font-weight:600}
-    .download-card small{display:block;margin-top:6px;color:#666}
-    .btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 14px;border-radius:10px;border:1px solid #e5e7eb;background:#fff;color:#111;text-decoration:none;cursor:pointer}
-    .btn:hover{background:#f7f7fb}
-    .btn-primary{background:#6c47ff;border-color:#6c47ff;color:#fff}
-    .btn-primary:hover{background:#5a38f0;border-color:#5a38f0}
-    .modal-footer{display:flex;justify-content:space-between;align-items:center;margin-top:14px;gap:10px;flex-wrap:wrap}
-    .trust-text{font-size:12px;color:#69707d;margin-top:6px}
-    `;
-    document.head.appendChild(style);
-  }
-
-  function showPrettyConfirmationModal(items) {
-    ensurePrettyModalStyles();
-    const existing = document.getElementById('confirmationModal');
-    if (existing) existing.remove();
-    const modal = document.createElement('div');
-    modal.id = 'confirmationModal';
-    modal.className = 'modal';
-    modal.tabIndex = -1;
-    const content = document.createElement('div');
-    content.className = 'modal-content';
-    const header = document.createElement('div');
-    header.className = 'modal-header';
-    const title = document.createElement('h2');
-    title.className = 'modal-title';
-    const icon = document.createElement('span');
-    icon.className = 'icon';
-    icon.textContent = '✓';
-    const titleText = document.createElement('span');
-    titleText.textContent = 'Achat confirmé';
-    title.appendChild(icon);
-    title.appendChild(titleText);
-    const closeBtn = document.createElement('button');
-    closeBtn.className = 'close-btn';
-    closeBtn.setAttribute('aria-label', 'Fermer');
-    closeBtn.textContent = '✕';
-    closeBtn.onclick = () => document.body.removeChild(modal);
-    header.appendChild(title);
-    header.appendChild(closeBtn);
-    const p = document.createElement('p');
-    if (items === null) {
-      p.textContent = 'Erreur lors de la récupération des liens. Vérifiez votre email ou contactez le support.';
-    } else {
-      p.textContent = 'Merci pour votre confiance. Voici vos liens de téléchargement sécurisés :';
-    }
-
-    content.appendChild(header);
-    content.appendChild(p);
-
-    const listWrap = document.createElement('div');
-    listWrap.className = 'download-list';
-    const allLinks = [];
-    if (Array.isArray(items) && items.length) {
-      items.forEach((it) => {
-        const card = document.createElement('div');
-        card.className = 'download-card';
-        const line = document.createElement('div');
-        line.className = 'line';
-        const name = document.createElement('span');
-        name.className = 'name';
-        name.textContent = `${it.name || 'Produit'} (x${it.qty || 1})`;
-        const primary = document.createElement('a');
-        const href = (it.links && it.links[0]) || '#';
-        if (href && href !== '#') allLinks.push(href);
-        primary.href = href;
-        primary.target = '_blank';
-        primary.rel = 'noopener';
-        primary.className = 'btn btn-primary';
-        primary.textContent = 'Télécharger';
-        line.appendChild(name);
-        line.appendChild(primary);
-        card.appendChild(line);
-        const sm = document.createElement('small');
-        sm.textContent = 'Lien valide pendant 7 jours';
-        card.appendChild(sm);
-        listWrap.appendChild(card);
-      });
-    }
-    content.appendChild(listWrap);
-    const footer = document.createElement('div');
-    footer.className = 'modal-footer';
-    const left = document.createElement('div');
-    const copy = document.createElement('button');
-    copy.className = 'btn';
-    copy.textContent = 'Copier tous les liens';
-    copy.onclick = async () => {
-      try { await navigator.clipboard.writeText(allLinks.join('\n')); copy.textContent = 'Copié !'; setTimeout(()=>copy.textContent='Copier tous les liens',1500);} catch(_){}
-    };
-    const open = document.createElement('button');
-    open.className = 'btn';
-    open.textContent = 'Ouvrir tous';
-    open.onclick = () => { allLinks.forEach((l)=>{ try{ if(l) window.open(l,'_blank','noopener'); }catch(_){} }); };
-    left.appendChild(copy);
-    left.appendChild(document.createTextNode(' '));
-    left.appendChild(open);
-    const ok = document.createElement('button');
-    ok.className = 'btn btn-primary';
-    ok.textContent = 'Terminer';
-    ok.onclick = () => document.body.removeChild(modal);
-    footer.appendChild(left);
-    footer.appendChild(ok);
-    const trust = document.createElement('p');
-    trust.className = 'trust-text';
-    trust.innerHTML = '🔒 Vos fichiers sont hébergés en toute sécurité. En cas de problème, contactez-nous à <a href="mailto:support@business-explained.com">support@business-explained.com</a>';
-    content.appendChild(footer);
-    content.appendChild(trust);
-    modal.appendChild(content);
-    document.body.appendChild(modal);
-    // backdrop click & ESC
-    modal.addEventListener('click', (e)=>{ if(e.target===modal){ document.body.removeChild(modal); }});
-    document.addEventListener('keydown', function onEsc(ev){ if(ev.key==='Escape'){ try{document.body.removeChild(modal);}catch(_){} document.removeEventListener('keydown', onEsc); } });
-    // focus first action
-    setTimeout(()=> ok.focus(), 0);
-  }
-
       // Requête vers l’API locale
       if (hint) hint.textContent = 'Inscription en cours…';
       fetch(apiBase + '/api/subscribe', {
@@ -212,6 +167,14 @@
   const totalEl = document.querySelector('.total-amount');
   const badgeEl = document.querySelector('.cart-badge');
   const checkoutBtn = document.querySelector('[data-checkout]');
+
+  function updateCheckoutButtons() {
+    const email = getBuyerEmail();
+    const valid = isValidEmail(email);
+    if (checkoutBtn) checkoutBtn.disabled = !valid;
+    const paypalBtn = document.querySelector('[data-checkout-paypal]');
+    if (paypalBtn) paypalBtn.disabled = !valid;
+  }
 
   let cart = [];
 
@@ -318,6 +281,12 @@
       renderCart();
     });
     checkoutBtn?.addEventListener('click', () => {
+      const email = getBuyerEmail();
+      if (!isValidEmail(email)) {
+        alert('Veuillez entrer un email valide pour recevoir vos liens.');
+        buyerEmailInput?.focus();
+        return;
+      }
       fetch(apiBase + '/api/create-checkout-session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -337,6 +306,12 @@
 
     const paypalBtn = document.querySelector('[data-checkout-paypal]');
     paypalBtn?.addEventListener('click', () => {
+      const email = getBuyerEmail();
+      if (!isValidEmail(email)) {
+        alert('Veuillez entrer un email valide pour recevoir vos liens.');
+        buyerEmailInput?.focus();
+        return;
+      }
       fetch(apiBase + '/api/paypal/create-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -361,6 +336,7 @@
   attachAnyAddToCart();
   attachCartHandlers();
   attachSearch();
+  updateCheckoutButtons();
 
   // Handle PayPal return (token in query)
   (function handlePaypalReturn() {
@@ -378,22 +354,29 @@
         .then((r) => r.json())
         .then((d) => {
           const defaultLinks = [
-            'https://drive.google.com/file/d/1HE7TU8Rq6aCNyS959zI3vck5-h4fC5uD/view?usp=drive_link'
+            'https://drive.google.com/file/d/1hHlcsfOf0w6QjxY2_CLp8kkfu0OBRWyT/view?usp=drive_link'
           ];
           if (d?.ok) {
             const items = (Array.isArray(cart) && cart.length)
               ? cart.map((it) => ({ name: it.name || 'Produit', qty: it.qty || 1, links: defaultLinks }))
               : [{ name: 'Achat PayPal', qty: 1, links: defaultLinks }];
-            showDownloadModalFromItems(items);
+            showPrettyConfirmationModal(items);
+            const email = getBuyerEmail();
+            if (email) sendDownloadsViaEmailJS(email, items, { orderRef: 'PAYPAL' });
             cart = [];
             saveCart();
             renderCart();
+            try { window.location.assign('/success.html?paypal=1'); } catch (_) {}
           } else {
             // Fallback: still present the default download link to match Stripe UX
-            showDownloadModalFromItems([{ name: 'Achat PayPal', qty: 1, links: defaultLinks }]);
+            const items = [{ name: 'Achat PayPal', qty: 1, links: defaultLinks }];
+            showPrettyConfirmationModal(items);
+            const email = getBuyerEmail();
+            if (email) sendDownloadsViaEmailJS(email, items, { orderRef: 'PAYPAL' });
+            try { window.location.assign('/success.html?paypal=1'); } catch (_) {}
           }
         })
-        .catch(() => showDownloadModalFromItems(null))
+        .catch(() => showPrettyConfirmationModal(null))
         .finally(() => {
           const url = new URL(location.href);
           url.searchParams.delete('pp');
@@ -415,7 +398,7 @@
       // Fallback: if session_id is missing (old success_url), still show default download link
       if (!sid) {
         const defaultLinks = [
-          'https://drive.google.com/file/d/1HE7TU8Rq6aCNyS959zI3vck5-h4fC5uD/view?usp=drive_link'
+          'https://drive.google.com/file/d/1hHlcsfOf0w6QjxY2_CLp8kkfu0OBRWyT/view?usp=drive_link'
         ];
         showPrettyConfirmationModal([{ name: 'Achat (Stripe)', qty: 1, links: defaultLinks }]);
         const url = new URL(location.href);
@@ -430,6 +413,8 @@
             showPrettyConfirmationModal(d.items);
             // try to send receipt email silently
             fetch(apiBase + '/api/send-receipt?session_id=' + encodeURIComponent(sid), { method: 'POST' }).catch(() => {});
+            const email = getBuyerEmail();
+            if (email) sendDownloadsViaEmailJS(email, d.items, { orderRef: sid });
             cart = [];
             saveCart();
             renderCart();

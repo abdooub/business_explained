@@ -8,7 +8,7 @@ const orderLinks = require('./api/order-links');
 const sendReceipt = require('./api/send-receipt');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = Number(process.env.PORT || 3000);
 const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY || '';
 const stripe = STRIPE_SECRET_KEY ? new Stripe(STRIPE_SECRET_KEY) : null;
 
@@ -136,6 +136,19 @@ app.get('*', (req, res, next) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+function startServer(port, maxTries = 5) {
+  const srv = app.listen(port, () => {
+    console.log(`Server running on http://localhost:${port}`);
+  });
+  srv.on('error', (err) => {
+    if (err && err.code === 'EADDRINUSE' && maxTries > 0) {
+      const next = port + 1;
+      console.warn(`Port ${port} in use, retrying on ${next}...`);
+      startServer(next, maxTries - 1);
+    } else {
+      throw err;
+    }
+  });
+}
+
+startServer(PORT);

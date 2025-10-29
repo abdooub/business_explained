@@ -2,7 +2,7 @@ const Stripe = require('stripe');
 
 // Simple mapping from product names to downloadable PDF links
 const DEFAULT_LINKS = [
-  'https://drive.google.com/file/d/1HE7TU8Rq6aCNyS959zI3vck5-h4fC5uD/view?usp=drive_link'
+  'https://drive.google.com/file/d/1hHlcsfOf0w6QjxY2_CLp8kkfu0OBRWyT/view?usp=drive_link'
 ];
 const LINK_MAP = {
   'All Products Special': DEFAULT_LINKS,

@@ -8,6 +8,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+      window.EMAILJS_CONFIG = window.EMAILJS_CONFIG || { serviceId: 'service_c25bo6c', templateId: 'template_mi7mbfn', publicKey: '9rCrKbba27RcCm_L8' };
+    </script>
     <style>
       .downloads { display:grid; gap:12px; max-width:800px; margin: 28px auto; }
       .downloads a { word-break: break-all; }
@@ -28,11 +32,95 @@
     </main>
 
     <script>
+      function sendDownloadsViaEmailJS(to, items){
+        try {
+          if(!to || !/\S+@\S+\.\S+/.test(to)) return;
+          var cfg = (window.EMAILJS_CONFIG||{});
+          if(!window.emailjs || !cfg.serviceId || !cfg.templateId || !cfg.publicKey) return;
+          try{ window.emailjs.init(cfg.publicKey); }catch(e){}
+          var links = [];
+          var summary = Array.isArray(items)? items.map(function(it){ (it.links||[]).forEach(function(l){links.push(l)}); return (it.name||'Produit')+' x'+(it.qty||1); }).join(', '):'';
+          window.emailjs.send(cfg.serviceId, cfg.templateId, { to_email: to, items_summary: summary, links_text: links.join('\n') }).catch(function(){});
+        } catch(e){}
+      }
       (async function(){
         const qp = new URLSearchParams(location.search);
         const sessionId = qp.get('session_id');
+        const pp = qp.get('pp') || qp.get('paypal');
+        const token = qp.get('token');
+        const payer = qp.get('PayerID');
         const statusEl = document.getElementById('status');
         const box = document.getElementById('downloads');
+        // If PayPal returned with token + PayerID, capture order then show links
+        if (!sessionId && token && payer) {
+          try {
+            const res = await fetch('/api/paypal/capture-order', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ token, payer })
+            });
+            const d = await res.json();
+            const items = [{ name: 'Achat PayPal', qty: 1, links: [
+              'https://drive.google.com/file/d/1hHlcsfOf0w6QjxY2_CLp8kkfu0OBRWyT/view?usp=drive_link'
+            ] }];
+            statusEl.textContent = '';
+            items.forEach(it => {
+              const card = document.createElement('div');
+              card.className = 'card';
+              const inner = document.createElement('div');
+              inner.className = 'card-body';
+              inner.innerHTML = `<h3>${it.name} <small>(x${it.qty})</small></h3>`;
+              const list = document.createElement('ul');
+              (it.links || []).forEach((href, idx) => {
+                const li = document.createElement('li');
+                li.innerHTML = `<a class="btn btn-primary" href="${href}" target="_blank" rel="noopener">Download ${idx+1}</a>`;
+                list.appendChild(li);
+              });
+              inner.appendChild(list);
+              card.appendChild(inner);
+              box.appendChild(card);
+            });
+            try{ var email = localStorage.getItem('buyerEmail') || ''; if(email) sendDownloadsViaEmailJS(email, items); }catch(e){}
+          } catch (e) {
+            statusEl.textContent = 'Error finalizing PayPal order';
+          } finally {
+            const url = new URL(location.href);
+            url.searchParams.delete('token');
+            url.searchParams.delete('PayerID');
+            history.replaceState({}, '', url);
+          }
+          return;
+        }
+        // If PayPal flow redirected here, show default links and send email
+        if (!sessionId && pp === '1') {
+          statusEl.textContent = '';
+          const items = [{ name: 'Achat PayPal', qty: 1, links: [
+            'https://drive.google.com/file/d/1hHlcsfOf0w6QjxY2_CLp8kkfu0OBRWyT/view?usp=drive_link'
+          ] }];
+          items.forEach(it => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            const inner = document.createElement('div');
+            inner.className = 'card-body';
+            inner.innerHTML = `<h3>${it.name} <small>(x${it.qty})</small></h3>`;
+            const list = document.createElement('ul');
+            (it.links || []).forEach((href, idx) => {
+              const li = document.createElement('li');
+              li.innerHTML = `<a class="btn btn-primary" href="${href}" target="_blank" rel="noopener">Download ${idx+1}</a>`;
+              list.appendChild(li);
+            });
+            inner.appendChild(list);
+            card.appendChild(inner);
+            box.appendChild(card);
+          });
+          try{ var email = localStorage.getItem('buyerEmail') || ''; if(email) sendDownloadsViaEmailJS(email, items); }catch(e){}
+          // Clean URL
+          const url = new URL(location.href);
+          url.searchParams.delete('pp');
+          url.searchParams.delete('paypal');
+          history.replaceState({}, '', url);
+          return;
+        }
         if (!sessionId) {
           statusEl.textContent = 'Missing session_id in URL';
           return;
@@ -62,6 +150,7 @@
             card.appendChild(inner);
             box.appendChild(card);
           });
+          try{ var email = localStorage.getItem('buyerEmail') || ''; if(email) sendDownloadsViaEmailJS(email, data.items); }catch(e){}
         } catch (e) {
           statusEl.textContent = 'Error: ' + (e?.message || e);
         }
