@@ -81,6 +81,7 @@
         links_html: linksHtml,
         order_ref: (meta && meta.orderRef) || '' ,
         store_name: 'Business Explained',
+        payment_method: (meta && meta.paymentMethod) || '',
         // For the user's custom single-link template
         customer_name: customerName,
         download_link: firstLink
@@ -342,10 +343,10 @@
   (function handlePaypalReturn() {
     try {
       const qp = new URLSearchParams(location.search);
-      const p = qp.get('pp');
       const token = qp.get('token');
       const payer = qp.get('PayerID');
-      if (p !== '1' || !token || !payer) return;
+      // Capture if PayPal returned with token & PayerID, even if 'pp' flag is missing
+      if (!token || !payer) return;
       fetch(apiBase + '/api/paypal/capture-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -362,7 +363,7 @@
               : [{ name: 'Achat PayPal', qty: 1, links: defaultLinks }];
             showPrettyConfirmationModal(items);
             const email = getBuyerEmail();
-            if (email) sendDownloadsViaEmailJS(email, items, { orderRef: 'PAYPAL' });
+            if (email) sendDownloadsViaEmailJS(email, items, { orderRef: 'PAYPAL', paymentMethod: 'PayPal' });
             cart = [];
             saveCart();
             renderCart();
@@ -372,7 +373,7 @@
             const items = [{ name: 'Achat PayPal', qty: 1, links: defaultLinks }];
             showPrettyConfirmationModal(items);
             const email = getBuyerEmail();
-            if (email) sendDownloadsViaEmailJS(email, items, { orderRef: 'PAYPAL' });
+            if (email) sendDownloadsViaEmailJS(email, items, { orderRef: 'PAYPAL', paymentMethod: 'PayPal' });
             try { window.location.assign('/success.html?paypal=1'); } catch (_) {}
           }
         })
@@ -414,7 +415,7 @@
             // try to send receipt email silently
             fetch(apiBase + '/api/send-receipt?session_id=' + encodeURIComponent(sid), { method: 'POST' }).catch(() => {});
             const email = getBuyerEmail();
-            if (email) sendDownloadsViaEmailJS(email, d.items, { orderRef: sid });
+            if (email) sendDownloadsViaEmailJS(email, d.items, { orderRef: sid, paymentMethod: 'Stripe' });
             cart = [];
             saveCart();
             renderCart();
