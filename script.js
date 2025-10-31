@@ -189,8 +189,8 @@
     } catch (_) { cart = []; }
   }
 
-  function cartCount() { return cart.reduce((n, it) => n + it.qty, 0); }
-  function cartTotal() { return cart.reduce((sum, it) => sum + it.price * it.qty, 0); }
+  function cartCount() { return cart.length; }
+  function cartTotal() { return cart.reduce((sum, it) => sum + it.price, 0); }
 
   function renderCart() {
     if (!itemsEl) return;
@@ -204,11 +204,6 @@
           <div class="sub">$${it.price.toFixed(2)}</div>
         </div>
         <div class="controls">
-          <div class="qty">
-            <button data-dec="${idx}" aria-label="Diminuer">-</button>
-            <span>${it.qty}</span>
-            <button data-inc="${idx}" aria-label="Augmenter">+</button>
-          </div>
           <button data-rem="${idx}" aria-label="Supprimer" class="btn">Retirer</button>
         </div>`;
       itemsEl.appendChild(row);
@@ -219,7 +214,7 @@
 
   function addToCart(product) {
     const found = cart.find((it) => it.id === product.id);
-    if (found) found.qty += 1; else cart.push({ ...product, qty: 1 });
+    if (found) { found.qty = 1; } else { cart.push({ ...product, qty: 1 }); }
     saveCart();
     renderCart();
   }
@@ -271,11 +266,7 @@
     itemsEl?.addEventListener('click', (e) => {
       const t = e.target;
       if (!(t instanceof Element)) return;
-      const dec = t.getAttribute('data-dec');
-      const inc = t.getAttribute('data-inc');
       const rem = t.getAttribute('data-rem');
-      if (dec) { const i = Number(dec); cart[i].qty = Math.max(1, cart[i].qty - 1); }
-      if (inc) { const i = Number(inc); cart[i].qty += 1; }
       if (rem) { const i = Number(rem); cart.splice(i, 1); }
       saveCart();
       renderCart();
