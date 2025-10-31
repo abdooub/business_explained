@@ -12,6 +12,22 @@
     });
   }
 
+  function attachMoreInfoLinks() {
+    document.querySelectorAll('.product-card').forEach((card) => {
+      const id = card.getAttribute('data-id') || '';
+      const name = card.getAttribute('data-name') || 'Product';
+      const price = card.getAttribute('data-price') || '0';
+      const info = card.querySelector('.more-info');
+      if (info && !info.getAttribute('href')) {
+        const url = new URL(location.origin + '/product.html');
+        url.searchParams.set('id', id);
+        url.searchParams.set('name', name);
+        url.searchParams.set('price', price);
+        info.setAttribute('href', url.toString());
+      }
+    });
+  }
+
   function shouldSendOnce(id) {
     try {
       if (!id) return false;
@@ -355,6 +371,7 @@
   renderCart();
   attachProductButtons();
   attachAnyAddToCart();
+  attachMoreInfoLinks();
   attachCartHandlers();
   attachSearch();
   updateCheckoutButtons();

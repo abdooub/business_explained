@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Produit — Business Explained</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css" />
+    <style>
+      .pd-wrap { padding: 28px 0 60px; }
+      .pd-hero { display:grid; grid-template-columns: 1.1fr 0.9fr; gap: 20px; align-items: start; }
+      .pd-media img { border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,.12); }
+      .pd-title { margin: 0 0 6px; font-size: clamp(24px, 3vw, 36px); line-height: 1.15; }
+      .pd-sub { color: var(--muted); margin: 0 0 10px; }
+      .pd-actions { display:flex; gap:10px; flex-wrap:wrap; margin-top: 8px; }
+      .pd-price { font-size: 22px; font-weight: 800; }
+      .pd-feature-list { list-style:none; padding:0; margin:16px 0 0; display:grid; gap:8px; color: var(--muted); }
+      .pd-feature-list li { position: relative; padding-left: 24px; }
+      .pd-feature-list li::before { content: "✔"; position:absolute; left:0; top:0; color:#16a34a; font-weight:800; }
+      @media (max-width: 900px){ .pd-hero { grid-template-columns: 1fr; } }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="/products.html" aria-label="Retour aux produits">
+          <span class="brand-logo" aria-hidden="true">B</span>
+          <span class="brand-text">Business Explained</span>
+        </a>
+      </div>
+    </header>
+
+    <main class="container pd-wrap">
+      <nav aria-label="Fil d'Ariane" style="margin-bottom: 14px;">
+        <a class="btn" href="/products.html">← Back to products</a>
+      </nav>
+      <section class="pd-hero">
+        <div class="pd-media">
+          <img id="pd-image" src="https://images.unsplash.com/photo-1513475382585-d06e58bcb0ea?w=1400&q=80&auto=format&fit=crop" alt="Product" />
+        </div>
+        <div class="pd-copy">
+          <h1 id="pd-title" class="pd-title">Product</h1>
+          <p id="pd-sub" class="pd-sub">Digital download • Instant access</p>
+          <div class="pd-price" id="pd-price">0€</div>
+          <div class="pd-actions">
+            <a id="pd-buy" class="btn btn-primary add-to-cart" data-id="" data-name="" data-price="0">Add to cart</a>
+            <a class="btn" href="#content">More details</a>
+          </div>
+          <ul class="pd-feature-list">
+            <li>Practical frameworks and templates.</li>
+            <li>Instant download after payment.</li>
+            <li>Free updates included.</li>
+            <li>Secure checkout (Stripe & PayPal).</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="content" style="margin-top: 28px;">
+        <div class="card">
+          <div class="card-body">
+            <h3>What you'll get</h3>
+            <p id="pd-desc">A premium-quality digital product designed to accelerate your business performance. Includes actionable insights, ready-to-use checklists, and step-by-step guidance.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Shared cart drawer -->
+    <aside class="cart-drawer" aria-label="Panier" aria-hidden="true">
+      <div class="cart-header"><h3>Panier</h3><button class="btn" data-cart-close>Close</button></div>
+      <div class="cart-items" role="list"></div>
+      <div class="cart-footer"><div class="cart-total"><span>Total</span><strong class="total-amount">0€</strong></div><div style="display:grid; gap:8px;">
+          <input id="buyer-email" type="email" placeholder="Votre email pour recevoir les liens" aria-invalid="false" />
+          <small id="buyer-email-hint" class="form-hint" style="display:none;">Veuillez entrer un email valide.</small>
+          <button class="btn btn-primary" data-checkout>Payer (Stripe)</button><button class="btn" data-checkout-paypal>Payer avec PayPal</button></div></div>
+    </aside>
+
+    <footer class="site-footer" aria-label="Footer">
+      <div class="container footer-bottom">
+        <p class="small">© <span id="year"></span>, Business Explained</p>
+        <ul class="social"><li><a href="#">LinkedIn</a></li><li><a href="#">Twitter</a></li><li><a href="#">YouTube</a></li></ul>
+      </div>
+    </footer>
+
+    <script src="./script.js?v=12" defer></script>
+    <script>
+      (function(){
+        const qp = new URLSearchParams(location.search);
+        const id = qp.get('id') || 'product';
+        const name = qp.get('name') || 'Product';
+        const price = Number(qp.get('price') || 0);
+        const imgMap = {
+          t1: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=1400&q=80&auto=format&fit=crop',
+          o1: 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=1400&q=80&auto=format&fit=crop',
+          c1: 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=1400&q=80&auto=format&fit=crop',
+          b1: 'https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=1400&q=80&auto=format&fit=crop',
+          m1: 'https://images.unsplash.com/photo-1513475382585-d06e58bcb0ea?w=1400&q=80&auto=format&fit=crop',
+          ca1:'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=1400&q=80&auto=format&fit=crop',
+          s1: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1400&q=80&auto=format&fit=crop',
+          sm1:'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1400&q=80&auto=format&fit=crop',
+          pim1:'https://images.unsplash.com/photo-1520975682031-ae4ce9a1ebff?w=1400&q=80&auto=format&fit=crop',
+          pm1: 'https://images.unsplash.com/photo-1487017159836-4e23ece2e4cf?w=1400&q=80&auto=format&fit=crop',
+          hr1: 'https://images.unsplash.com/photo-1555431189-0fabf2667795?w=1400&q=80&auto=format&fit=crop',
+          pack:'https://images.unsplash.com/photo-1545239351-1141bd82e8a6?w=1400&q=80&auto=format&fit=crop'
+        };
+        const titleEl = document.getElementById('pd-title');
+        const priceEl = document.getElementById('pd-price');
+        const imgEl = document.getElementById('pd-image');
+        const buyEl = document.getElementById('pd-buy');
+        titleEl.textContent = name;
+        priceEl.textContent = (price || 0) + '€';
+        imgEl.src = imgMap[id] || imgEl.src;
+        imgEl.alt = name;
+        buyEl.setAttribute('data-id', id);
+        buyEl.setAttribute('data-name', name);
+        buyEl.setAttribute('data-price', String(price || 0));
+      })();
+    </script>
+  </body>
+</html>
