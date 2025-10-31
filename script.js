@@ -25,6 +25,9 @@
       try { localStorage.setItem('buyerEmail', buyerEmailInput.value.trim()); } catch (_) {}
       updateCheckoutButtons();
     });
+    buyerEmailInput.addEventListener('blur', () => {
+      setEmailValidityUI(isValidEmail(getBuyerEmail()));
+    });
   }
 
   function toDirectLink(url) {
@@ -166,6 +169,14 @@
   const totalEl = document.querySelector('.total-amount');
   const badgeEl = document.querySelector('.cart-badge');
   const checkoutBtn = document.querySelector('[data-checkout]');
+  const emailHint = document.getElementById('buyer-email-hint');
+
+  function setEmailValidityUI(valid) {
+    try {
+      if (buyerEmailInput) buyerEmailInput.setAttribute('aria-invalid', valid ? 'false' : 'true');
+      if (emailHint) emailHint.style.display = valid ? 'none' : '';
+    } catch (_) {}
+  }
 
   function updateCheckoutButtons() {
     const email = getBuyerEmail();
@@ -173,6 +184,7 @@
     if (checkoutBtn) checkoutBtn.disabled = !valid;
     const paypalBtn = document.querySelector('[data-checkout-paypal]');
     if (paypalBtn) paypalBtn.disabled = !valid;
+    setEmailValidityUI(valid);
   }
 
   let cart = [];
@@ -273,7 +285,7 @@
     checkoutBtn?.addEventListener('click', () => {
       const email = getBuyerEmail();
       if (!isValidEmail(email)) {
-        alert('Veuillez entrer un email valide pour recevoir vos liens.');
+        setEmailValidityUI(false);
         buyerEmailInput?.focus();
         return;
       }
@@ -304,7 +316,7 @@
     paypalBtn?.addEventListener('click', () => {
       const email = getBuyerEmail();
       if (!isValidEmail(email)) {
-        alert('Veuillez entrer un email valide pour recevoir vos liens.');
+        setEmailValidityUI(false);
         buyerEmailInput?.focus();
         return;
       }
