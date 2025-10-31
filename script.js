@@ -12,6 +12,18 @@
     });
   }
 
+  function shouldSendOnce(id) {
+    try {
+      if (!id) return false;
+      const key = 'sent:' + id;
+      if (localStorage.getItem(key) === '1') return false;
+      localStorage.setItem(key, '1');
+      return true;
+    } catch (_) {
+      return true;
+    }
+  }
+
   // API base: use same-origin by default; in local dev when serving static on 5173, target Express API on 3000
   const apiBase = (location.hostname === 'localhost' && location.port === '5173') ? 'http://localhost:3000' : '';
   const buyerEmailInput = document.getElementById('buyer-email');
@@ -367,21 +379,21 @@
           ];
           if (d?.ok) {
             const items = (Array.isArray(cart) && cart.length)
-              ? cart.map((it) => ({ name: it.name || 'Produit', qty: it.qty || 1, links: defaultLinks }))
-              : [{ name: 'Achat PayPal', qty: 1, links: defaultLinks }];
+              ? cart.map((it) => ({ name: it.name || 'Produit', links: defaultLinks }))
+              : [{ name: 'Your purchase', links: defaultLinks }];
             showPrettyConfirmationModal(items);
             const email = getBuyerEmail();
-            if (email) sendDownloadsViaEmailJS(email, items, { orderRef: 'PAYPAL' });
+            if (email && shouldSendOnce('paypal:'+String(token||'capture'))) sendDownloadsViaEmailJS(email, items, { orderRef: 'PAYPAL' });
             cart = [];
             saveCart();
             renderCart();
             try { window.location.assign('/success.html?paypal=1'); } catch (_) {}
           } else {
             // Fallback: still present the default download link to match Stripe UX
-            const items = [{ name: 'Achat PayPal', qty: 1, links: defaultLinks }];
+            const items = [{ name: 'Your purchase', links: defaultLinks }];
             showPrettyConfirmationModal(items);
             const email = getBuyerEmail();
-            if (email) sendDownloadsViaEmailJS(email, items, { orderRef: 'PAYPAL', paymentMethod: 'PayPal' });
+            if (email && shouldSendOnce('paypal:fallback')) sendDownloadsViaEmailJS(email, items, { orderRef: 'PAYPAL', paymentMethod: 'PayPal' });
             try { window.location.assign('/success.html?paypal=1'); } catch (_) {}
           }
         })
@@ -409,11 +421,11 @@
         'https://drive.google.com/file/d/1hHlcsfOf0w6QjxY2_CLp8kkfu0OBRWyT/view?usp=drive_link'
       ];
       const items = (Array.isArray(cart) && cart.length)
-        ? cart.map((it) => ({ name: it.name || 'Produit', qty: it.qty || 1, links: defaultLinks }))
-        : [{ name: 'Achat PayPal', qty: 1, links: defaultLinks }];
+        ? cart.map((it) => ({ name: it.name || 'Produit', links: defaultLinks }))
+        : [{ name: 'Your purchase', links: defaultLinks }];
       showPrettyConfirmationModal(items);
       const email = getBuyerEmail();
-      if (email) sendDownloadsViaEmailJS(email, items, { orderRef: 'PAYPAL' });
+      if (email && shouldSendOnce('paypal:referrer')) sendDownloadsViaEmailJS(email, items, { orderRef: 'PAYPAL' });
       try { window.location.assign('/success.html?paypal=1'); } catch (_) {}
       try { localStorage.removeItem('paypalPending'); } catch (_) {}
     } catch (_) {}
@@ -436,7 +448,7 @@
         : [{ name: 'Your purchase', links: defaultLinks }];
       showPrettyConfirmationModal(items);
       const email = getBuyerEmail();
-      if (email) sendDownloadsViaEmailJS(email, items, { orderRef: 'STRIPE_FALLBACK' });
+      if (email && shouldSendOnce('stripe:referrer')) sendDownloadsViaEmailJS(email, items, { orderRef: 'STRIPE_FALLBACK' });
       try { localStorage.removeItem('stripePending'); } catch (_) {}
     } catch (_) {}
   })();
@@ -468,7 +480,7 @@
             // try to send receipt email silently
             fetch(apiBase + '/api/send-receipt?session_id=' + encodeURIComponent(sid), { method: 'POST' }).catch(() => {});
             const email = getBuyerEmail();
-            if (email) sendDownloadsViaEmailJS(email, d.items, { orderRef: sid });
+            if (email && shouldSendOnce('stripe:'+String(sid||''))) sendDownloadsViaEmailJS(email, d.items, { orderRef: sid });
             cart = [];
             saveCart();
             renderCart();

@@ -54,6 +54,9 @@
           window.emailjs.send(cfg.serviceId, cfg.templateId, { to_email: to, items_summary: summary, links_text: links.join('\n') }).catch(function(){});
         } catch(e){}
       }
+      function shouldSendOnce(id){
+        try{ if(!id) return false; var key = 'sent:'+id; if(localStorage.getItem(key)==='1') return false; localStorage.setItem(key,'1'); return true; }catch(_){ return true; }
+      }
       function getCartItemsNames(){
         try { var raw = localStorage.getItem('cart'); if(!raw) return []; var arr = JSON.parse(raw)||[]; return arr.map(function(it){ return (it && it.name) ? it.name : 'Your purchase'; }); } catch(_) { return []; }
       }
@@ -102,7 +105,7 @@
             ] }; });
             statusEl.textContent = '';
             renderItems(items, box);
-            try{ var email = localStorage.getItem('buyerEmail') || ''; if(email) sendDownloadsViaEmailJS(email, items); }catch(e){}
+            try{ var email = localStorage.getItem('buyerEmail') || ''; if(email && shouldSendOnce('paypal:'+token)) sendDownloadsViaEmailJS(email, items); }catch(e){}
           } catch (e) {
             statusEl.textContent = 'Error finalizing PayPal order';
           } finally {
@@ -121,7 +124,7 @@
             'https://drive.google.com/file/d/1hHlcsfOf0w6QjxY2_CLp8kkfu0OBRWyT/view?usp=drive_link'
           ] }; });
           renderItems(items, box);
-          try{ var email = localStorage.getItem('buyerEmail') || ''; if(email) sendDownloadsViaEmailJS(email, items); }catch(e){}
+          try{ var email = localStorage.getItem('buyerEmail') || ''; if(email && shouldSendOnce('paypal:pp1')) sendDownloadsViaEmailJS(email, items); }catch(e){}
           // Clean URL
           const url = new URL(location.href);
           url.searchParams.delete('pp');
@@ -140,7 +143,7 @@
               'https://drive.google.com/file/d/1hHlcsfOf0w6QjxY2_CLp8kkfu0OBRWyT/view?usp=drive_link'
             ] }; });
             renderItems(items, box);
-            try{ var email2 = localStorage.getItem('buyerEmail') || ''; if(email2) sendDownloadsViaEmailJS(email2, items); }catch(e){}
+            try{ var email2 = localStorage.getItem('buyerEmail') || ''; if(email2 && shouldSendOnce('paypal:referrer')) sendDownloadsViaEmailJS(email2, items); }catch(e){}
             try{ localStorage.removeItem('paypalPending'); }catch(_){ }
             return;
           }
@@ -153,7 +156,7 @@
             'https://drive.google.com/file/d/1hHlcsfOf0w6QjxY2_CLp8kkfu0OBRWyT/view?usp=drive_link'
           ] }; });
           renderItems(items, box);
-          try{ var email0 = localStorage.getItem('buyerEmail') || ''; if(email0) sendDownloadsViaEmailJS(email0, items); }catch(e){}
+          try{ var email0 = localStorage.getItem('buyerEmail') || ''; if(email0 && shouldSendOnce('stripe:successFlag')) sendDownloadsViaEmailJS(email0, items); }catch(e){}
           return;
         }
         if (!sessionId) {
@@ -170,7 +173,7 @@
             return;
           }
           renderItems(data.items.map(function(it){ return { name: it.name, links: it.links }; }), box);
-          try{ var email = localStorage.getItem('buyerEmail') || ''; if(email) sendDownloadsViaEmailJS(email, data.items); }catch(e){}
+          try{ var email = localStorage.getItem('buyerEmail') || ''; if(email && shouldSendOnce('stripe:'+sessionId)) sendDownloadsViaEmailJS(email, data.items); }catch(e){}
         } catch (e) {
           statusEl.textContent = '';
           // Fallback: show default Stripe link and email so user is not blocked
@@ -178,7 +181,7 @@
             'https://drive.google.com/file/d/1hHlcsfOf0w6QjxY2_CLp8kkfu0OBRWyT/view?usp=drive_link'
           ] }];
           renderItems(items, box);
-          try{ var emailF = localStorage.getItem('buyerEmail') || ''; if(emailF) sendDownloadsViaEmailJS(emailF, items); }catch(err){}
+          try{ var emailF = localStorage.getItem('buyerEmail') || ''; if(emailF && shouldSendOnce('stripe:fallback')) sendDownloadsViaEmailJS(emailF, items); }catch(err){}
         }
       })();
     </script>
