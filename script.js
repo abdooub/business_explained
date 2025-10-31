@@ -51,12 +51,11 @@
       const allLinks = [];
       const summary = Array.isArray(items) ? items.map((it) => {
         (it.links || []).forEach((l) => allLinks.push(toDirectLink(l)));
-        return `${it.name || 'Produit'} x${it.qty || 1}`;
+        return `${it.name || 'Produit'}`;
       }).join(', ') : '';
       const linksHtml = Array.isArray(items)
         ? items.map((it) => {
             const name = it.name || 'Produit';
-            const qty = it.qty || 1;
             const buttons = (it.links || [])
               .map((href, idx) => {
                 const dl = toDirectLink(href);
@@ -64,7 +63,7 @@
               })
               .join('');
             return `<div style="margin:10px 0 14px 0;padding:12px;border:1px solid #eee;border-radius:10px;background:#fafaff;">
-                      <div style="font-weight:600;margin-bottom:6px;">${name} <span style="opacity:.7;">(x${qty})</span></div>
+                      <div style="font-weight:600;margin-bottom:6px;">${name}</div>
                       <div>${buttons}</div>
                     </div>`;
           })
@@ -421,8 +420,8 @@
         'https://drive.google.com/file/d/1hHlcsfOf0w6QjxY2_CLp8kkfu0OBRWyT/view?usp=drive_link'
       ];
       const items = (Array.isArray(cart) && cart.length)
-        ? cart.map((it) => ({ name: it.name || 'Produit', qty: it.qty || 1, links: defaultLinks }))
-        : [{ name: 'Achat (Stripe)', qty: 1, links: defaultLinks }];
+        ? cart.map((it) => ({ name: it.name || 'Produit', links: defaultLinks }))
+        : [{ name: 'Your purchase', links: defaultLinks }];
       showPrettyConfirmationModal(items);
       const email = getBuyerEmail();
       if (email) sendDownloadsViaEmailJS(email, items, { orderRef: 'STRIPE_FALLBACK' });
@@ -443,7 +442,7 @@
         const defaultLinks = [
           'https://drive.google.com/file/d/1hHlcsfOf0w6QjxY2_CLp8kkfu0OBRWyT/view?usp=drive_link'
         ];
-        showPrettyConfirmationModal([{ name: 'Achat (Stripe)', qty: 1, links: defaultLinks }]);
+        showPrettyConfirmationModal([{ name: 'Your purchase', links: defaultLinks }]);
         const url = new URL(location.href);
         url.searchParams.delete('success');
         history.replaceState({}, '', url);
@@ -594,7 +593,7 @@
       const body = document.createElement('div');
       body.className = 'card-body';
       const title = document.createElement('h3');
-      title.textContent = `${it.name || 'Produit'} (x${it.qty || 1})`;
+      title.textContent = `${it.name || 'Produit'}`;
       title.style.margin = '0 0 8px';
       body.appendChild(title);
       const list = document.createElement('div');

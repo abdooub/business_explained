@@ -13,8 +13,16 @@
       window.EMAILJS_CONFIG = window.EMAILJS_CONFIG || { serviceId: 'service_c25bo6c', templateId: 'template_mi7mbfn', publicKey: '9rCrKbba27RcCm_L8' };
     </script>
     <style>
-      .downloads { display:grid; gap:12px; max-width:800px; margin: 28px auto; }
-      .downloads a { word-break: break-all; }
+      .success-wrap { max-width: 960px; margin: 40px auto 60px; }
+      .section-header h1 { font-size: 32px; line-height: 1.2; margin: 0 0 6px; }
+      .section-header p { color: #6b7280; margin: 0; }
+      .downloads { display:grid; gap:14px; margin-top: 22px; }
+      .card { border: 1px solid #e5e7eb; border-radius: 14px; background: #fff; box-shadow: 0 4px 14px rgba(17, 24, 39, 0.06); }
+      .card-body { padding: 16px 18px; }
+      .card-body h3 { margin: 0 0 10px; font-size: 18px; }
+      .dl-actions { display: grid; grid-auto-flow: row; gap: 10px; }
+      .dl-actions .btn-primary { display:inline-block; text-align:center; padding:10px 14px; border-radius:10px; background:#6c47ff; color:#fff; text-decoration:none; }
+      .back-actions { margin-top: 26px; }
     </style>
   </head>
   <body>
@@ -24,11 +32,14 @@
       </div>
     </header>
 
-    <main class="container" style="padding:40px 20px 60px;">
-      <header class="section-header"><h1>Thank you! Your downloads are ready</h1></header>
+    <main class="container success-wrap" style="padding:0 20px;">
+      <header class="section-header">
+        <h1>Thank you! Your downloads are ready</h1>
+        <p>We’ve prepared your files below.</p>
+      </header>
       <p id="status">Loading your order…</p>
       <section id="downloads" class="downloads" aria-live="polite"></section>
-      <p><a class="btn" href="/products.html">Back to products</a></p>
+      <p class="back-actions"><a class="btn" href="/products.html">Back to products</a></p>
     </main>
 
     <script>
@@ -39,9 +50,33 @@
           if(!window.emailjs || !cfg.serviceId || !cfg.templateId || !cfg.publicKey) return;
           try{ window.emailjs.init(cfg.publicKey); }catch(e){}
           var links = [];
-          var summary = Array.isArray(items)? items.map(function(it){ (it.links||[]).forEach(function(l){links.push(l)}); return (it.name||'Produit')+' x'+(it.qty||1); }).join(', '):'';
+          var summary = Array.isArray(items)? items.map(function(it){ (it.links||[]).forEach(function(l){links.push(l)}); return (it.name||'Produit'); }).join(', '):'';
           window.emailjs.send(cfg.serviceId, cfg.templateId, { to_email: to, items_summary: summary, links_text: links.join('\n') }).catch(function(){});
         } catch(e){}
+      }
+      function getCartItemsNames(){
+        try { var raw = localStorage.getItem('cart'); if(!raw) return []; var arr = JSON.parse(raw)||[]; return arr.map(function(it){ return (it && it.name) ? it.name : 'Your purchase'; }); } catch(_) { return []; }
+      }
+      function renderItems(items, box){
+        items.forEach(function(it){
+          var card = document.createElement('div');
+          card.className = 'card';
+          var inner = document.createElement('div');
+          inner.className = 'card-body';
+          inner.innerHTML = '<h3>'+ (it.name||'Your purchase') +'</h3>';
+          var actions = document.createElement('div');
+          actions.className = 'dl-actions';
+          (it.links||[]).forEach(function(href, idx){
+            var a = document.createElement('a');
+            a.className = 'btn btn-primary';
+            a.href = href; a.target = '_blank'; a.rel = 'noopener';
+            a.textContent = 'Download '+(idx+1);
+            actions.appendChild(a);
+          });
+          inner.appendChild(actions);
+          card.appendChild(inner);
+          box.appendChild(card);
+        });
       }
       (async function(){
         const qp = new URLSearchParams(location.search);
@@ -61,26 +96,12 @@
               body: JSON.stringify({ token, payer })
             });
             const d = await res.json();
-            const items = [{ name: 'Achat PayPal', qty: 1, links: [
+            var names = getCartItemsNames();
+            const items = (names.length ? names : ['Your purchase']).map(function(nm){ return { name: nm, links: [
               'https://drive.google.com/file/d/1hHlcsfOf0w6QjxY2_CLp8kkfu0OBRWyT/view?usp=drive_link'
-            ] }];
+            ] }; });
             statusEl.textContent = '';
-            items.forEach(it => {
-              const card = document.createElement('div');
-              card.className = 'card';
-              const inner = document.createElement('div');
-              inner.className = 'card-body';
-              inner.innerHTML = `<h3>${it.name} <small>(x${it.qty})</small></h3>`;
-              const list = document.createElement('ul');
-              (it.links || []).forEach((href, idx) => {
-                const li = document.createElement('li');
-                li.innerHTML = `<a class="btn btn-primary" href="${href}" target="_blank" rel="noopener">Download ${idx+1}</a>`;
-                list.appendChild(li);
-              });
-              inner.appendChild(list);
-              card.appendChild(inner);
-              box.appendChild(card);
-            });
+            renderItems(items, box);
             try{ var email = localStorage.getItem('buyerEmail') || ''; if(email) sendDownloadsViaEmailJS(email, items); }catch(e){}
           } catch (e) {
             statusEl.textContent = 'Error finalizing PayPal order';
@@ -95,25 +116,11 @@
         // If PayPal flow redirected here, show default links and send email
         if (!sessionId && pp === '1') {
           statusEl.textContent = '';
-          const items = [{ name: 'Achat PayPal', qty: 1, links: [
+          var names2 = getCartItemsNames();
+          const items = (names2.length ? names2 : ['Your purchase']).map(function(nm){ return { name: nm, links: [
             'https://drive.google.com/file/d/1hHlcsfOf0w6QjxY2_CLp8kkfu0OBRWyT/view?usp=drive_link'
-          ] }];
-          items.forEach(it => {
-            const card = document.createElement('div');
-            card.className = 'card';
-            const inner = document.createElement('div');
-            inner.className = 'card-body';
-            inner.innerHTML = `<h3>${it.name} <small>(x${it.qty})</small></h3>`;
-            const list = document.createElement('ul');
-            (it.links || []).forEach((href, idx) => {
-              const li = document.createElement('li');
-              li.innerHTML = `<a class="btn btn-primary" href="${href}" target="_blank" rel="noopener">Download ${idx+1}</a>`;
-              list.appendChild(li);
-            });
-            inner.appendChild(list);
-            card.appendChild(inner);
-            box.appendChild(card);
-          });
+          ] }; });
+          renderItems(items, box);
           try{ var email = localStorage.getItem('buyerEmail') || ''; if(email) sendDownloadsViaEmailJS(email, items); }catch(e){}
           // Clean URL
           const url = new URL(location.href);
@@ -128,25 +135,11 @@
           var pending = false; try { pending = (localStorage.getItem('paypalPending') === '1'); } catch(_){}
           if (!sessionId && !pp && (cameFromPaypal || pending)) {
             statusEl.textContent = '';
-            var items = [{ name: 'Achat PayPal', qty: 1, links: [
+            var names3 = getCartItemsNames();
+            var items = (names3.length ? names3 : ['Your purchase']).map(function(nm){ return { name: nm, links: [
               'https://drive.google.com/file/d/1hHlcsfOf0w6QjxY2_CLp8kkfu0OBRWyT/view?usp=drive_link'
-            ] }];
-            items.forEach(function(it){
-              var card = document.createElement('div');
-              card.className = 'card';
-              var inner = document.createElement('div');
-              inner.className = 'card-body';
-              inner.innerHTML = `<h3>${it.name} <small>(x${it.qty})</small></h3>`;
-              var list = document.createElement('ul');
-              (it.links||[]).forEach(function(href, idx){
-                var li = document.createElement('li');
-                li.innerHTML = `<a class="btn btn-primary" href="${href}" target="_blank" rel="noopener">Download ${idx+1}</a>`;
-                list.appendChild(li);
-              });
-              inner.appendChild(list);
-              card.appendChild(inner);
-              box.appendChild(card);
-            });
+            ] }; });
+            renderItems(items, box);
             try{ var email2 = localStorage.getItem('buyerEmail') || ''; if(email2) sendDownloadsViaEmailJS(email2, items); }catch(e){}
             try{ localStorage.removeItem('paypalPending'); }catch(_){ }
             return;
@@ -155,25 +148,11 @@
         // Stripe fallback: if success=1 but no session_id, still show default links and email
         if (!sessionId && successFlag === '1') {
           statusEl.textContent = '';
-          const items = [{ name: 'Achat (Stripe)', qty: 1, links: [
+          var namesS = getCartItemsNames();
+          const items = (namesS.length ? namesS : ['Your purchase']).map(function(nm){ return { name: nm, links: [
             'https://drive.google.com/file/d/1hHlcsfOf0w6QjxY2_CLp8kkfu0OBRWyT/view?usp=drive_link'
-          ] }];
-          items.forEach(it => {
-            const card = document.createElement('div');
-            card.className = 'card';
-            const inner = document.createElement('div');
-            inner.className = 'card-body';
-            inner.innerHTML = `<h3>${it.name} <small>(x${it.qty})</small></h3>`;
-            const list = document.createElement('ul');
-            (it.links || []).forEach((href, idx) => {
-              const li = document.createElement('li');
-              li.innerHTML = `<a class="btn btn-primary" href="${href}" target="_blank" rel="noopener">Download ${idx+1}</a>`;
-              list.appendChild(li);
-            });
-            inner.appendChild(list);
-            card.appendChild(inner);
-            box.appendChild(card);
-          });
+          ] }; });
+          renderItems(items, box);
           try{ var email0 = localStorage.getItem('buyerEmail') || ''; if(email0) sendDownloadsViaEmailJS(email0, items); }catch(e){}
           return;
         }
@@ -190,45 +169,15 @@
             box.innerHTML = '<p>No items found in this order.</p>';
             return;
           }
-          data.items.forEach(it => {
-            const card = document.createElement('div');
-            card.className = 'card';
-            const inner = document.createElement('div');
-            inner.className = 'card-body';
-            inner.innerHTML = `<h3>${it.name} <small>(x${it.qty})</small></h3>`;
-            const list = document.createElement('ul');
-            (it.links || []).forEach((href, idx) => {
-              const li = document.createElement('li');
-              li.innerHTML = `<a class="btn btn-primary" href="${href}" target="_blank" rel="noopener">Download ${idx+1}</a>`;
-              list.appendChild(li);
-            });
-            inner.appendChild(list);
-            card.appendChild(inner);
-            box.appendChild(card);
-          });
+          renderItems(data.items.map(function(it){ return { name: it.name, links: it.links }; }), box);
           try{ var email = localStorage.getItem('buyerEmail') || ''; if(email) sendDownloadsViaEmailJS(email, data.items); }catch(e){}
         } catch (e) {
           statusEl.textContent = '';
           // Fallback: show default Stripe link and email so user is not blocked
-          const items = [{ name: 'Achat (Stripe)', qty: 1, links: [
+          const items = [{ name: 'Your purchase', links: [
             'https://drive.google.com/file/d/1hHlcsfOf0w6QjxY2_CLp8kkfu0OBRWyT/view?usp=drive_link'
           ] }];
-          items.forEach(it => {
-            const card = document.createElement('div');
-            card.className = 'card';
-            const inner = document.createElement('div');
-            inner.className = 'card-body';
-            inner.innerHTML = `<h3>${it.name} <small>(x${it.qty})</small></h3>`;
-            const list = document.createElement('ul');
-            (it.links || []).forEach((href, idx) => {
-              const li = document.createElement('li');
-              li.innerHTML = `<a class="btn btn-primary" href="${href}" target="_blank" rel="noopener">Download ${idx+1}</a>`;
-              list.appendChild(li);
-            });
-            inner.appendChild(list);
-            card.appendChild(inner);
-            box.appendChild(card);
-          });
+          renderItems(items, box);
           try{ var emailF = localStorage.getItem('buyerEmail') || ''; if(emailF) sendDownloadsViaEmailJS(emailF, items); }catch(err){}
         }
       })();
