@@ -28,6 +28,57 @@
     });
   }
 
+  function attachCardNavigation() {
+    // Make product cards clickable
+    document.querySelectorAll('.product-card').forEach((card) => {
+      if (card.getAttribute('data-click-bound') === '1') return;
+      card.setAttribute('data-click-bound', '1');
+      const id = card.getAttribute('data-id') || '';
+      const name = card.getAttribute('data-name') || 'Product';
+      const price = card.getAttribute('data-price') || '0';
+      const go = () => {
+        if (!id) return;
+        const url = new URL(location.origin + '/product.html');
+        url.searchParams.set('id', id);
+        url.searchParams.set('name', name);
+        url.searchParams.set('price', price);
+        window.location.assign(url.toString());
+      };
+      card.addEventListener('click', (e) => {
+        const t = e.target;
+        if (t instanceof Element && (t.closest('.add-to-cart') || t.closest('button'))) return; // do not navigate when clicking buttons
+        go();
+      });
+      card.setAttribute('tabindex', '0');
+      card.setAttribute('role', 'link');
+      card.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); go(); } });
+    });
+
+    // Make top offer card clickable
+    document.querySelectorAll('.offer-card').forEach((card) => {
+      if (card.getAttribute('data-click-bound') === '1') return;
+      card.setAttribute('data-click-bound', '1');
+      const id = 'pack';
+      const name = 'All Products Special';
+      const price = '247';
+      const go = () => {
+        const url = new URL(location.origin + '/product.html');
+        url.searchParams.set('id', id);
+        url.searchParams.set('name', name);
+        url.searchParams.set('price', price);
+        window.location.assign(url.toString());
+      };
+      card.addEventListener('click', (e) => {
+        const t = e.target;
+        if (t instanceof Element && (t.closest('.add-to-cart') || t.closest('button') || t.closest('a.btn'))) return; // keep CTA behavior
+        go();
+      });
+      card.setAttribute('tabindex', '0');
+      card.setAttribute('role', 'link');
+      card.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); go(); } });
+    });
+  }
+
   function shouldSendOnce(id) {
     try {
       if (!id) return false;
@@ -372,6 +423,7 @@
   attachProductButtons();
   attachAnyAddToCart();
   attachMoreInfoLinks();
+  attachCardNavigation();
   attachCartHandlers();
   attachSearch();
   updateCheckoutButtons();
