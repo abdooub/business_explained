@@ -12,6 +12,60 @@
     });
   }
 
+  function attachCouponForm() {
+    try {
+      const footer = document.querySelector('.cart-footer');
+      if (!footer || document.getElementById('coupon-form')) return;
+      const box = document.createElement('div');
+      box.style.display = 'grid';
+      box.style.gap = '8px';
+      box.style.marginTop = '8px';
+      const form = document.createElement('form');
+      form.id = 'coupon-form';
+      form.innerHTML = `
+        <div style="display:flex; gap:8px; align-items:center;">
+          <input id="coupon-code" placeholder="Code promo" autocomplete="off" style="flex:1;" />
+          <button class="btn" type="submit">Appliquer</button>
+        </div>
+        <small id="coupon-msg" class="form-hint" aria-live="polite"></small>
+      `;
+      box.appendChild(form);
+      footer.appendChild(box);
+
+      const msg = () => document.getElementById('coupon-msg');
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const codeEl = document.getElementById('coupon-code');
+        const code = (codeEl?.value || '').trim();
+        const email = getBuyerEmail();
+        if (!code) { if (msg()) msg().textContent = 'Entrez un code promo.'; return; }
+        if (!isValidEmail(email)) { if (msg()) msg().textContent = 'Saisissez un email valide avant d\'appliquer un code.'; buyerEmailInput?.focus(); return; }
+        if (msg()) msg().textContent = 'Vérification du code…';
+        try {
+          const r = await fetch(apiBase + '/api/redeem-coupon', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ code, email })
+          });
+          const d = await r.json().catch(() => ({}));
+          if (!r.ok || !d?.ok) {
+            if (msg()) msg().textContent = d?.message || 'Code promo invalide.';
+            return;
+          }
+          if (d.action === 'add_product_free' && d.product) {
+            addFreeProduct(d.product);
+            if (msg()) msg().textContent = d.message || 'Code appliqué ! Produit offert ajouté.';
+            codeEl.value = '';
+            return;
+          }
+          if (msg()) msg().textContent = 'Code appliqué.';
+        } catch (err) {
+          if (msg()) msg().textContent = 'Erreur serveur. Veuillez réessayer plus tard.';
+        }
+      });
+    } catch (_) {}
+  }
+
   function attachMoreInfoLinks() {
     document.querySelectorAll('.product-card').forEach((card) => {
       const id = card.getAttribute('data-id') || '';
@@ -314,6 +368,10 @@
   function cartCount() { return cart.length; }
   function cartTotal() { return cart.reduce((sum, it) => sum + it.price, 0); }
 
+  function hasCartItem(id) {
+    return cart.some((it) => it.id === id);
+  }
+
   function renderCart() {
     if (!itemsEl) return;
     itemsEl.innerHTML = '';
@@ -337,6 +395,19 @@
   function addToCart(product) {
     const found = cart.find((it) => it.id === product.id);
     if (found) { found.qty = 1; } else { cart.push({ ...product, qty: 1 }); }
+    saveCart();
+    renderCart();
+  }
+
+  function addFreeProduct(product) {
+    if (!product || !product.id) return;
+    const idx = cart.findIndex((it) => it.id === product.id);
+    const base = { id: product.id, name: product.name || 'Free item', price: 0, qty: 1 };
+    if (idx >= 0) {
+      cart[idx] = { ...cart[idx], ...base, price: 0, qty: 1 };
+    } else {
+      cart.push(base);
+    }
     saveCart();
     renderCart();
   }
@@ -459,6 +530,7 @@
   attachCartHandlers();
   attachSearch();
   attachSort();
+  attachCouponForm();
   updateCheckoutButtons();
 
   // Handle PayPal return (token in query)
