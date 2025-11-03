@@ -161,7 +161,7 @@
         links_text: allLinks.join('\n'),
         links_html: linksHtml,
         order_ref: (meta && meta.orderRef) || '' ,
-        store_name: 'Business Explained',
+        store_name: 'Business Explique',
         // For the user's custom single-link template
         customer_name: customerName,
         download_link: firstLink

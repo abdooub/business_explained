@@ -53,13 +53,13 @@ module.exports = async function handler(req, res) {
         purchase_units: [
           {
             amount: { currency_code: 'EUR', value: total.toFixed(2) },
-            description: 'Business Explained - Digital products'
+            description: 'Business Explique - Digital products'
           }
         ],
         application_context: {
           return_url: `${origin}/success.html?paypal=1`,
           cancel_url: `${origin}/products.html?ppc=1`,
-          brand_name: 'Business Explained',
+          brand_name: 'Business Explique',
           shipping_preference: 'NO_SHIPPING',
           user_action: 'PAY_NOW'
         }

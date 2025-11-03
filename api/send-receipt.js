@@ -73,7 +73,7 @@ module.exports = async function handler(req, res) {
       body: JSON.stringify({
         from: FROM_EMAIL,
         to,
-        subject: 'Your Business Explained downloads',
+        subject: 'Your Business Explique downloads',
         html
       })
     });
