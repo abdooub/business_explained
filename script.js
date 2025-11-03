@@ -377,6 +377,7 @@
     // Toggle free-download button and hide/show payment buttons
     const footer = document.querySelector('.cart-footer');
     let freeBtn = document.getElementById('free-download-btn');
+    let freeHint = document.getElementById('free-download-hint');
     if (zero) {
       if (checkoutBtn) checkoutBtn.style.display = 'none';
       if (paypalBtn) paypalBtn.style.display = 'none';
@@ -396,10 +397,18 @@
         });
         if (footer) footer.insertBefore(freeBtn, footer.querySelector('#buyer-email')?.nextSibling || footer.firstChild);
       }
+      if (!freeHint) {
+        freeHint = document.createElement('small');
+        freeHint.id = 'free-download-hint';
+        freeHint.className = 'form-hint';
+        freeHint.textContent = 'Cliquez sur “Obtenir gratuitement” pour accéder à vos liens de téléchargement. Un email vous sera envoyé.';
+        if (footer) footer.insertBefore(freeHint, freeBtn.nextSibling);
+      }
     } else {
       if (checkoutBtn) checkoutBtn.style.display = '';
       if (paypalBtn) paypalBtn.style.display = '';
       if (freeBtn) freeBtn.remove();
+      if (freeHint) freeHint.remove();
     }
     setEmailValidityUI(valid);
   }

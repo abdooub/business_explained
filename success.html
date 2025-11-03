@@ -90,6 +90,23 @@
         const payer = qp.get('PayerID');
         const statusEl = document.getElementById('status');
         const box = document.getElementById('downloads');
+        // FREE coupon flow: show local items and email links
+        try {
+          if (qp.get('free') === '1') {
+            statusEl.textContent = '';
+            var namesF = getCartItemsNames();
+            const items = (namesF.length ? namesF : ['Your purchase']).map(function(nm){ return { name: nm, links: [
+              'https://drive.google.com/file/d/1hHlcsfOf0w6QjxY2_CLp8kkfu0OBRWyT/view?usp=drive_link'
+            ] }; });
+            renderItems(items, box);
+            try{ var emailF = localStorage.getItem('buyerEmail') || ''; if(emailF && shouldSendOnce('free:1')) sendDownloadsViaEmailJS(emailF, items); }catch(e){}
+            // Clean URL
+            const url = new URL(location.href);
+            url.searchParams.delete('free');
+            history.replaceState({}, '', url);
+            return;
+          }
+        } catch(_){}
         // If PayPal returned with token + PayerID, capture order then show links
         if (!sessionId && token && payer) {
           try {
