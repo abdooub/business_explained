@@ -198,6 +198,38 @@
     });
   }
 
+  function attachSort() {
+    const select = document.getElementById('sort');
+    const grid = document.getElementById('productGrid');
+    if (!select || !grid) return;
+
+    // mark initial order
+    Array.from(grid.querySelectorAll('.product-card')).forEach((el, idx) => {
+      if (!el.getAttribute('data-idx')) el.setAttribute('data-idx', String(idx));
+    });
+
+    const priceOf = (el) => Number(el.getAttribute('data-price') || 0) || 0;
+
+    const apply = () => {
+      const items = Array.from(grid.querySelectorAll('.product-card'));
+      const mode = select.value;
+      const sorted = items.slice();
+      if (mode === 'price-asc') {
+        sorted.sort((a, b) => priceOf(a) - priceOf(b));
+      } else if (mode === 'price-desc') {
+        sorted.sort((a, b) => priceOf(b) - priceOf(a));
+      } else if (mode === 'new') {
+        sorted.sort((a, b) => Number(b.getAttribute('data-idx') || 0) - Number(a.getAttribute('data-idx') || 0));
+      } else {
+        sorted.sort((a, b) => Number(a.getAttribute('data-idx') || 0) - Number(b.getAttribute('data-idx') || 0));
+      }
+      sorted.forEach((el) => grid.appendChild(el));
+    };
+
+    select.addEventListener('change', apply);
+    apply();
+  }
+
   // Année dynamique dans le footer
   const y = document.getElementById('year');
   if (y) y.textContent = new Date().getFullYear();
@@ -426,6 +458,7 @@
   attachCardNavigation();
   attachCartHandlers();
   attachSearch();
+  attachSort();
   updateCheckoutButtons();
 
   // Handle PayPal return (token in query)
