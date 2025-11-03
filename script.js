@@ -12,6 +12,17 @@
     });
   }
 
+  // === Zero-coupon helpers ===
+  function isZeroCouponActive() {
+    try { return localStorage.getItem('couponZero') === '1'; } catch (_) { return false; }
+  }
+  function setZeroCouponActive(on) {
+    try {
+      if (on) localStorage.setItem('couponZero', '1');
+      else localStorage.removeItem('couponZero');
+    } catch (_) {}
+  }
+
   function attachCouponForm() {
     try {
       const footer = document.querySelector('.cart-footer');
@@ -53,8 +64,8 @@
             return;
           }
           if (d.action === 'add_product_free' && d.product) {
-            addFreeProduct(d.product);
-            if (msg()) msg().textContent = d.message || 'Code appliqué ! Produit offert ajouté.';
+            addFreeProduct(d.product); // will clear cart and set total to $0
+            if (msg()) msg().textContent = d.message || 'Code appliqué ! Total = 0.';
             codeEl.value = '';
             return;
           }
@@ -346,9 +357,9 @@
   function updateCheckoutButtons() {
     const email = getBuyerEmail();
     const valid = isValidEmail(email);
-    if (checkoutBtn) checkoutBtn.disabled = !valid;
+    if (checkoutBtn) checkoutBtn.disabled = !valid || isZeroCouponActive();
     const paypalBtn = document.querySelector('[data-checkout-paypal]');
-    if (paypalBtn) paypalBtn.disabled = !valid;
+    if (paypalBtn) paypalBtn.disabled = !valid || isZeroCouponActive();
     setEmailValidityUI(valid);
   }
 
@@ -375,20 +386,25 @@
   function renderCart() {
     if (!itemsEl) return;
     itemsEl.innerHTML = '';
-    cart.forEach((it, idx) => {
-      const row = document.createElement('div');
-      row.className = 'cart-item';
-      row.innerHTML = `
-        <div>
-          <div class="name">${it.name}</div>
-          <div class="sub">$${it.price.toFixed(2)}</div>
-        </div>
-        <div class="controls">
-          <button data-rem="${idx}" aria-label="Supprimer" class="btn">Retirer</button>
-        </div>`;
-      itemsEl.appendChild(row);
-    });
-    if (totalEl) totalEl.textContent = `$${cartTotal().toFixed(2)}`;
+    if (!isZeroCouponActive()) {
+      cart.forEach((it, idx) => {
+        const row = document.createElement('div');
+        row.className = 'cart-item';
+        row.innerHTML = `
+          <div>
+            <div class="name">${it.name}</div>
+            <div class="sub">$${it.price.toFixed(2)}</div>
+          </div>
+          <div class="controls">
+            <button data-rem="${idx}" aria-label="Supprimer" class="btn">Retirer</button>
+          </div>`;
+        itemsEl.appendChild(row);
+      });
+      if (totalEl) totalEl.textContent = `$${cartTotal().toFixed(2)}`;
+    } else {
+      // Hide items, force total to $0
+      if (totalEl) totalEl.textContent = `$0.00`;
+    }
     if (badgeEl) badgeEl.textContent = String(cartCount());
   }
 
@@ -400,16 +416,12 @@
   }
 
   function addFreeProduct(product) {
-    if (!product || !product.id) return;
-    const idx = cart.findIndex((it) => it.id === product.id);
-    const base = { id: product.id, name: product.name || 'Free item', price: 0, qty: 1 };
-    if (idx >= 0) {
-      cart[idx] = { ...cart[idx], ...base, price: 0, qty: 1 };
-    } else {
-      cart.push(base);
-    }
+    // Changed behavior: do not show items; make total 0 and clear cart
+    try { cart = []; } catch (_) { cart = []; }
+    setZeroCouponActive(true);
     saveCart();
     renderCart();
+    updateCheckoutButtons();
   }
 
   function attachProductButtons() {
