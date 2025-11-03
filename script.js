@@ -22,6 +22,12 @@
       else localStorage.removeItem('couponZero');
     } catch (_) {}
   }
+  function clearZeroCouponActive() {
+    try {
+      localStorage.removeItem('couponZero');
+      localStorage.removeItem('couponZeroName');
+    } catch (_) {}
+  }
 
   function setZeroCouponItemName(name) {
     try { localStorage.setItem('couponZeroName', String(name || 'Votre produit')); } catch (_) {}
@@ -417,7 +423,9 @@
           <div class="name">${getZeroCouponItemName()}</div>
           <div class="sub">$0.00</div>
         </div>
-        <div class="controls"></div>`;
+        <div class="controls">
+          <button class="btn" data-zero-clear>Retirer</button>
+        </div>`;
       itemsEl.appendChild(row);
       if (totalEl) totalEl.textContent = `$0.00`;
     }
@@ -488,6 +496,14 @@
     itemsEl?.addEventListener('click', (e) => {
       const t = e.target;
       if (!(t instanceof Element)) return;
+      if (t.hasAttribute('data-zero-clear')) {
+        // Clear zero-coupon state and re-enable checkout
+        clearZeroCouponActive();
+        // Leave cart empty; user can add items again
+        renderCart();
+        updateCheckoutButtons();
+        return;
+      }
       const rem = t.getAttribute('data-rem');
       if (rem) { const i = Number(rem); cart.splice(i, 1); }
       saveCart();
