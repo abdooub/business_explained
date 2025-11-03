@@ -23,6 +23,13 @@
     } catch (_) {}
   }
 
+  function setZeroCouponItemName(name) {
+    try { localStorage.setItem('couponZeroName', String(name || 'Votre produit')); } catch (_) {}
+  }
+  function getZeroCouponItemName() {
+    try { return localStorage.getItem('couponZeroName') || 'Votre produit'; } catch (_) { return 'Votre produit'; }
+  }
+
   function attachCouponForm() {
     try {
       const footer = document.querySelector('.cart-footer');
@@ -402,10 +409,19 @@
       });
       if (totalEl) totalEl.textContent = `$${cartTotal().toFixed(2)}`;
     } else {
-      // Hide items, force total to $0
+      // Show a single read-only row for the free product and force total to $0
+      const row = document.createElement('div');
+      row.className = 'cart-item';
+      row.innerHTML = `
+        <div>
+          <div class="name">${getZeroCouponItemName()}</div>
+          <div class="sub">$0.00</div>
+        </div>
+        <div class="controls"></div>`;
+      itemsEl.appendChild(row);
       if (totalEl) totalEl.textContent = `$0.00`;
     }
-    if (badgeEl) badgeEl.textContent = String(cartCount());
+    if (badgeEl) badgeEl.textContent = isZeroCouponActive() ? '1' : String(cartCount());
   }
 
   function addToCart(product) {
@@ -419,6 +435,7 @@
     // Changed behavior: do not show items; make total 0 and clear cart
     try { cart = []; } catch (_) { cart = []; }
     setZeroCouponActive(true);
+    setZeroCouponItemName(product?.name || 'Votre produit');
     saveCart();
     renderCart();
     updateCheckoutButtons();
