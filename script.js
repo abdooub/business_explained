@@ -370,9 +370,37 @@
   function updateCheckoutButtons() {
     const email = getBuyerEmail();
     const valid = isValidEmail(email);
-    if (checkoutBtn) checkoutBtn.disabled = !valid || isZeroCouponActive();
     const paypalBtn = document.querySelector('[data-checkout-paypal]');
-    if (paypalBtn) paypalBtn.disabled = !valid || isZeroCouponActive();
+    const zero = isZeroCouponActive();
+    if (checkoutBtn) checkoutBtn.disabled = !valid || zero;
+    if (paypalBtn) paypalBtn.disabled = !valid || zero;
+    // Toggle free-download button and hide/show payment buttons
+    const footer = document.querySelector('.cart-footer');
+    let freeBtn = document.getElementById('free-download-btn');
+    if (zero) {
+      if (checkoutBtn) checkoutBtn.style.display = 'none';
+      if (paypalBtn) paypalBtn.style.display = 'none';
+      if (!freeBtn) {
+        freeBtn = document.createElement('button');
+        freeBtn.id = 'free-download-btn';
+        freeBtn.className = 'btn btn-primary';
+        freeBtn.textContent = 'Obtenir gratuitement';
+        freeBtn.style.width = '100%';
+        freeBtn.addEventListener('click', () => {
+          const email = getBuyerEmail();
+          if (!isValidEmail(email)) { setEmailValidityUI(false); buyerEmailInput?.focus(); return; }
+          // Prepare simple items in localStorage so success page can read names
+          try { localStorage.setItem('cart', JSON.stringify([{ id: 'free', name: getZeroCouponItemName(), price: 0 }])); } catch (_) {}
+          try { localStorage.setItem('stripePending', '0'); localStorage.setItem('paypalPending', '0'); } catch (_) {}
+          try { window.location.assign('/success.html?free=1'); } catch (_) {}
+        });
+        if (footer) footer.insertBefore(freeBtn, footer.querySelector('#buyer-email')?.nextSibling || footer.firstChild);
+      }
+    } else {
+      if (checkoutBtn) checkoutBtn.style.display = '';
+      if (paypalBtn) paypalBtn.style.display = '';
+      if (freeBtn) freeBtn.remove();
+    }
     setEmailValidityUI(valid);
   }
 
