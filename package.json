@@ -11,6 +11,7 @@
     "node": ">=18.0.0"
   },
   "dependencies": {
+    "@sendgrid/mail": "^8.1.6",
     "express": "^4.19.2",
     "resend": "^6.3.0",
     "stripe": "^14.0.0"
