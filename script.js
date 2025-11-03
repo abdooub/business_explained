@@ -374,8 +374,14 @@
     const zero = isZeroCouponActive();
     if (checkoutBtn) checkoutBtn.disabled = !valid || zero;
     if (paypalBtn) paypalBtn.disabled = !valid || zero;
-    // Toggle free-download button and hide/show payment buttons
+    syncZeroFreeUI();
+    setEmailValidityUI(valid);
+  }
+
+  function syncZeroFreeUI(){
+    const zero = isZeroCouponActive();
     const footer = document.querySelector('.cart-footer');
+    const paypalBtn = document.querySelector('[data-checkout-paypal]');
     let freeBtn = document.getElementById('free-download-btn');
     let freeHint = document.getElementById('free-download-hint');
     if (zero) {
@@ -390,19 +396,18 @@
         freeBtn.addEventListener('click', () => {
           const email = getBuyerEmail();
           if (!isValidEmail(email)) { setEmailValidityUI(false); buyerEmailInput?.focus(); return; }
-          // Prepare simple items in localStorage so success page can read names
           try { localStorage.setItem('cart', JSON.stringify([{ id: 'free', name: getZeroCouponItemName(), price: 0 }])); } catch (_) {}
           try { localStorage.setItem('stripePending', '0'); localStorage.setItem('paypalPending', '0'); } catch (_) {}
           try { window.location.assign('/success.html?free=1'); } catch (_) {}
         });
-        if (footer) footer.insertBefore(freeBtn, footer.querySelector('#buyer-email')?.nextSibling || footer.firstChild);
+        if (footer) footer.appendChild(freeBtn);
       }
       if (!freeHint) {
         freeHint = document.createElement('small');
         freeHint.id = 'free-download-hint';
         freeHint.className = 'form-hint';
         freeHint.textContent = 'Cliquez sur “Obtenir gratuitement” pour accéder à vos liens de téléchargement. Un email vous sera envoyé.';
-        if (footer) footer.insertBefore(freeHint, freeBtn.nextSibling);
+        if (footer && freeBtn) footer.appendChild(freeHint);
       }
     } else {
       if (checkoutBtn) checkoutBtn.style.display = '';
@@ -410,7 +415,6 @@
       if (freeBtn) freeBtn.remove();
       if (freeHint) freeHint.remove();
     }
-    setEmailValidityUI(valid);
   }
 
   let cart = [];
@@ -467,6 +471,7 @@
       if (totalEl) totalEl.textContent = `$0.00`;
     }
     if (badgeEl) badgeEl.textContent = isZeroCouponActive() ? '1' : String(cartCount());
+    syncZeroFreeUI();
   }
 
   function addToCart(product) {

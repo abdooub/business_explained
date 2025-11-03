@@ -55,6 +55,8 @@ app.post('/api/paypal/create-order', (req, res) => paypalCreate(req, res));
 app.post('/api/paypal/capture-order', (req, res) => paypalCapture(req, res));
 app.get('/api/order-links', (req, res) => orderLinks(req, res));
 app.post('/api/send-receipt', (req, res) => sendReceipt(req, res));
+// Coupons
+app.post('/api/redeem-coupon', (req, res) => require('./api/redeem-coupon')(req, res));
 
 // Stripe Checkout endpoint
 app.post('/api/create-checkout-session', async (req, res) => {
