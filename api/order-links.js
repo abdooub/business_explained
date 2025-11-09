@@ -5,18 +5,53 @@ const DEFAULT_LINKS = [
   'https://drive.google.com/file/d/1hHlcsfOf0w6QjxY2_CLp8kkfu0OBRWyT/view?usp=drive_link'
 ];
 const LINK_MAP = {
-  'All Products Special': DEFAULT_LINKS,
-  'Top-Tier Management Explained': DEFAULT_LINKS,
-  'Organizational Management Explained': DEFAULT_LINKS,
-  'Consulting Management Explained': DEFAULT_LINKS,
-  'Business Development Explained': DEFAULT_LINKS,
-  'Marketing Frameworks Explained': DEFAULT_LINKS,
-  'Competitive Advantage Explained': DEFAULT_LINKS,
-  'Sales Strategies Explained': DEFAULT_LINKS,
-  'Strategic Management Explained': DEFAULT_LINKS,
-  'Process Improvement Strategies Explained': DEFAULT_LINKS,
-  'Project Management Explained': DEFAULT_LINKS,
-  'Human Resources Explained': DEFAULT_LINKS
+  'Top-Tier Management Explained': [
+    'https://drive.google.com/file/d/top-tier-management-explained/view?usp=sharing'
+  ],
+  'Strategic Management Explained': [
+    'https://drive.google.com/file/d/strategic-management-explained/view?usp=sharing'
+  ],
+  'Sales Strategies Explained': [
+    'https://drive.google.com/file/d/sales-strategies-explained/view?usp=sharing'
+  ],
+  'Competitive Advantage Explained': [
+    'https://drive.google.com/file/d/competitive-advantage-explained/view?usp=sharing'
+  ],
+  'Marketing Frameworks Explained': [
+    'https://drive.google.com/file/d/marketing-frameworks-explained/view?usp=sharing'
+  ],
+  'Business Development Explained': [
+    'https://drive.google.com/file/d/business-development-explained/view?usp=sharing'
+  ],
+  'Consulting Management Explained': [
+    'https://drive.google.com/file/d/consulting-management-explained/view?usp=sharing'
+  ],
+  'Organizational Management Explained': [
+    'https://drive.google.com/file/d/organizational-management-explained/view?usp=sharing'
+  ],
+  'Human Resources Explained': [
+    'https://drive.google.com/file/d/human-resources-explained/view?usp=sharing'
+  ],
+  'Project Management Explained': [
+    'https://drive.google.com/file/d/project-management-explained/view?usp=sharing'
+  ],
+  'Process Improvement Strategies Explained': [
+    'https://drive.google.com/file/d/process-improvement-strategies-explained/view?usp=sharing'
+  ],
+  // Bundle: include all links
+  'All Products Special': [
+    'https://drive.google.com/file/d/top-tier-management-explained/view?usp=sharing',
+    'https://drive.google.com/file/d/strategic-management-explained/view?usp=sharing',
+    'https://drive.google.com/file/d/sales-strategies-explained/view?usp=sharing',
+    'https://drive.google.com/file/d/competitive-advantage-explained/view?usp=sharing',
+    'https://drive.google.com/file/d/marketing-frameworks-explained/view?usp=sharing',
+    'https://drive.google.com/file/d/business-development-explained/view?usp=sharing',
+    'https://drive.google.com/file/d/consulting-management-explained/view?usp=sharing',
+    'https://drive.google.com/file/d/organizational-management-explained/view?usp=sharing',
+    'https://drive.google.com/file/d/human-resources-explained/view?usp=sharing',
+    'https://drive.google.com/file/d/project-management-explained/view?usp=sharing',
+    'https://drive.google.com/file/d/process-improvement-strategies-explained/view?usp=sharing'
+  ]
 };
 
 const handler = async function handler(req, res) {
