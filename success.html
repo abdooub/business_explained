@@ -110,6 +110,16 @@
           return url;
         } catch(_) { return url; }
       }
+      function getCartTotalEUR(){
+        try {
+          var raw = localStorage.getItem('cart');
+          if (!raw) return '';
+          var arr = JSON.parse(raw)||[];
+          var total = arr.reduce(function(sum, it){ return sum + (Number(it.price||0) * Number(it.qty||1)); }, 0);
+          if (!isFinite(total) || total<=0) return '';
+          return '€' + total.toFixed(2);
+        } catch(_) { return ''; }
+      }
       function sendDownloadsViaEmailJS(to, items){
         try {
           if(!to || !/\S+@\S+\.\S+/.test(to)) return;
@@ -122,7 +132,7 @@
           var productName = firstItem && firstItem.name ? firstItem.name : 'Your product';
           var productLink = (firstItem && Array.isArray(firstItem.links) && firstItem.links[0]) ? firstItem.links[0] : '';
           var customerName = (to && String(to).split('@')[0]) || 'Customer';
-          var message = 'Click the button above to download your file. If the link expires, reply to this email.';
+          var message = 'Click the button to download your file. If it expires, just reply to this email.';
           // Build HTML buttons for all links
           var linksHtml = Array.isArray(items) ? items.map(function(it){
             var name = it.name || 'Product';
@@ -136,6 +146,7 @@
                    '</div>';
           }).join('') : '';
           var firstDirect = toDirectLink(productLink || links[0] || '');
+          var priceText = getCartTotalEUR();
           window.emailjs.send(cfg.serviceId, cfg.templateId, {
             to_email: to,
             customer_name: customerName,
@@ -143,7 +154,7 @@
             product_name: productName,
             product_link: firstDirect,
             download_link: firstDirect,
-            price: '',
+            price: priceText,
             message: message,
             // Existing fallback fields
             items_summary: summary,
