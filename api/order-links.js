@@ -19,10 +19,7 @@ const LINK_MAP = {
   'Human Resources Explained': DEFAULT_LINKS
 };
 
-module.exports.LINK_MAP = LINK_MAP;
-module.exports.DEFAULT_LINKS = DEFAULT_LINKS;
-
-module.exports = async function handler(req, res) {
+const handler = async function handler(req, res) {
   try {
     const sessionId = req.query?.session_id || req.query?.sessionid || req.query?.session;
     if (!sessionId) {
@@ -61,3 +58,5 @@ module.exports = async function handler(req, res) {
     res.status(500).json({ ok: false, message: 'Erreur', error: e?.message || String(e) });
   }
 };
+
+module.exports = Object.assign(handler, { LINK_MAP, DEFAULT_LINKS });
