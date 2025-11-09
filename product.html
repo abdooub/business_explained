@@ -109,6 +109,8 @@
         const priceEl = document.getElementById('pd-price');
         const imgEl = document.getElementById('pd-image');
         const buyEl = document.getElementById('pd-buy');
+        const subEl = document.getElementById('pd-sub');
+        const descEl = document.getElementById('pd-desc');
         titleEl.textContent = name;
         priceEl.textContent = (price || 0) + '€';
         imgEl.src = imgMap[id] || imgEl.src;
@@ -116,6 +118,48 @@
         buyEl.setAttribute('data-id', id);
         buyEl.setAttribute('data-name', name);
         buyEl.setAttribute('data-price', String(price || 0));
+
+        if (name === 'Everything Explained Bundle' || id === 'pack') {
+          if (subEl) subEl.textContent = 'Digital bundle • Instant access • One-time payment';
+          if (descEl) descEl.innerHTML = `
+            <p>The Everything Explained Bundle is a comprehensive collection of business eBooks covering essential topics like marketing, leadership, finance, technology and more.</p>
+            <h4 style="margin:16px 0 8px;">FE: Everything Explained Bundle (139€ – One Time)</h4>
+            <ul style="columns:1;gap:12px;list-style:disc;padding-left:20px;">
+              <li>Organizational Management Explained</li>
+              <li>Entrepreneurship Explained</li>
+              <li>Marketing Frameworks Explained</li>
+              <li>Market Research Explained</li>
+              <li>Strategic Management Explained</li>
+              <li>Process Improvement Strategies Explained</li>
+              <li>Project Management Explained</li>
+              <li>Human Resources Explained</li>
+              <li>Leadership Strategies Explained</li>
+              <li>Negotiation Strategies Explained</li>
+              <li>Productivity Strategies Explained</li>
+              <li>Financial Management Explained</li>
+              <li>Risk Management Explained</li>
+              <li>Soft Skills Explained</li>
+              <li>Change Management Strategies Explained</li>
+              <li>Employee Engagement Strategies Explained</li>
+              <li>360-Degree Feedback Explained</li>
+              <li>Talent Management & Onboarding Explained</li>
+              <li>Performance Management Strategies Explained</li>
+              <li>Brand Development Explained</li>
+              <li>Ecommerce Explained</li>
+              <li>Financial Crisis Explained</li>
+              <li>Housing Crisis Explained</li>
+              <li>Customer Relationship Explained</li>
+              <li>Scrum Manual</li>
+              <li>Kanban Manual</li>
+              <li>Agile Manual</li>
+              <li>Artificial Intelligence in Business Explained</li>
+              <li>Cyber Security Explained</li>
+              <li>Machine Learning Explained</li>
+              <li>Virtual Reality Explained</li>
+            </ul>
+            <p style="margin-top:8px;color:#374151;">Dive into 3000+ pages of high-quality business knowledge.</p>
+          `;
+        }
       })();
     </script>
   </body>

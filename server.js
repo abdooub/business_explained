@@ -6,6 +6,7 @@ const paypalCreate = require('./api/paypal/create-order');
 const paypalCapture = require('./api/paypal/capture-order');
 const orderLinks = require('./api/order-links');
 const sendReceipt = require('./api/send-receipt');
+const dlHandler = require('./api/dl');
 
 const app = express();
 const PORT = Number(process.env.PORT || 3000);
@@ -57,6 +58,8 @@ app.get('/api/order-links', (req, res) => orderLinks(req, res));
 app.post('/api/send-receipt', (req, res) => sendReceipt(req, res));
 // Coupons
 app.post('/api/redeem-coupon', (req, res) => require('./api/redeem-coupon')(req, res));
+// Name-based download redirector
+app.get('/api/dl', (req, res) => dlHandler(req, res));
 
 // Stripe Checkout endpoint
 app.post('/api/create-checkout-session', async (req, res) => {

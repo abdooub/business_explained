@@ -137,8 +137,8 @@
       if (card.getAttribute('data-click-bound') === '1') return;
       card.setAttribute('data-click-bound', '1');
       const id = 'pack';
-      const name = 'All Products Special';
-      const price = '247';
+      const name = 'Everything Explained Bundle';
+      const price = '139';
       const go = () => {
         const url = new URL(location.origin + '/product.html');
         url.searchParams.set('id', id);

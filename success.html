@@ -81,6 +81,19 @@
         'Process Improvement Strategies Explained': [
           'https://drive.google.com/file/d/process-improvement-strategies-explained/view?usp=sharing'
         ],
+        'Everything Explained Bundle': [
+          'https://drive.google.com/file/d/top-tier-management-explained/view?usp=sharing',
+          'https://drive.google.com/file/d/strategic-management-explained/view?usp=sharing',
+          'https://drive.google.com/file/d/sales-strategies-explained/view?usp=sharing',
+          'https://drive.google.com/file/d/competitive-advantage-explained/view?usp=sharing',
+          'https://drive.google.com/file/d/marketing-frameworks-explained/view?usp=sharing',
+          'https://drive.google.com/file/d/business-development-explained/view?usp=sharing',
+          'https://drive.google.com/file/d/consulting-management-explained/view?usp=sharing',
+          'https://drive.google.com/file/d/organizational-management-explained/view?usp=sharing',
+          'https://drive.google.com/file/d/human-resources-explained/view?usp=sharing',
+          'https://drive.google.com/file/d/project-management-explained/view?usp=sharing',
+          'https://drive.google.com/file/d/process-improvement-strategies-explained/view?usp=sharing'
+        ],
         'All Products Special': [
           'https://drive.google.com/file/d/top-tier-management-explained/view?usp=sharing',
           'https://drive.google.com/file/d/strategic-management-explained/view?usp=sharing',
@@ -186,8 +199,12 @@
           (it.links||[]).forEach(function(href, idx){
             var a = document.createElement('a');
             a.className = 'btn btn-primary';
-            a.href = href; a.target = '_blank'; a.rel = 'noopener';
-            a.textContent = 'Download '+(idx+1);
+            // Route via API with readable name in URL
+            var url = new URL(location.origin + '/api/dl');
+            url.searchParams.set('name', String(it.name||'Product'));
+            url.searchParams.set('i', String(idx));
+            a.href = url.toString(); a.target = '_blank'; a.rel = 'noopener';
+            a.textContent = (it.name || ('Download '+(idx+1)));
             actions.appendChild(a);
           });
           inner.appendChild(actions);
