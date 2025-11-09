@@ -110,6 +110,11 @@
           return url;
         } catch(_) { return url; }
       }
+      function clearCartStorage(){
+        try { localStorage.setItem('cart', '[]'); } catch(_) {}
+        try { localStorage.removeItem('couponZero'); localStorage.removeItem('couponZeroName'); } catch(_) {}
+        try { localStorage.removeItem('stripePending'); localStorage.removeItem('paypalPending'); } catch(_) {}
+      }
       function getCartTotalEUR(){
         try {
           var raw = localStorage.getItem('cart');
@@ -209,6 +214,7 @@
             });
             renderItems(items, box);
             try{ var emailF = localStorage.getItem('buyerEmail') || ''; if(emailF && shouldSendOnce('free:1')) sendDownloadsViaEmailJS(emailF, items); }catch(e){}
+            try { clearCartStorage(); } catch(_){ }
             // Clean URL
             const url = new URL(location.href);
             url.searchParams.delete('free');
@@ -232,6 +238,7 @@
             statusEl.textContent = '';
             renderItems(items, box);
             try{ var email = localStorage.getItem('buyerEmail') || ''; if(email && shouldSendOnce('paypal:'+token)) sendDownloadsViaEmailJS(email, items); }catch(e){}
+            try { clearCartStorage(); } catch(_){ }
           } catch (e) {
             statusEl.textContent = 'Error finalizing PayPal order';
           } finally {
@@ -251,6 +258,7 @@
           });
           renderItems(items, box);
           try{ var email = localStorage.getItem('buyerEmail') || ''; if(email && shouldSendOnce('paypal:pp1')) sendDownloadsViaEmailJS(email, items); }catch(e){}
+          try { clearCartStorage(); } catch(_){ }
           // Clean URL
           const url = new URL(location.href);
           url.searchParams.delete('pp');
@@ -270,6 +278,7 @@
             });
             renderItems(items, box);
             try{ var email2 = localStorage.getItem('buyerEmail') || ''; if(email2 && shouldSendOnce('paypal:referrer')) sendDownloadsViaEmailJS(email2, items); }catch(e){}
+            try { clearCartStorage(); } catch(_){ }
             try{ localStorage.removeItem('paypalPending'); }catch(_){ }
             return;
           }
@@ -283,6 +292,7 @@
           });
           renderItems(items, box);
           try{ var email0 = localStorage.getItem('buyerEmail') || ''; if(email0 && shouldSendOnce('stripe:successFlag')) sendDownloadsViaEmailJS(email0, items); }catch(e){}
+          try { clearCartStorage(); } catch(_){ }
           return;
         }
         if (!sessionId) {
@@ -300,6 +310,7 @@
           }
           renderItems(data.items.map(function(it){ return { name: it.name, links: it.links }; }), box);
           try{ var email = localStorage.getItem('buyerEmail') || ''; if(email && shouldSendOnce('stripe:'+sessionId)) sendDownloadsViaEmailJS(email, data.items); }catch(e){}
+          try { clearCartStorage(); } catch(_){ }
         } catch (e) {
           statusEl.textContent = '';
           // Fallback: best-effort links based on cart names if available
@@ -309,6 +320,7 @@
           });
           renderItems(items, box);
           try{ var emailF = localStorage.getItem('buyerEmail') || ''; if(emailF && shouldSendOnce('stripe:fallback')) sendDownloadsViaEmailJS(emailF, items); }catch(err){}
+          try { clearCartStorage(); } catch(_){ }
         }
       })();
     </script>
