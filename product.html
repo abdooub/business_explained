@@ -4,6 +4,19 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Produit — Business Explique</title>
+    <meta name="description" content="Digital product ebooks on business topics — Business Explique. Download premium guides, frameworks, and templates instantly." />
+    <meta name="keywords" content="digital product, ebook, business explained, business explique, business, explained, pdf ebook, bundle, templates" />
+    <link rel="canonical" href="https://business-explique.com/product.html" />
+    <meta property="og:site_name" content="Business Explique" />
+    <meta property="og:type" content="product" />
+    <meta property="og:title" content="Business Explique — Digital eBooks" />
+    <meta property="og:description" content="Premium digital product ebooks. Instant access. Practical frameworks and templates." />
+    <meta property="og:image" content="/images/ebooks/all_pack.png" />
+    <meta property="og:url" content="https://business-explique.com/product.html" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Business Explique — Digital eBooks" />
+    <meta name="twitter:description" content="Premium digital product ebooks. Instant access. Practical frameworks and templates." />
+    <meta name="twitter:image" content="/images/ebooks/all_pack.png" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -227,6 +240,71 @@
         if (featList && featuresById[id]) {
           featList.innerHTML = featuresById[id].map(t => '<li>'+t+'</li>').join('');
         }
+
+        // --- SEO: dynamic meta tags and JSON-LD ---
+        function setMeta(name, content){
+          if (!content) return;
+          let m = document.querySelector('meta[name="'+name+'"]');
+          if (!m) { m = document.createElement('meta'); m.setAttribute('name', name); document.head.appendChild(m); }
+          m.setAttribute('content', content);
+        }
+        function setMetaProp(prop, content){
+          if (!content) return;
+          let m = document.querySelector('meta[property="'+prop+'"]');
+          if (!m) { m = document.createElement('meta'); m.setAttribute('property', prop); document.head.appendChild(m); }
+          m.setAttribute('content', content);
+        }
+        function setOrCreate(tag, attrs){
+          let el = document.querySelector(tag);
+          if (!el) { el = document.createElement(tag); document.head.appendChild(el); }
+          Object.keys(attrs||{}).forEach(k=> el.setAttribute(k, attrs[k]));
+          return el;
+        }
+        const url = location.href;
+        const title = name + ' — Business Explique';
+        const desc = (featuresById[id] ? featuresById[id].join('. ') : 'Premium digital product eBook by Business Explique.') + ' Instant access.';
+        document.title = title;
+        setMeta('description', desc);
+        setMeta('keywords', [name, 'digital product', 'ebook', 'business explained', 'business explique', 'business', 'explained', 'pdf ebook', 'bundle'].join(', '));
+        setMetaProp('og:title', name);
+        setMetaProp('og:description', desc);
+        setMetaProp('og:type', 'product');
+        setMetaProp('og:url', url);
+        setMeta('twitter:title', name);
+        setMeta('twitter:description', desc);
+        setOrCreate('link[rel="canonical"]', { rel: 'canonical', href: url });
+
+        function updateOgImage(src){
+          if (!src) return;
+          setMetaProp('og:image', src);
+          setMeta('twitter:image', src);
+        }
+        // set now with current src; updates if it changes later
+        updateOgImage(imgEl.src);
+        imgEl.addEventListener('load', function(){ updateOgImage(imgEl.currentSrc || imgEl.src); }, { once: true });
+        imgEl.addEventListener('error', function(){ updateOgImage(imgEl.src); }, { once: true });
+
+        // JSON-LD Product
+        const ld = {
+          '@context':'https://schema.org',
+          '@type':'Product',
+          'name': name,
+          'image': [ imgEl.src ],
+          'description': desc,
+          'brand': { '@type':'Organization', 'name':'Business Explique' },
+          'url': url,
+          'offers': {
+            '@type':'Offer',
+            'priceCurrency':'EUR',
+            'price': String(finalPrice),
+            'availability':'https://schema.org/InStock',
+            'url': url
+          }
+        };
+        const scriptLd = document.createElement('script');
+        scriptLd.type = 'application/ld+json';
+        scriptLd.textContent = JSON.stringify(ld);
+        document.head.appendChild(scriptLd);
 
         if (name === 'Everything Explained Bundle' || id === 'pack') {
           if (subEl) subEl.textContent = 'Digital bundle • Instant access • One-time payment';

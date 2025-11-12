@@ -5,6 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Produits — Business Explique</title>
     <meta name="description" content="Catalogue de produits: eBooks, Checklists et Outils. Filtres par marque et catégorie." />
+    <meta name="keywords" content="Organizational Management Explained, Entrepreneurship Explained, Marketing Frameworks Explained, Market Research Explained, Strategic Management Explained, Process Improvement Strategies Explained, Project Management Explained, Human Resources Explained, Leadership Strategies Explained, Negotiation Strategies Explained, Productivity Strategies Explained, Financial Management Explained, Risk Management Explained, Soft Skills Explained, Change Management Strategies Explained, Employee Engagement Strategies Explained, 360-Degree Feedback Explained, Talent Management & Onboarding Explained, Performance Management Strategies Explained, Brand Development Explained, Ecommerce Explained, Financial Crisis Explained, Housing Crisis Explained, Customer Relationship Explained, Scrum Manual, Kanban Manual, Agile Manual, Artificial Intelligence in Business Explained, Cyber Security Explained, Machine Learning Explained, Virtual Reality Explained, Dive into 3000+ pages of high-quality business knowledge" />
+    <link rel="canonical" href="https://business-explique.com/products.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Business Explique" />
+    <meta property="og:title" content="Products — Business Explique" />
+    <meta property="og:description" content="Catalogue de produits: eBooks, Checklists et Outils. Filtres par marque et catégorie." />
+    <meta property="og:image" content="https://business-explique.com/images/ebooks/all_pack.png" />
+    <meta property="og:url" content="https://business-explique.com/products.html" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Products — Business Explique" />
+    <meta name="twitter:description" content="Catalogue de produits: eBooks, Checklists et Outils. Filtres par marque et catégorie." />
+    <meta name="twitter:image" content="https://business-explique.com/images/ebooks/all_pack.png" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -414,6 +426,37 @@
           img.src = localSrc;
           img.alt = title;
         });
+
+        // SEO: JSON-LD ItemList of products (helps Google understand your catalog)
+        try {
+          var items = [];
+          var base = 'https://business-explique.com/product.html';
+          var position = 1;
+          document.querySelectorAll('.product-card').forEach(function(card){
+            var id = card.getAttribute('data-id') || '';
+            var name = card.getAttribute('data-name') || (card.querySelector('h3') && card.querySelector('h3').textContent) || '';
+            var price = card.getAttribute('data-price') || '29';
+            if (!name) return;
+            var url = base + '?id=' + encodeURIComponent(id) + '&name=' + encodeURIComponent(name) + '&price=' + encodeURIComponent(price);
+            items.push({
+              '@type': 'ListItem',
+              position: position++,
+              url: url,
+              name: name
+            });
+          });
+          if (items.length) {
+            var ld = {
+              '@context': 'https://schema.org',
+              '@type': 'ItemList',
+              itemListElement: items
+            };
+            var s = document.createElement('script');
+            s.type = 'application/ld+json';
+            s.textContent = JSON.stringify(ld);
+            document.head.appendChild(s);
+          }
+        } catch(e) {}
       });
     </script>
   </body>
