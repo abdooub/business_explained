@@ -75,8 +75,14 @@
           <div class="card-body">
             <h3 style="margin-bottom:8px;">Items Included</h3>
             <p style="margin-top:0;color:#6b7280;">Worth of products if bought separately</p>
+            <div style="margin:8px 0 12px;">
+              <a id="bundle-buy" class="btn btn-primary add-to-cart" data-id="" data-name="" data-price="">Add bundle to cart</a>
+            </div>
             <div id="bundle-items" class="bundle-list" role="list"></div>
             <p id="bundle-note" style="margin-top:8px;color:#374151; display:none;">Dive into 3000+ pages of high-quality business knowledge.</p>
+            <div style="margin-top:12px;">
+              <a id="bundle-buy-bottom" class="btn btn-primary add-to-cart" data-id="" data-name="" data-price="">Add bundle to cart</a>
+            </div>
           </div>
         </div>
       </section>
@@ -141,6 +147,8 @@
           `;
           const bundleEl = document.getElementById('bundle-section');
           const listEl = document.getElementById('bundle-items');
+          const bundleBuy = document.getElementById('bundle-buy');
+          const bundleBuyBottom = document.getElementById('bundle-buy-bottom');
           const imageByTitle = {
             'Organizational Management Explained': 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=160&q=70&auto=format&fit=crop',
             'Marketing Frameworks Explained': 'https://images.unsplash.com/photo-1556761175-4b46a572b786?w=160&q=70&auto=format&fit=crop',
@@ -220,6 +228,9 @@
             `;}).join('');
             const noteEl = document.getElementById('bundle-note');
             if (noteEl) noteEl.style.display = 'block';
+            const fillBtn = (btn) => { if (!btn) return; btn.setAttribute('data-id', id); btn.setAttribute('data-name', name); btn.setAttribute('data-price', String(price || 0)); btn.textContent = `Add to cart — ${price || 0}€`; };
+            fillBtn(bundleBuy);
+            fillBtn(bundleBuyBottom);
           }
         }
       })();

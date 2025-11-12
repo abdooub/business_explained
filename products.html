@@ -19,6 +19,8 @@
       .offer-card .offer-copy { padding: 36px; }
       .offer-card .offer-price { font-size: 28px; color: var(--pro-accent); }
       .badge.red { background: #ef4444; color: #fff; }
+      .perk-badges { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:8px; color: var(--pro-dim); font-size: 13px; }
+      .perk-badges .pill { background: var(--pro-soft); border: 1px solid var(--pro-border); border-radius: 999px; padding: 4px 10px; }
 
       .shop-layout { padding-top: 16px; }
       .pro-hero { display: grid; gap: 16px; margin-bottom: 20px; }
@@ -120,10 +122,9 @@
             <div class="offer-actions" style="display:flex;gap:10px;flex-wrap:wrap;">
               <a class="btn btn-primary add-to-cart" data-id="pack" data-name="Everything Explained Bundle" data-price="139">Get Everything Explained Bundle for 139€</a>
             </div>
-            <ul class="offer-perks">
-              <li>Risk-free Purchase: 14 days refund</li>
-              <li>Safe and Secure Checkout</li>
-            </ul>
+            <div class="perk-badges">
+              <span class="pill">Secure checkout</span>
+            </div>
           </div>
         </div>
       </div>
@@ -389,5 +390,14 @@
     </footer>
 
     <script src="./script.js?v=12" defer></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.product-card').forEach(function(card){
+          card.setAttribute('data-price', '29');
+          var priceEl = card.querySelector('.product-meta .price');
+          if (priceEl) priceEl.textContent = '29€';
+        });
+      });
+    </script>
   </body>
 </html>
