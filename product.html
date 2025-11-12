@@ -15,7 +15,7 @@
       .pd-title { margin: 0 0 6px; font-size: clamp(24px, 3vw, 36px); line-height: 1.15; }
       .pd-sub { color: var(--muted); margin: 0 0 10px; }
       .pd-actions { display:flex; gap:10px; flex-wrap:wrap; margin-top: 8px; }
-      .pd-price { font-size: 22px; font-weight: 800; }
+      .pd-price { font-size: 22px; font-weight: 800; color: var(--primary); }
       .pd-feature-list { list-style:none; padding:0; margin:16px 0 0; display:grid; gap:8px; color: var(--muted); }
       .pd-feature-list li { position: relative; padding-left: 24px; }
       .pd-feature-list li::before { content: "✔"; position:absolute; left:0; top:0; color:#16a34a; font-weight:800; }
@@ -50,10 +50,28 @@
         <div class="pd-copy">
           <h1 id="pd-title" class="pd-title">Product</h1>
           <p id="pd-sub" class="pd-sub">Digital download • Instant access</p>
+          <div class="pd-stats" aria-label="Product stats" style="display:grid; grid-template-columns: repeat(3, max-content); gap: 20px; align-items:center; margin: 8px 0 12px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span aria-hidden="true">📄</span>
+              <span>PDF eBook</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span aria-hidden="true">📘</span>
+              <span><strong id="pd-pages">70</strong> Pages</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span aria-hidden="true">✍️</span>
+              <span>100% Human Written</span>
+            </div>
+          </div>
           <div class="pd-price" id="pd-price">0€</div>
           <div class="pd-actions">
             <a id="pd-buy" class="btn btn-primary add-to-cart" data-id="" data-name="" data-price="0">Add to cart</a>
             <a class="btn" href="#content">More details</a>
+          </div>
+          <div class="pd-trust" style="margin-top:6px; color:#6b7280; display:flex; align-items:center; gap:8px;">
+            <span aria-hidden="true">🔒</span>
+            <small>Safe and Secure Checkout</small>
           </div>
           <ul class="pd-feature-list">
             <li>Practical frameworks and templates.</li>
@@ -112,6 +130,9 @@
         const id = qp.get('id') || 'product';
         const name = qp.get('name') || 'Product';
         const price = Number(qp.get('price') || 0);
+        const hasUrlPrice = qp.has('price') && !isNaN(price) && price > 0;
+        const defaultPrice = (name === 'Everything Explained Bundle' || id === 'pack') ? 139 : 29;
+        const finalPrice = hasUrlPrice ? price : defaultPrice;
         // Fallback map (will be used only if local image is missing)
         const imgMap = {
           t1: 'images/ebooks/t1.png',
@@ -133,6 +154,7 @@
         const buyEl = document.getElementById('pd-buy');
         const subEl = document.getElementById('pd-sub');
         const descEl = document.getElementById('pd-desc');
+        const pagesEl = document.getElementById('pd-pages');
         function slugify(s){ return String(s||'').toLowerCase().trim().replace(/&/g,' and ').replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,''); }
         function underscored(s){ return String(s||'').trim().replace(/[^A-Za-z0-9]+/g,'_').replace(/^_+|_+$/g,''); }
         function candidateImages(name, id){
@@ -170,13 +192,34 @@
           tryNext();
         }
         titleEl.textContent = name;
-        priceEl.textContent = (price || 0) + '€';
+        priceEl.textContent = finalPrice + '€';
         var fallbackSrc = imgMap[id] || imgEl.src;
         setSrcWithFallback(imgEl, candidateImages(name, id), fallbackSrc);
         imgEl.alt = name;
         buyEl.setAttribute('data-id', id);
         buyEl.setAttribute('data-name', name);
-        buyEl.setAttribute('data-price', String(price || 0));
+        buyEl.setAttribute('data-price', String(finalPrice));
+        buyEl.textContent = 'Add to cart for ' + finalPrice + '€';
+
+        // Optional: pages and features per product
+        const pagesById = {
+          hr1: 70
+        };
+        if (pagesEl) {
+          pagesEl.textContent = pagesById[id] || 70;
+        }
+        // Product-specific bullets (example for Housing Crisis)
+        const featuresById = {
+          hr1: [
+            'Overview of the Housing Crisis',
+            'Causes, Impacts, Solutions',
+            'Key Contributing Factors'
+          ]
+        };
+        const featList = document.querySelector('.pd-feature-list');
+        if (featList && featuresById[id]) {
+          featList.innerHTML = featuresById[id].map(t => '<li>'+t+'</li>').join('');
+        }
 
         if (name === 'Everything Explained Bundle' || id === 'pack') {
           if (subEl) subEl.textContent = 'Digital bundle • Instant access • One-time payment';
@@ -237,7 +280,7 @@
             });
             const noteEl = document.getElementById('bundle-note');
             if (noteEl) noteEl.style.display = 'block';
-            const fillBtn = (btn) => { if (!btn) return; btn.setAttribute('data-id', id); btn.setAttribute('data-name', name); btn.setAttribute('data-price', String(price || 0)); btn.textContent = `Add to cart — ${price || 0}€`; };
+            const fillBtn = (btn) => { if (!btn) return; btn.setAttribute('data-id', id); btn.setAttribute('data-name', name); btn.setAttribute('data-price', String(finalPrice)); btn.textContent = `Add to cart — ${finalPrice}€`; };
             fillBtn(bundleBuy);
             fillBtn(bundleBuyBottom);
           }
