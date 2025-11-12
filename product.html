@@ -76,6 +76,7 @@
             <h3 style="margin-bottom:8px;">Items Included</h3>
             <p style="margin-top:0;color:#6b7280;">Worth of products if bought separately</p>
             <div id="bundle-items" class="bundle-list" role="list"></div>
+            <p id="bundle-note" style="margin-top:8px;color:#374151; display:none;">Dive into 3000+ pages of high-quality business knowledge.</p>
           </div>
         </div>
       </section>
@@ -140,10 +141,40 @@
           `;
           const bundleEl = document.getElementById('bundle-section');
           const listEl = document.getElementById('bundle-items');
+          const imageByTitle = {
+            'Organizational Management Explained': 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=160&q=70&auto=format&fit=crop',
+            'Marketing Frameworks Explained': 'https://images.unsplash.com/photo-1556761175-4b46a572b786?w=160&q=70&auto=format&fit=crop',
+            'Strategic Management Explained': 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=160&q=70&auto=format&fit=crop',
+            'Process Improvement Strategies Explained': 'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=160&q=70&auto=format&fit=crop',
+            'Project Management Explained': 'https://images.unsplash.com/photo-1487017159836-4e23ece2e4cf?w=160&q=70&auto=format&fit=crop',
+            'Human Resources Explained': 'https://images.unsplash.com/photo-1555431189-0fabf2667795?w=160&q=70&auto=format&fit=crop',
+            'Entrepreneurship Explained': 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=160&q=70&auto=format&fit=crop',
+            'Market Research Explained': 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=160&q=70&auto=format&fit=crop',
+            'Leadership Strategies Explained': 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=160&q=70&auto=format&fit=crop',
+            'Negotiation Strategies Explained': 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=160&q=70&auto=format&fit=crop',
+            'Productivity Strategies Explained': 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=160&q=70&auto=format&fit=crop',
+            'Financial Management Explained': 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=160&q=70&auto=format&fit=crop',
+            'Risk Management Explained': 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=160&q=70&auto=format&fit=crop',
+            'Soft Skills Explained': 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=160&q=70&auto=format&fit=crop',
+            'Change Management Strategies Explained': 'https://images.unsplash.com/photo-1506784983877-45594efa4cbe?w=160&q=70&auto=format&fit=crop',
+            'Employee Engagement Strategies Explained': 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=160&q=70&auto=format&fit=crop',
+            '360-Degree Feedback Explained': 'https://images.unsplash.com/photo-1494173853739-c21f58b16055?w=160&q=70&auto=format&fit=crop',
+            'Talent Management & Onboarding Explained': 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=160&q=70&auto=format&fit=crop',
+            'Performance Management Strategies Explained': 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=160&q=70&auto=format&fit=crop',
+            'Brand Development Explained': 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?w=160&q=70&auto=format&fit=crop',
+            'Ecommerce Explained': 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=160&q=70&auto=format&fit=crop',
+            'Financial Crisis Explained': 'https://images.unsplash.com/photo-1516101922849-2bf0be616449?w=160&q=70&auto=format&fit=crop',
+            'Housing Crisis Explained': 'https://images.unsplash.com/photo-1501183638710-841dd1904471?w=160&q=70&auto=format&fit=crop',
+            'Customer Relationship Explained': 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=160&q=70&auto=format&fit=crop',
+            'Scrum Manual': 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=160&q=70&auto=format&fit=crop',
+            'Kanban Manual': 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=160&q=70&auto=format&fit=crop',
+            'Agile Manual': 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=160&q=70&auto=format&fit=crop',
+            'Artificial Intelligence in Business Explained': 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=160&q=70&auto=format&fit=crop',
+            'Cyber Security Explained': 'https://images.unsplash.com/photo-1510511459019-5dda7724fd87?w=160&q=70&auto=format&fit=crop',
+            'Machine Learning Explained': 'https://images.unsplash.com/photo-1517433456452-f9633a875f6f?w=160&q=70&auto=format&fit=crop',
+            'Virtual Reality Explained': 'https://images.unsplash.com/photo-1518365050014-70fe7232897f?w=160&q=70&auto=format&fit=crop'
+          };
           const items = [
-            'Competitive Advantage Explained',
-            'Consulting Management Explained',
-            'Founder Frameworks Explained',
             'Organizational Management Explained',
             'Entrepreneurship Explained',
             'Marketing Frameworks Explained',
@@ -178,13 +209,17 @@
           ];
           if (bundleEl && listEl) {
             bundleEl.style.display = 'block';
-            listEl.innerHTML = items.map((t) => `
+            listEl.innerHTML = items.map((t) => {
+              const thumb = imageByTitle[t] || 'https://images.unsplash.com/photo-1556761175-b413da4baf72?w=160&q=70&auto=format&fit=crop';
+              return `
               <div class="bundle-item" role="listitem">
-                <img class="thumb" alt="" src="https://images.unsplash.com/photo-1556761175-b413da4baf72?w=80&q=60&auto=format&fit=crop" />
+                <img class="thumb" alt="" src="${thumb}" />
                 <div class="title">${t}</div>
-                <div class="price">$99</div>
+                <div class="price">29€</div>
               </div>
-            `).join('');
+            `;}).join('');
+            const noteEl = document.getElementById('bundle-note');
+            if (noteEl) noteEl.style.display = 'block';
           }
         }
       })();
