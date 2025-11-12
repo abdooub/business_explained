@@ -45,7 +45,7 @@
       </nav>
       <section class="pd-hero">
         <div class="pd-media">
-          <img id="pd-image" src="https://images.unsplash.com/photo-1513475382585-d06e58bcb0ea?w=1400&q=80&auto=format&fit=crop" alt="Product" />
+          <img id="pd-image" src="images/ebooks/all_pack2.png" alt="Product" />
         </div>
         <div class="pd-copy">
           <h1 id="pd-title" class="pd-title">Product</h1>
@@ -112,19 +112,20 @@
         const id = qp.get('id') || 'product';
         const name = qp.get('name') || 'Product';
         const price = Number(qp.get('price') || 0);
+        // Fallback map (will be used only if local image is missing)
         const imgMap = {
-          t1: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=1400&q=80&auto=format&fit=crop',
-          o1: 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=1400&q=80&auto=format&fit=crop',
-          c1: 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=1400&q=80&auto=format&fit=crop',
-          b1: 'https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=1400&q=80&auto=format&fit=crop',
-          m1: 'https://images.unsplash.com/photo-1513475382585-d06e58bcb0ea?w=1400&q=80&auto=format&fit=crop',
-          ca1:'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=1400&q=80&auto=format&fit=crop',
-          s1: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1400&q=80&auto=format&fit=crop',
-          sm1:'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1400&q=80&auto=format&fit=crop',
-          pim1:'https://images.unsplash.com/photo-1520975682031-ae4ce9a1ebff?w=1400&q=80&auto=format&fit=crop',
-          pm1: 'https://images.unsplash.com/photo-1487017159836-4e23ece2e4cf?w=1400&q=80&auto=format&fit=crop',
-          hr1: 'https://images.unsplash.com/photo-1555431189-0fabf2667795?w=1400&q=80&auto=format&fit=crop',
-          pack:'https://images.unsplash.com/photo-1545239351-1141bd82e8a6?w=1400&q=80&auto=format&fit=crop'
+          t1: 'images/ebooks/t1.png',
+          o1: 'images/ebooks/Organizational_Management_Explained.png',
+          c1: 'images/ebooks/c1.png',
+          b1: 'images/ebooks/b1.png',
+          m1: 'images/ebooks/m1.png',
+          ca1:'images/ebooks/ca1.png',
+          s1: 'images/ebooks/s1.png',
+          sm1:'images/ebooks/sm1.png',
+          pim1:'images/ebooks/pim1.png',
+          pm1: 'images/ebooks/pm1.png',
+          hr1: 'images/ebooks/hr1.png',
+          pack:'images/ebooks/all_pack.png'
         };
         const titleEl = document.getElementById('pd-title');
         const priceEl = document.getElementById('pd-price');
@@ -132,9 +133,46 @@
         const buyEl = document.getElementById('pd-buy');
         const subEl = document.getElementById('pd-sub');
         const descEl = document.getElementById('pd-desc');
+        function slugify(s){ return String(s||'').toLowerCase().trim().replace(/&/g,' and ').replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,''); }
+        function underscored(s){ return String(s||'').trim().replace(/[^A-Za-z0-9]+/g,'_').replace(/^_+|_+$/g,''); }
+        function candidateImages(name, id){
+          var base = 'images/ebooks/';
+          var dash = slugify(name);
+          var under = underscored(name);
+          var out = [
+            // Prioritize your current naming style
+            base + under + '.png',
+            base + under + '.jpg',
+            base + dash + '.png',
+            base + dash + '.jpg',
+            // Uppercase extension variants (some servers are case-sensitive)
+            base + under + '.PNG',
+            base + under + '.JPG',
+            base + dash + '.PNG',
+            base + dash + '.JPG',
+            // JPEG long variant
+            base + under + '.jpeg',
+            base + dash + '.jpeg'
+          ];
+          if (id) {
+            out.push(base + id + '.png', base + id + '.jpg', base + id + '.PNG', base + id + '.JPG', base + id + '.jpeg');
+          }
+          return out;
+        }
+        function setSrcWithFallback(img, candidates, fallback){
+          var list = Array.isArray(candidates) ? candidates.slice() : [];
+          function tryNext(){
+            if (!list.length){ img.onerror = null; img.src = fallback; return; }
+            var next = list.shift();
+            img.onerror = tryNext; img.src = next;
+          }
+          try { console.debug('[image-candidates]', candidates); } catch(_) {}
+          tryNext();
+        }
         titleEl.textContent = name;
         priceEl.textContent = (price || 0) + '€';
-        imgEl.src = imgMap[id] || imgEl.src;
+        var fallbackSrc = imgMap[id] || imgEl.src;
+        setSrcWithFallback(imgEl, candidateImages(name, id), fallbackSrc);
         imgEl.alt = name;
         buyEl.setAttribute('data-id', id);
         buyEl.setAttribute('data-name', name);
@@ -149,39 +187,7 @@
           const listEl = document.getElementById('bundle-items');
           const bundleBuy = document.getElementById('bundle-buy');
           const bundleBuyBottom = document.getElementById('bundle-buy-bottom');
-          const imageByTitle = {
-            'Organizational Management Explained': 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=160&q=70&auto=format&fit=crop',
-            'Marketing Frameworks Explained': 'https://images.unsplash.com/photo-1556761175-4b46a572b786?w=160&q=70&auto=format&fit=crop',
-            'Strategic Management Explained': 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=160&q=70&auto=format&fit=crop',
-            'Process Improvement Strategies Explained': 'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=160&q=70&auto=format&fit=crop',
-            'Project Management Explained': 'https://images.unsplash.com/photo-1487017159836-4e23ece2e4cf?w=160&q=70&auto=format&fit=crop',
-            'Human Resources Explained': 'https://images.unsplash.com/photo-1555431189-0fabf2667795?w=160&q=70&auto=format&fit=crop',
-            'Entrepreneurship Explained': 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=160&q=70&auto=format&fit=crop',
-            'Market Research Explained': 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=160&q=70&auto=format&fit=crop',
-            'Leadership Strategies Explained': 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=160&q=70&auto=format&fit=crop',
-            'Negotiation Strategies Explained': 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=160&q=70&auto=format&fit=crop',
-            'Productivity Strategies Explained': 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=160&q=70&auto=format&fit=crop',
-            'Financial Management Explained': 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=160&q=70&auto=format&fit=crop',
-            'Risk Management Explained': 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=160&q=70&auto=format&fit=crop',
-            'Soft Skills Explained': 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=160&q=70&auto=format&fit=crop',
-            'Change Management Strategies Explained': 'https://images.unsplash.com/photo-1506784983877-45594efa4cbe?w=160&q=70&auto=format&fit=crop',
-            'Employee Engagement Strategies Explained': 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=160&q=70&auto=format&fit=crop',
-            '360-Degree Feedback Explained': 'https://images.unsplash.com/photo-1494173853739-c21f58b16055?w=160&q=70&auto=format&fit=crop',
-            'Talent Management & Onboarding Explained': 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=160&q=70&auto=format&fit=crop',
-            'Performance Management Strategies Explained': 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=160&q=70&auto=format&fit=crop',
-            'Brand Development Explained': 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?w=160&q=70&auto=format&fit=crop',
-            'Ecommerce Explained': 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=160&q=70&auto=format&fit=crop',
-            'Financial Crisis Explained': 'https://images.unsplash.com/photo-1516101922849-2bf0be616449?w=160&q=70&auto=format&fit=crop',
-            'Housing Crisis Explained': 'https://images.unsplash.com/photo-1501183638710-841dd1904471?w=160&q=70&auto=format&fit=crop',
-            'Customer Relationship Explained': 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=160&q=70&auto=format&fit=crop',
-            'Scrum Manual': 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=160&q=70&auto=format&fit=crop',
-            'Kanban Manual': 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=160&q=70&auto=format&fit=crop',
-            'Agile Manual': 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=160&q=70&auto=format&fit=crop',
-            'Artificial Intelligence in Business Explained': 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=160&q=70&auto=format&fit=crop',
-            'Cyber Security Explained': 'https://images.unsplash.com/photo-1510511459019-5dda7724fd87?w=160&q=70&auto=format&fit=crop',
-            'Machine Learning Explained': 'https://images.unsplash.com/photo-1517433456452-f9633a875f6f?w=160&q=70&auto=format&fit=crop',
-            'Virtual Reality Explained': 'https://images.unsplash.com/photo-1518365050014-70fe7232897f?w=160&q=70&auto=format&fit=crop'
-          };
+          function localThumbs(title){ return candidateImages(title); }
           const items = [
             'Organizational Management Explained',
             'Entrepreneurship Explained',
@@ -218,14 +224,17 @@
           if (bundleEl && listEl) {
             bundleEl.style.display = 'block';
             listEl.innerHTML = items.map((t) => {
-              const thumb = imageByTitle[t] || 'https://images.unsplash.com/photo-1556761175-b413da4baf72?w=160&q=70&auto=format&fit=crop';
               return `
               <div class="bundle-item" role="listitem">
-                <img class="thumb" alt="" src="${thumb}" />
+                <img class="thumb" alt="" data-title="${t.replace(/&/g,'&amp;')}" />
                 <div class="title">${t}</div>
                 <div class="price">29€</div>
               </div>
             `;}).join('');
+            listEl.querySelectorAll('img.thumb').forEach(function(im){
+              var t = im.getAttribute('data-title') || '';
+              setSrcWithFallback(im, localThumbs(t), 'https://images.unsplash.com/photo-1556761175-b413da4baf72?w=160&q=70&auto=format&fit=crop');
+            });
             const noteEl = document.getElementById('bundle-note');
             if (noteEl) noteEl.style.display = 'block';
             const fillBtn = (btn) => { if (!btn) return; btn.setAttribute('data-id', id); btn.setAttribute('data-name', name); btn.setAttribute('data-price', String(price || 0)); btn.textContent = `Add to cart — ${price || 0}€`; };
