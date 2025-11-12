@@ -133,6 +133,7 @@
         const hasUrlPrice = qp.has('price') && !isNaN(price) && price > 0;
         const defaultPrice = (name === 'Everything Explained Bundle' || id === 'pack') ? 139 : 29;
         const finalPrice = hasUrlPrice ? price : defaultPrice;
+        const isBundle = (name === 'Everything Explained Bundle' || id === 'pack');
         // Fallback map (will be used only if local image is missing)
         const imgMap = {
           t1: 'images/ebooks/t1.png',
@@ -206,7 +207,13 @@
           hr1: 70
         };
         if (pagesEl) {
-          pagesEl.textContent = pagesById[id] || 70;
+          var pagesWrap = pagesEl.parentElement && pagesEl.parentElement.parentElement;
+          if (isBundle) {
+            if (pagesWrap) pagesWrap.style.display = 'none';
+          } else {
+            if (pagesWrap) pagesWrap.style.display = '';
+            pagesEl.textContent = pagesById[id] || 70;
+          }
         }
         // Product-specific bullets (example for Housing Crisis)
         const featuresById = {
