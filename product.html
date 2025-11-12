@@ -20,6 +20,13 @@
       .pd-feature-list li { position: relative; padding-left: 24px; }
       .pd-feature-list li::before { content: "✔"; position:absolute; left:0; top:0; color:#16a34a; font-weight:800; }
       @media (max-width: 900px){ .pd-hero { grid-template-columns: 1fr; } }
+      .bundle-card { margin-top: 16px; }
+      .bundle-list { max-height: 360px; overflow: auto; border-radius: 12px; background: #fff; }
+      .bundle-item { display:flex; align-items:center; gap:12px; padding:12px 14px; border-bottom: 1px solid #eee; }
+      .bundle-item:last-child { border-bottom: 0; }
+      .bundle-item .title { font-weight:600; }
+      .bundle-item .price { margin-left:auto; color:#6b7280; font-weight:700; }
+      .bundle-item .thumb { width:40px; height:40px; border-radius:8px; object-fit:cover; background:#f3f4f6; }
     </style>
   </head>
   <body>
@@ -62,6 +69,13 @@
           <div class="card-body">
             <h3>What you'll get</h3>
             <p id="pd-desc">A premium-quality digital product designed to accelerate your business performance. Includes actionable insights, ready-to-use checklists, and step-by-step guidance.</p>
+          </div>
+        </div>
+        <div class="card bundle-card" id="bundle-section" style="display:none;">
+          <div class="card-body">
+            <h3 style="margin-bottom:8px;">Items Included</h3>
+            <p style="margin-top:0;color:#6b7280;">Worth of products if bought separately</p>
+            <div id="bundle-items" class="bundle-list" role="list"></div>
           </div>
         </div>
       </section>
@@ -122,43 +136,56 @@
         if (name === 'Everything Explained Bundle' || id === 'pack') {
           if (subEl) subEl.textContent = 'Digital bundle • Instant access • One-time payment';
           if (descEl) descEl.innerHTML = `
-            <p>The Everything Explained Bundle is a comprehensive collection of business eBooks covering essential topics like marketing, leadership, finance, technology and more.</p>
-            <h4 style="margin:16px 0 8px;">FE: Everything Explained Bundle (139€ – One Time)</h4>
-            <ul style="columns:1;gap:12px;list-style:disc;padding-left:20px;">
-              <li>Organizational Management Explained</li>
-              <li>Entrepreneurship Explained</li>
-              <li>Marketing Frameworks Explained</li>
-              <li>Market Research Explained</li>
-              <li>Strategic Management Explained</li>
-              <li>Process Improvement Strategies Explained</li>
-              <li>Project Management Explained</li>
-              <li>Human Resources Explained</li>
-              <li>Leadership Strategies Explained</li>
-              <li>Negotiation Strategies Explained</li>
-              <li>Productivity Strategies Explained</li>
-              <li>Financial Management Explained</li>
-              <li>Risk Management Explained</li>
-              <li>Soft Skills Explained</li>
-              <li>Change Management Strategies Explained</li>
-              <li>Employee Engagement Strategies Explained</li>
-              <li>360-Degree Feedback Explained</li>
-              <li>Talent Management & Onboarding Explained</li>
-              <li>Performance Management Strategies Explained</li>
-              <li>Brand Development Explained</li>
-              <li>Ecommerce Explained</li>
-              <li>Financial Crisis Explained</li>
-              <li>Housing Crisis Explained</li>
-              <li>Customer Relationship Explained</li>
-              <li>Scrum Manual</li>
-              <li>Kanban Manual</li>
-              <li>Agile Manual</li>
-              <li>Artificial Intelligence in Business Explained</li>
-              <li>Cyber Security Explained</li>
-              <li>Machine Learning Explained</li>
-              <li>Virtual Reality Explained</li>
-            </ul>
-            <p style="margin-top:8px;color:#374151;">Dive into 3000+ pages of high-quality business knowledge.</p>
+            <p>The Everything Explained Bundle is a comprehensive collection of business eBooks covering marketing, leadership, finance, technology and more. See the list of all items included below.</p>
           `;
+          const bundleEl = document.getElementById('bundle-section');
+          const listEl = document.getElementById('bundle-items');
+          const items = [
+            'Competitive Advantage Explained',
+            'Consulting Management Explained',
+            'Founder Frameworks Explained',
+            'Organizational Management Explained',
+            'Entrepreneurship Explained',
+            'Marketing Frameworks Explained',
+            'Market Research Explained',
+            'Strategic Management Explained',
+            'Process Improvement Strategies Explained',
+            'Project Management Explained',
+            'Human Resources Explained',
+            'Leadership Strategies Explained',
+            'Negotiation Strategies Explained',
+            'Productivity Strategies Explained',
+            'Financial Management Explained',
+            'Risk Management Explained',
+            'Soft Skills Explained',
+            'Change Management Strategies Explained',
+            'Employee Engagement Strategies Explained',
+            '360-Degree Feedback Explained',
+            'Talent Management & Onboarding Explained',
+            'Performance Management Strategies Explained',
+            'Brand Development Explained',
+            'Ecommerce Explained',
+            'Financial Crisis Explained',
+            'Housing Crisis Explained',
+            'Customer Relationship Explained',
+            'Scrum Manual',
+            'Kanban Manual',
+            'Agile Manual',
+            'Artificial Intelligence in Business Explained',
+            'Cyber Security Explained',
+            'Machine Learning Explained',
+            'Virtual Reality Explained'
+          ];
+          if (bundleEl && listEl) {
+            bundleEl.style.display = 'block';
+            listEl.innerHTML = items.map((t) => `
+              <div class="bundle-item" role="listitem">
+                <img class="thumb" alt="" src="https://images.unsplash.com/photo-1556761175-b413da4baf72?w=80&q=60&auto=format&fit=crop" />
+                <div class="title">${t}</div>
+                <div class="price">$99</div>
+              </div>
+            `).join('');
+          }
         }
       })();
     </script>
