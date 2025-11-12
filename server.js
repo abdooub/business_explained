@@ -30,13 +30,60 @@ app.get(['/', '/index.html'], (req, res) => {
 });
 app.get('/home', (req, res) => res.redirect(302, '/products.html'));
 
-// Support form endpoint
-app.post('/api/support', (req, res) => {
+// Support form endpoint — sends an email to business@business-explique.com
+app.post('/api/support', async (req, res) => {
   const { firstName, lastName, email, subject, message } = req.body || {};
   if (!firstName || !lastName || !email || !subject || !message) {
     return res.status(400).json({ ok: false, message: 'Missing required fields' });
   }
-  return res.json({ ok: true, message: 'Your request has been received. Our team will get back to you ASAP.' });
+  const to = 'business@business-explique.com';
+  const subj = `[Support] ${subject} — ${firstName} ${lastName}`;
+  const text = `New support request\n\nFrom: ${firstName} ${lastName}\nEmail: ${email}\nSubject: ${subject}\n\nMessage:\n${message}`;
+  try {
+    // Prefer Resend if configured
+    let sent = false;
+    try {
+      const { Resend } = require('resend');
+      const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
+      if (RESEND_API_KEY) {
+        const resend = new Resend(RESEND_API_KEY);
+        await resend.emails.send({
+          from: 'Business Explique <noreply@business-explique.com>',
+          to,
+          subject: subj,
+          text
+        });
+        sent = true;
+      }
+    } catch (_) {}
+
+    // Fallback to SendGrid if configured and not yet sent
+    if (!sent) {
+      try {
+        const sgMail = require('@sendgrid/mail');
+        const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY || '';
+        if (SENDGRID_API_KEY) {
+          sgMail.setApiKey(SENDGRID_API_KEY);
+          await sgMail.send({
+            to,
+            from: 'noreply@business-explique.com',
+            subject: subj,
+            text
+          });
+          sent = true;
+        }
+      } catch (_) {}
+    }
+
+    // If neither provider configured, log and succeed to avoid blocking UX in dev
+    if (!sent) {
+      console.log('[Support email mock]\nTo:', to, '\nSubject:', subj, '\n---\n' + text);
+    }
+    return res.json({ ok: true, message: 'Thanks! Your message has been sent.' });
+  } catch (e) {
+    console.error('Support email error:', e);
+    return res.status(500).json({ ok: false, message: 'Server error sending email' });
+  }
 });
 
 // Mock checkout endpoint

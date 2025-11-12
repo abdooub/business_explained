@@ -350,6 +350,35 @@
 
   document.querySelectorAll('.newsletter-form').forEach(attachNewsletterHandler);
 
+  // Support form -> POST /api/support and show message
+  function attachSupportHandler(form) {
+    if (!form) return;
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const hint = document.getElementById('support-hint');
+      const data = Object.fromEntries(new FormData(form).entries());
+      const required = ['firstName', 'lastName', 'email', 'subject', 'message'];
+      const missing = required.some((k) => !String(data[k] || '').trim());
+      if (missing) { if (hint) hint.textContent = 'Please fill all required fields.'; return; }
+      if (hint) hint.textContent = 'Sending…';
+      fetch(apiBase + '/api/support', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      })
+        .then((r) => r.json())
+        .then((d) => {
+          if (d?.ok) {
+            if (hint) hint.textContent = d.message || 'Message sent.';
+            form.reset();
+          } else {
+            if (hint) hint.textContent = d?.message || 'Failed to send. Try again later.';
+          }
+        })
+        .catch(() => { if (hint) hint.textContent = 'Server error. Try again later.'; });
+    });
+  }
+
   // Panier
   const drawer = document.querySelector('.cart-drawer');
   const openBtn = document.querySelector('[data-cart-open]');
@@ -619,6 +648,8 @@
   attachSort();
   attachCouponForm();
   updateCheckoutButtons();
+  // Support form init
+  attachSupportHandler(document.getElementById('support-form'));
 
   // Handle PayPal return (token in query)
   (function handlePaypalReturn() {
