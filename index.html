@@ -13,7 +13,10 @@
     <title>Business Explique — Digital Product eBooks, Guides & Templates</title>
     <meta name="description" content="Digital product eBooks on business topics — Business Explique. Premium guides, frameworks, and templates. Instant download." />
     <meta name="keywords" content="digital product, ebook, business explained, business explique, business, explained, Organizational Management Explained, Entrepreneurship Explained, Marketing Frameworks Explained, Market Research Explained, Strategic Management Explained, Process Improvement Strategies Explained, Project Management Explained, Human Resources Explained, Leadership Strategies Explained, Negotiation Strategies Explained, Productivity Strategies Explained, Financial Management Explained, Risk Management Explained, Soft Skills Explained, Change Management Strategies Explained, Employee Engagement Strategies Explained, 360-Degree Feedback Explained, Talent Management & Onboarding Explained, Performance Management Strategies Explained, Brand Development Explained, Ecommerce Explained, Financial Crisis Explained, Housing Crisis Explained, Customer Relationship Explained, Scrum Manual, Kanban Manual, Agile Manual, Artificial Intelligence in Business Explained, Cyber Security Explained, Machine Learning Explained, Virtual Reality Explained, Dive into 3000+ pages of high-quality business knowledge" />
+    <meta name="robots" content="index,follow" />
     <link rel="canonical" href="https://business-explique.com/" />
+    <link rel="alternate" hreflang="fr" href="https://business-explique.com/" />
+    <link rel="alternate" hreflang="x-default" href="https://business-explique.com/" />
 
     <!-- Open Graph / Twitter -->
     <meta property="og:type" content="website" />
@@ -34,10 +37,21 @@
     <!-- Police moderne -->
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- CSS principal -->
     <link rel="stylesheet" href="/styles.css" />
+
+    <!-- Preload LCP hero image -->
+    <link
+      rel="preload"
+      as="image"
+      href="https://images.unsplash.com/photo-1544717305-996b815c338c?w=1000&q=80&auto=format&fit=crop"
+      imagesrcset="https://images.unsplash.com/photo-1544717305-996b815c338c?w=700&q=80&auto=format&fit=crop 700w, https://images.unsplash.com/photo-1544717305-996b815c338c?w=1000&q=80&auto=format&fit=crop 1000w, https://images.unsplash.com/photo-1544717305-996b815c338c?w=1400&q=80&auto=format&fit=crop 1400w"
+      imagesizes="(max-width: 900px) 100vw, 560px"
+      fetchpriority="high"
+    />
 
     <!-- Structured Data: Organization -->
     <script type="application/ld+json">
@@ -46,7 +60,19 @@
         "@type": "Organization",
         "name": "Business Explique",
         "url": "https://business-explique.com/",
-        "logo": "https://business-explique.com/images/ebooks/all_pack.png"
+        "logo": "https://business-explique.com/images/ebooks/all_pack.png",
+        "alternateName": "Business Explained",
+        "sameAs": [
+          "https://www.instagram.com/",
+          "https://www.tiktok.com/",
+          "https://www.facebook.com/"
+        ],
+        "contactPoint": [{
+          "@type": "ContactPoint",
+          "email": "business@business-explique.com",
+          "contactType": "customer support",
+          "availableLanguage": ["fr", "en"]
+        }]
       }
     </script>
     <!-- Structured Data: WebSite with SearchAction -->
@@ -68,6 +94,7 @@
     </script>
   </head>
   <body>
+    <a class="sr-only" href="#main">Skip to main content</a>
     <!-- Bandeau d'annonce -->
     <div class="announcement" role="region" aria-label="Promotion">
       <div class="container announcement-inner">
@@ -123,47 +150,49 @@
     </header>
 
     <!-- Hero -->
-    <section class="hero hero-gradient" role="region" aria-label="Introduction">
-      <div class="container hero-inner">
-        <div class="hero-copy">
-          <h1>Business eBooks, Checklists and Tools</h1>
-          <p>Your place to upgrade business skills in the digital age.</p>
-          <div class="hero-cta">
-            <a class="btn btn-primary" href="./products.html">View products</a>
-            <a class="btn btn-ghost" href="#articles">Browse the blog</a>
+    <main id="main">
+      <section class="hero hero-gradient" role="region" aria-label="Introduction">
+        <div class="container hero-inner">
+          <div class="hero-copy">
+            <h1>Business eBooks, Checklists and Tools</h1>
+            <p>Your place to upgrade business skills in the digital age. Discover <a href="/products.html" style="text-decoration:underline">Business Explained</a> resources.</p>
+            <div class="hero-cta">
+              <a class="btn btn-primary" href="./products.html">View products</a>
+              <a class="btn btn-ghost" href="#articles">Browse the blog</a>
+            </div>
+          </div>
+          <div class="hero-media">
+            <img
+              src="https://images.unsplash.com/photo-1544717305-996b815c338c?w=1200&q=80&auto=format&fit=crop"
+              srcset="
+                https://images.unsplash.com/photo-1544717305-996b815c338c?w=700&q=80&auto=format&fit=crop 700w,
+                https://images.unsplash.com/photo-1544717305-996b815c338c?w=1000&q=80&auto=format&fit=crop 1000w,
+                https://images.unsplash.com/photo-1544717305-996b815c338c?w=1400&q=80&auto=format&fit=crop 1400w
+              "
+              sizes="(max-width: 900px) 100vw, 560px"
+              alt="Illustration colorée liée au travail en équipe"
+              loading="eager"
+              decoding="async"
+              fetchpriority="high"
+            />
           </div>
         </div>
-        <div class="hero-media">
-          <img
-            src="https://images.unsplash.com/photo-1544717305-996b815c338c?w=1200&q=80&auto=format&fit=crop"
-            srcset="
-              https://images.unsplash.com/photo-1544717305-996b815c338c?w=700&q=80&auto=format&fit=crop 700w,
-              https://images.unsplash.com/photo-1544717305-996b815c338c?w=1000&q=80&auto=format&fit=crop 1000w,
-              https://images.unsplash.com/photo-1544717305-996b815c338c?w=1400&q=80&auto=format&fit=crop 1400w
-            "
-            sizes="(max-width: 900px) 100vw, 560px"
-            alt="Illustration colorée liée au travail en équipe"
-            loading="eager"
-            decoding="async"
-          />
-        </div>
-      </div>
 
-      <!-- Panneau de crédibilité -->
-      <div class="trust-panel" aria-label="Marques de confiance">
-        <div class="container trust-inner">
-          <div class="trust-card">
-            <span class="trust-item">Brand One</span>
-            <span class="trust-item">Brand Two</span>
-            <span class="trust-item">Brand Three</span>
-            <span class="trust-item">Brand Four</span>
-            <span class="trust-item">Brand Five</span>
+        <!-- Panneau de crédibilité -->
+        <div class="trust-panel" aria-label="Marques de confiance">
+          <div class="container trust-inner">
+            <div class="trust-card">
+              <span class="trust-item">Brand One</span>
+              <span class="trust-item">Brand Two</span>
+              <span class="trust-item">Brand Three</span>
+              <span class="trust-item">Brand Four</span>
+              <span class="trust-item">Brand Five</span>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-  <main class="container" style="padding:28px 20px 60px; display:grid; gap:20px;">
+  <div class="container" style="padding:28px 20px 60px; display:grid; gap:20px;">
     <section class="card">
       <div class="card-body">
         <h2 style="margin:0 0 8px;">What’s Inside the Bundle</h2>
@@ -195,19 +224,19 @@
         <h2 style="margin:0 0 8px;">Featured eBooks</h2>
         <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap:12px;">
           <a class="card" href="./product.html?id=ls1&name=Leadership%20Strategies%20Explained&price=29" style="text-decoration:none;">
-            <img src="images/ebooks/Leadership_Strategies_Explained.png" alt="Leadership Strategies Explained" />
+            <img src="images/ebooks/Leadership_Strategies_Explained.png" alt="Leadership Strategies Explained" loading="lazy" decoding="async" />
             <div class="card-body"><strong>Leadership Strategies Explained</strong><div class="small">29€</div></div>
           </a>
           <a class="card" href="./product.html?id=m1&name=Marketing%20Frameworks%20Explained&price=29" style="text-decoration:none;">
-            <img src="images/ebooks/Marketing_Frameworks_Explained.png" alt="Marketing Frameworks Explained" />
+            <img src="images/ebooks/Marketing_Frameworks_Explained.png" alt="Marketing Frameworks Explained" loading="lazy" decoding="async" />
             <div class="card-body"><strong>Marketing Frameworks Explained</strong><div class="small">29€</div></div>
           </a>
           <a class="card" href="./product.html?id=ai1&name=Artificial%20Intelligence%20in%20Business%20Explained&price=29" style="text-decoration:none;">
-            <img src="images/ebooks/Artificial_Intelligence_in_Business_Explained.png" alt="AI in Business Explained" />
+            <img src="images/ebooks/Artificial_Intelligence_in_Business_Explained.png" alt="AI in Business Explained" loading="lazy" decoding="async" />
             <div class="card-body"><strong>AI in Business Explained</strong><div class="small">29€</div></div>
           </a>
           <a class="card" href="./product.html?id=ps1&name=Productivity%20Strategies%20Explained&price=29" style="text-decoration:none;">
-            <img src="images/ebooks/Productivity_Strategies_Explained.png" alt="Productivity Strategies Explained" />
+            <img src="images/ebooks/Productivity_Strategies_Explained.png" alt="Productivity Strategies Explained" loading="lazy" decoding="async" />
             <div class="card-body"><strong>Productivity Strategies Explained</strong><div class="small">29€</div></div>
           </a>
         </div>
@@ -239,15 +268,15 @@
         <h2 style="margin:0 0 8px;">From our Blog</h2>
         <div class="card-grid">
           <article class="card">
-            <img src="images/ebooks/Leadership_Strategies_Explained.png" alt="Top 5 Leadership Strategies" />
+            <img src="images/ebooks/Leadership_Strategies_Explained.png" alt="Top 5 Leadership Strategies" loading="lazy" decoding="async" />
             <div class="card-body"><h3>Top 5 Leadership Strategies Every Manager Should Know</h3><a class="btn" href="./blog.html">Read</a></div>
           </article>
           <article class="card">
-            <img src="images/ebooks/Artificial_Intelligence_in_Business_Explained.png" alt="AI in Business Today" />
+            <img src="images/ebooks/Artificial_Intelligence_in_Business_Explained.png" alt="AI in Business Today" loading="lazy" decoding="async" />
             <div class="card-body"><h3>How Artificial Intelligence is Transforming Modern Business</h3><a class="btn" href="./blog.html">Read</a></div>
           </article>
           <article class="card">
-            <img src="images/ebooks/Marketing_Frameworks_Explained.png" alt="Marketing Frameworks 2025" />
+            <img src="images/ebooks/Marketing_Frameworks_Explained.png" alt="Marketing Frameworks 2025" loading="lazy" decoding="async" />
             <div class="card-body"><h3>Marketing Frameworks That Actually Work in 2025</h3><a class="btn" href="./blog.html">Read</a></div>
           </article>
         </div>
@@ -271,7 +300,7 @@
         <p>Business Explique is a digital library for entrepreneurs and professionals who want to learn practical business skills in an easy and structured way. Clear eBooks, actionable templates, lifetime updates.</p>
       </div>
     </section>
-  </main>
+  </div>
 
     
 
@@ -355,6 +384,7 @@
       </div>
     </footer>
 
+    </main>
     <!-- JS -->
     <script src="./script.js" defer></script>
   </body>

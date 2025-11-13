@@ -3,10 +3,13 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Produits — Business Explique</title>
+    <title>Business Explained Products — Business Explique</title>
     <meta name="description" content="Catalogue de produits: eBooks, Checklists et Outils. Filtres par marque et catégorie." />
     <meta name="keywords" content="Organizational Management Explained, Entrepreneurship Explained, Marketing Frameworks Explained, Market Research Explained, Strategic Management Explained, Process Improvement Strategies Explained, Project Management Explained, Human Resources Explained, Leadership Strategies Explained, Negotiation Strategies Explained, Productivity Strategies Explained, Financial Management Explained, Risk Management Explained, Soft Skills Explained, Change Management Strategies Explained, Employee Engagement Strategies Explained, 360-Degree Feedback Explained, Talent Management & Onboarding Explained, Performance Management Strategies Explained, Brand Development Explained, Ecommerce Explained, Financial Crisis Explained, Housing Crisis Explained, Customer Relationship Explained, Scrum Manual, Kanban Manual, Agile Manual, Artificial Intelligence in Business Explained, Cyber Security Explained, Machine Learning Explained, Virtual Reality Explained, Dive into 3000+ pages of high-quality business knowledge" />
     <link rel="canonical" href="https://business-explique.com/products.html" />
+    <link rel="alternate" hreflang="fr" href="https://business-explique.com/products.html" />
+    <link rel="alternate" hreflang="x-default" href="https://business-explique.com/products.html" />
+    <meta name="robots" content="index,follow" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Business Explique" />
     <meta property="og:title" content="Products — Business Explique" />
@@ -21,6 +24,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/styles.css" />
+    <!-- Preload LCP image on products page -->
+    <link rel="preload" as="image" href="/images/ebooks/all_pack2.png" fetchpriority="high" />
     <style>
       /* Scoped styles for the products page redesign */
       :root { --pro-bg:#f6f8fb; --pro-card:#ffffff; --pro-soft:#f1f5fb; --pro-border:#e4e8f1; --pro-text:#0f172a; --pro-dim:#64748b; --pro-brand:#3b82f6; --pro-accent:#16a34a; }
@@ -69,16 +74,42 @@
         .offer-card .offer-media img { height: 220px; }
       }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <script>
-      window.EMAILJS_CONFIG = {
-        serviceId: 'service_c25bo6c',
-        templateId: 'template_mi7mbfn',
-        publicKey: '9rCrKbba27RcCm_L8'
-      };
-    </script>
+    
   </head>
   <body>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is Business Explained?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Business Explained is a library of digital eBooks, checklists and templates that help you learn practical business skills quickly."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What products are included in Business Explained?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "You will find guides across leadership, marketing, finance, technology and operations, plus the Everything Explained Bundle that combines them at a discount."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I receive my Business Explained downloads?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "After checkout you get instant access on the success page and a copy of your download links by email."
+            }
+          }
+        ]
+      }
+    </script>
+    <a class="sr-only" href="#main">Skip to main content</a>
     <div class="announcement">
       <div class="container announcement-inner">
         <span class="badge">ultimate offer</span>
@@ -124,7 +155,7 @@
       <div class="container">
         <div class="offer-card">
           <div class="offer-media">
-            <img src="images/ebooks/all_pack2.png" alt="Everything Explained Bundle" />
+            <img src="images/ebooks/all_pack2.png" alt="Everything Explained Bundle" loading="eager" decoding="async" fetchpriority="high" />
           </div>
           <div class="offer-copy">
             <div class="badge red">ultimate offer</div>
@@ -142,12 +173,12 @@
       </div>
     </section>
 
-    <main class="shop-layout">
+    <main class="shop-layout" id="main">
       <div class="container shop-grid">
         <section class="shop-products" aria-label="Liste des produits">
           <div class="pro-hero">
             <div>
-              <h2>Our Products</h2>
+              <h2>Business Explained Products</h2>
               <p>Curated eBooks, Checklists and Tools to grow your business.</p>
             </div>
             <div class="pro-controls">
@@ -166,7 +197,7 @@
             
 
             <article class="product-card" data-id="o1" data-name="Organizational Management Explained" data-price="49">
-              <img src="images/ebooks/Organizational_Management_Explained.png" alt="Organizational Management Explained" />
+              <img src="images/ebooks/Organizational_Management_Explained.png" alt="Organizational Management Explained" loading="lazy" decoding="async" />
               <div class="product-body">
                 <h3>Organizational Management Explained</h3>
                 <div class="price-range">$49–$247</div>
@@ -179,7 +210,7 @@
             
 
             <article class="product-card" data-id="m1" data-name="Marketing Frameworks Explained" data-price="49">
-              <img src="images/ebooks/Marketing_Frameworks_Explained.png" alt="Marketing Frameworks Explained" />
+              <img src="images/ebooks/Marketing_Frameworks_Explained.png" alt="Marketing Frameworks Explained" loading="lazy" decoding="async" />
               <div class="product-body">
                 <h3>Marketing Frameworks Explained</h3>
                 <div class="price-range">$49–$247</div>
@@ -192,7 +223,7 @@
             
 
             <article class="product-card" data-id="sm1" data-name="Strategic Management Explained" data-price="49">
-              <img src="images/ebooks/Strategic_Management_Explained.png" alt="Strategic Management Explained" />
+              <img src="images/ebooks/Strategic_Management_Explained.png" alt="Strategic Management Explained" loading="lazy" decoding="async" />
               <div class="product-body">
                 <h3>Strategic Management Explained</h3>
                 <div class="price-range">$49–$247</div>
@@ -201,7 +232,7 @@
             </article>
 
             <article class="product-card" data-id="pim1" data-name="Process Improvement Strategies Explained" data-price="49">
-              <img src="images/ebooks/Process_Improvement_Strategies_Explained.png" alt="Process Improvement Strategies Explained" />
+              <img src="images/ebooks/Process_Improvement_Strategies_Explained.png" alt="Process Improvement Strategies Explained" loading="lazy" decoding="async" />
               <div class="product-body">
                 <h3>Process Improvement Strategies Explained</h3>
                 <div class="price-range">$49–$247</div>
@@ -210,7 +241,7 @@
             </article>
 
            <article class="product-card" data-id="pm1" data-name="Project Management Explained" data-price="49">
-              <img src="images/ebooks/Project_Management_Explained.png" alt="Project Management Explained" />
+              <img src="images/ebooks/Project_Management_Explained.png" alt="Project Management Explained" loading="lazy" decoding="async" />
               <div class="product-body">
                 <h3>Project Management Explained</h3>
                 <div class="price-range">$49–$247</div>
@@ -218,7 +249,7 @@
               </div>
             </article>
             <article class="product-card" data-id="hr1" data-name="Human Resources Explained" data-price="49">
-              <img src="images/ebooks/Human_Resources_Explained.png" alt="Human Resources Explained" />
+              <img src="images/ebooks/Human_Resources_Explained.png" alt="Human Resources Explained" loading="lazy" decoding="async" />
               <div class="product-body">
                 <h3>Human Resources Explained</h3>
                 <div class="price-range">$49–$247</div>
@@ -228,103 +259,103 @@
 
             <!-- Additional products at 49€ -->
             <article class="product-card" data-id="ent1" data-name="Entrepreneurship Explained" data-price="49">
-              <img src="images/ebooks/Entrepreneurship_Explained.png" alt="Entrepreneurship Explained" />
+              <img src="images/ebooks/Entrepreneurship_Explained.png" alt="Entrepreneurship Explained" loading="lazy" decoding="async" />
               <div class="product-body"><h3>Entrepreneurship Explained</h3><div class="product-meta"><span class="price">49€</span><div><button class="btn btn-primary add-to-cart">Add</button></div></div></div>
             </article>
             <article class="product-card" data-id="mr1" data-name="Market Research Explained" data-price="49">
-              <img src="images/ebooks/Market_Research_Explained.png" alt="Market Research Explained" />
+              <img src="images/ebooks/Market_Research_Explained.png" alt="Market Research Explained" loading="lazy" decoding="async" />
               <div class="product-body"><h3>Market Research Explained</h3><div class="product-meta"><span class="price">49€</span><div><button class="btn btn-primary add-to-cart">Add</button></div></div></div>
             </article>
             <article class="product-card" data-id="ls1" data-name="Leadership Strategies Explained" data-price="49">
-              <img src="images/ebooks/Leadership_Strategies_Explained.png" alt="Leadership Strategies Explained" />
+              <img src="images/ebooks/Leadership_Strategies_Explained.png" alt="Leadership Strategies Explained" loading="lazy" decoding="async" />
               <div class="product-body"><h3>Leadership Strategies Explained</h3><div class="product-meta"><span class="price">49€</span><div><button class="btn btn-primary add-to-cart">Add</button></div></div></div>
             </article>
             <article class="product-card" data-id="ns1" data-name="Negotiation Strategies Explained" data-price="49">
-              <img src="images/ebooks/Negotiation_Strategies_Explained.png" alt="Negotiation Strategies Explained" />
+              <img src="images/ebooks/Negotiation_Strategies_Explained.png" alt="Negotiation Strategies Explained" loading="lazy" decoding="async" />
               <div class="product-body"><h3>Negotiation Strategies Explained</h3><div class="product-meta"><span class="price">49€</span><div><button class="btn btn-primary add-to-cart">Add</button></div></div></div>
             </article>
             <article class="product-card" data-id="ps1" data-name="Productivity Strategies Explained" data-price="49">
-              <img src="images/ebooks/Productivity_Strategies_Explained.png" alt="Productivity Strategies Explained" />
+              <img src="images/ebooks/Productivity_Strategies_Explained.png" alt="Productivity Strategies Explained" loading="lazy" decoding="async" />
               <div class="product-body"><h3>Productivity Strategies Explained</h3><div class="product-meta"><span class="price">49€</span><div><button class="btn btn-primary add-to-cart">Add</button></div></div></div>
             </article>
             <article class="product-card" data-id="fm1x" data-name="Financial Management Explained" data-price="49">
-              <img src="images/ebooks/Financial_Management_Explained.png" alt="Financial Management Explained" />
+              <img src="images/ebooks/Financial_Management_Explained.png" alt="Financial Management Explained" loading="lazy" decoding="async" />
               <div class="product-body"><h3>Financial Management Explained</h3><div class="product-meta"><span class="price">49€</span><div><button class="btn btn-primary add-to-cart">Add</button></div></div></div>
             </article>
             <article class="product-card" data-id="rk1" data-name="Risk Management Explained" data-price="49">
-              <img src="images/ebooks/Risk_Management_Explained.png" alt="Risk Management Explained" />
+              <img src="images/ebooks/Risk_Management_Explained.png" alt="Risk Management Explained" loading="lazy" decoding="async" />
               <div class="product-body"><h3>Risk Management Explained</h3><div class="product-meta"><span class="price">49€</span><div><button class="btn btn-primary add-to-cart">Add</button></div></div></div>
             </article>
             <article class="product-card" data-id="ss1" data-name="Soft Skills Explained" data-price="49">
-              <img src="images/ebooks/Soft_Skills_Explained.png" alt="Soft Skills Explained" />
+              <img src="images/ebooks/Soft_Skills_Explained.png" alt="Soft Skills Explained" loading="lazy" decoding="async" />
               <div class="product-body"><h3>Soft Skills Explained</h3><div class="product-meta"><span class="price">49€</span><div><button class="btn btn-primary add-to-cart">Add</button></div></div></div>
             </article>
             <article class="product-card" data-id="cms1" data-name="Change Management Strategies Explained" data-price="49">
-              <img src="images/ebooks/Change_Management_Strategies_Explained.png" alt="Change Management Strategies Explained" />
+              <img src="images/ebooks/Change_Management_Strategies_Explained.png" alt="Change Management Strategies Explained" loading="lazy" decoding="async" />
               <div class="product-body"><h3>Change Management Strategies Explained</h3><div class="product-meta"><span class="price">49€</span><div><button class="btn btn-primary add-to-cart">Add</button></div></div></div>
             </article>
             <article class="product-card" data-id="ees1" data-name="Employee Engagement Strategies Explained" data-price="49">
-              <img src="images/ebooks/Employee_Engagement_Strategies_Explained.png" alt="Employee Engagement Strategies Explained" />
+              <img src="images/ebooks/Employee_Engagement_Strategies_Explained.png" alt="Employee Engagement Strategies Explained" loading="lazy" decoding="async" />
               <div class="product-body"><h3>Employee Engagement Strategies Explained</h3><div class="product-meta"><span class="price">49€</span><div><button class="btn btn-primary add-to-cart">Add</button></div></div></div>
             </article>
             <article class="product-card" data-id="fdb1" data-name="360-Degree Feedback Explained" data-price="49">
-              <img src="images/ebooks/360_Degree_Feedback_Explained.png" alt="360-Degree Feedback Explained" />
+              <img src="images/ebooks/360_Degree_Feedback_Explained.png" alt="360-Degree Feedback Explained" loading="lazy" decoding="async" />
               <div class="product-body"><h3>360-Degree Feedback Explained</h3><div class="product-meta"><span class="price">49€</span><div><button class="btn btn-primary add-to-cart">Add</button></div></div></div>
             </article>
             <article class="product-card" data-id="tmo1" data-name="Talent Management & Onboarding Explained" data-price="49">
-              <img src="images/ebooks/Talent_Management_Onboarding_Explained.png" alt="Talent Management & Onboarding Explained" />
+              <img src="images/ebooks/Talent_Management_Onboarding_Explained.png" alt="Talent Management & Onboarding Explained" loading="lazy" decoding="async" />
               <div class="product-body"><h3>Talent Management & Onboarding Explained</h3><div class="product-meta"><span class="price">49€</span><div><button class="btn btn-primary add-to-cart">Add</button></div></div></div>
             </article>
             <article class="product-card" data-id="pms1x" data-name="Performance Management Strategies Explained" data-price="49">
-              <img src="images/ebooks/Performance_Management_Strategies_Explained.png" alt="Performance Management Strategies Explained" />
+              <img src="images/ebooks/Performance_Management_Strategies_Explained.png" alt="Performance Management Strategies Explained" loading="lazy" decoding="async" />
               <div class="product-body"><h3>Performance Management Strategies Explained</h3><div class="product-meta"><span class="price">49€</span><div><button class="btn btn-primary add-to-cart">Add</button></div></div></div>
             </article>
             <article class="product-card" data-id="bd1x" data-name="Brand Development Explained" data-price="49">
-              <img src="images/ebooks/Brand_Development_Explained.png" alt="Brand Development Explained" />
+              <img src="images/ebooks/Brand_Development_Explained.png" alt="Brand Development Explained" loading="lazy" decoding="async" />
               <div class="product-body"><h3>Brand Development Explained</h3><div class="product-meta"><span class="price">49€</span><div><button class="btn btn-primary add-to-cart">Add</button></div></div></div>
             </article>
             <article class="product-card" data-id="ec1" data-name="Ecommerce Explained" data-price="49">
-              <img src="images/ebooks/Ecommerce_Explained.png" alt="Ecommerce Explained" />
+              <img src="images/ebooks/Ecommerce_Explained.png" alt="Ecommerce Explained" loading="lazy" decoding="async" />
               <div class="product-body"><h3>Ecommerce Explained</h3><div class="product-meta"><span class="price">49€</span><div><button class="btn btn-primary add-to-cart">Add</button></div></div></div>
             </article>
             <article class="product-card" data-id="fc1" data-name="Financial Crisis Explained" data-price="49">
-              <img src="images/ebooks/Financial_Crisis_Explained.png" alt="Financial Crisis Explained" />
+              <img src="images/ebooks/Financial_Crisis_Explained.png" alt="Financial Crisis Explained" loading="lazy" decoding="async" />
               <div class="product-body"><h3>Financial Crisis Explained</h3><div class="product-meta"><span class="price">49€</span><div><button class="btn btn-primary add-to-cart">Add</button></div></div></div>
             </article>
             <article class="product-card" data-id="hc1x" data-name="Housing Crisis Explained" data-price="49">
-              <img src="images/ebooks/Housing_Crisis_Explained.png" alt="Housing Crisis Explained" />
+              <img src="images/ebooks/Housing_Crisis_Explained.png" alt="Housing Crisis Explained" loading="lazy" decoding="async" />
               <div class="product-body"><h3>Housing Crisis Explained</h3><div class="product-meta"><span class="price">49€</span><div><button class="btn btn-primary add-to-cart">Add</button></div></div></div>
             </article>
             <article class="product-card" data-id="cr1x" data-name="Customer Relationship Explained" data-price="49">
-              <img src="images/ebooks/Customer_Relationship_Explained.png" alt="Customer Relationship Explained" />
+              <img src="images/ebooks/Customer_Relationship_Explained.png" alt="Customer Relationship Explained" loading="lazy" decoding="async" />
               <div class="product-body"><h3>Customer Relationship Explained</h3><div class="product-meta"><span class="price">49€</span><div><button class="btn btn-primary add-to-cart">Add</button></div></div></div>
             </article>
             <article class="product-card" data-id="scr1" data-name="Scrum Manual" data-price="49">
-              <img src="images/ebooks/Scrum_Manual.png" alt="Scrum Manual" />
+              <img src="images/ebooks/Scrum_Manual.png" alt="Scrum Manual" loading="lazy" decoding="async" />
               <div class="product-body"><h3>Scrum Manual</h3><div class="product-meta"><span class="price">49€</span><div><button class="btn btn-primary add-to-cart">Add</button></div></div></div>
             </article>
             <article class="product-card" data-id="kan1" data-name="Kanban Manual" data-price="49">
-              <img src="images/ebooks/Kanban_Manual.png" alt="Kanban Manual" />
+              <img src="images/ebooks/Kanban_Manual.png" alt="Kanban Manual" loading="lazy" decoding="async" />
               <div class="product-body"><h3>Kanban Manual</h3><div class="product-meta"><span class="price">49€</span><div><button class="btn btn-primary add-to-cart">Add</button></div></div></div>
             </article>
             <article class="product-card" data-id="ag1" data-name="Agile Manual" data-price="49">
-              <img src="images/ebooks/Agile_Manual.png" alt="Agile Manual" />
+              <img src="images/ebooks/Agile_Manual.png" alt="Agile Manual" loading="lazy" decoding="async" />
               <div class="product-body"><h3>Agile Manual</h3><div class="product-meta"><span class="price">49€</span><div><button class="btn btn-primary add-to-cart">Add</button></div></div></div>
             </article>
             <article class="product-card" data-id="ai1" data-name="Artificial Intelligence in Business Explained" data-price="49">
-              <img src="images/ebooks/Artificial_Intelligence_in_Business_Explained.png" alt="Artificial Intelligence in Business Explained" />
+              <img src="images/ebooks/Artificial_Intelligence_in_Business_Explained.png" alt="Artificial Intelligence in Business Explained" loading="lazy" decoding="async" />
               <div class="product-body"><h3>Artificial Intelligence in Business Explained</h3><div class="product-meta"><span class="price">49€</span><div><button class="btn btn-primary add-to-cart">Add</button></div></div></div>
             </article>
             <article class="product-card" data-id="cs1x" data-name="Cyber Security Explained" data-price="49">
-              <img src="images/ebooks/Cyber_Security_Explained.png" alt="Cyber Security Explained" />
+              <img src="images/ebooks/Cyber_Security_Explained.png" alt="Cyber Security Explained" loading="lazy" decoding="async" />
               <div class="product-body"><h3>Cyber Security Explained</h3><div class="product-meta"><span class="price">49€</span><div><button class="btn btn-primary add-to-cart">Add</button></div></div></div>
             </article>
             <article class="product-card" data-id="ml1x" data-name="Machine Learning Explained" data-price="49">
-              <img src="images/ebooks/Machine_Learning_Explained.png" alt="Machine Learning Explained" />
+              <img src="images/ebooks/Machine_Learning_Explained.png" alt="Machine Learning Explained" loading="lazy" decoding="async" />
               <div class="product-body"><h3>Machine Learning Explained</h3><div class="product-meta"><span class="price">49€</span><div><button class="btn btn-primary add-to-cart">Add</button></div></div></div>
             </article>
             <article class="product-card" data-id="vr1x" data-name="Virtual Reality Explained" data-price="49">
-              <img src="images/ebooks/Virtual_Reality_Explained.png" alt="Virtual Reality Explained" />
+              <img src="images/ebooks/Virtual_Reality_Explained.png" alt="Virtual Reality Explained" loading="lazy" decoding="async" />
               <div class="product-body"><h3>Virtual Reality Explained</h3><div class="product-meta"><span class="price">49€</span><div><button class="btn btn-primary add-to-cart">Add</button></div></div></div>
             </article>
           </div>
@@ -405,6 +436,14 @@
     </footer>
 
     <script src="./script.js?v=12" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js" defer></script>
+    <script>
+      window.EMAILJS_CONFIG = {
+        serviceId: 'service_c25bo6c',
+        templateId: 'template_mi7mbfn',
+        publicKey: '9rCrKbba27RcCm_L8'
+      };
+    </script>
     <script>
       document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.product-card').forEach(function(card){
