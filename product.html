@@ -166,12 +166,13 @@
 
     <footer class="site-footer" aria-label="Footer">
       <div class="container footer-bottom">
-        <p class="small">© <span id="year"></span>, Business Explique</p>
+        <p class="small"> 2023, Business Explique</p>
         <ul class="social"><li><a href="#">Instagram</a></li><li><a href="#">TikTok</a></li><li><a href="#">Facebook</a></li></ul>
       </div>
     </footer>
 
     <script src="./script.js?v=12" defer></script>
+    <script src="https://gumroad.com/js/gumroad.js"></script>
     <script>
       (function(){
         const qp = new URLSearchParams(location.search);
@@ -249,6 +250,19 @@
         buyEl.setAttribute('data-name', name);
         buyEl.setAttribute('data-price', String(finalPrice));
         buyEl.textContent = 'Add to cart for ' + finalPrice + '€';
+
+        // Gumroad overlay for Soft Skills Explained
+        if (name === 'Soft Skills Explained') {
+          try {
+            buyEl.classList.remove('add-to-cart');
+            buyEl.classList.add('gumroad-button');
+            buyEl.setAttribute('href', 'https://businessexplique.gumroad.com/l/SoftSkillsExplained');
+            buyEl.removeAttribute('data-id');
+            buyEl.removeAttribute('data-name');
+            buyEl.removeAttribute('data-price');
+            buyEl.textContent = 'Buy Now — ' + finalPrice + '€';
+          } catch(_) {}
+        }
 
         // Optional: pages and features per product
         const pagesById = {
