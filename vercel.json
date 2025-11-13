@@ -18,19 +18,19 @@
       ]
     },
     {
-      "source": "/(.*)\\.(?:css|js)",
+      "source": "/:path*.(css|js)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
       ]
     },
     {
-      "source": "/images/(.*)",
+      "source": "/images/:path*",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
       ]
     },
     {
-      "source": "/(.*)\\.(?:svg|png|jpg|jpeg|gif|webp|ico)",
+      "source": "/:path*.(svg|png|jpg|jpeg|gif|webp|ico)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
       ]
