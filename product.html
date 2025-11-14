@@ -655,6 +655,12 @@
           if (descEl) descEl.innerHTML = `
             <p>The Everything Explained Bundle is a comprehensive collection of business eBooks covering marketing, leadership, finance, technology and more. See the list of all items included below.</p>
           `;
+          // Replace the "Pages" badge by "32 Books" for the bundle
+          try {
+            if (pagesEl && pagesEl.parentElement) {
+              pagesEl.parentElement.innerHTML = '<strong id="pd-pages">32</strong> Books';
+            }
+          } catch(_) {}
           const bundleEl = document.getElementById('bundle-section');
           const listEl = document.getElementById('bundle-items');
           const bundleBuy = document.getElementById('bundle-buy');
