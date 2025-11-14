@@ -392,3 +392,22 @@ a { color: inherit; text-decoration: none; }
   .card-grid { grid-template-columns: 1fr; }
   .trust-card { width: 94%; }
 }
+
+/* Global compact header for small phones */
+@media (max-width: 560px) {
+  .container { padding: 0 10px; }
+  .header-inner {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 4px;
+    min-height: 52px;
+  }
+  .brand { gap: 8px; }
+  .brand-text { font-size: 13px; line-height: 1; white-space: nowrap; }
+  .header-actions { gap: 6px; }
+  /* Use more specific selectors + !important to override per-page styles */
+  .site-header .header-search { width: min(180px, 42vw) !important; }
+  .site-header .header-search input[type="search"] { height: 30px !important; padding: 4px 10px !important; font-size: 12.5px !important; border-radius: 999px !important; }
+  .icon-link, .cart-button { width: 32px; height: 32px; }
+}
