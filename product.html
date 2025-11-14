@@ -264,30 +264,305 @@
           } catch(_) {}
         }
 
-        // Optional: pages and features per product
-        const pagesById = {
-          hr1: 70
-        };
-        if (pagesEl) {
-          var pagesWrap = pagesEl.parentElement && pagesEl.parentElement.parentElement;
-          if (isBundle) {
-            if (pagesWrap) pagesWrap.style.display = 'none';
-          } else {
-            if (pagesWrap) pagesWrap.style.display = '';
-            pagesEl.textContent = pagesById[id] || 70;
+        // Optional: pages/features/price/desc/keywords/subtext per product (catalog by name)
+        const catalog = {
+          'Organizational Management Explained': {
+            price: 29, pages: 359,
+            desc: 'How to run and improve any organization, explained strategy by strategy across 359 pages of usable knowledge.',
+            features: [
+              'Explore Modern Management Strategies',
+              'Strategic Planning, PM & HR Management, Operations and Quality Management',
+              'Value Stream Mapping, SMART Goals, SWOT Analysis and more'
+            ],
+            keywords: ['organizational management','strategy','operations','hr','swot','smart goals','value stream mapping','ebook']
+          },
+          'Marketing Frameworks Explained': {
+            price: 29, pages: 256,
+            desc: 'What really works in marketing, explained framework by framework across 256 pages of usable knowledge.',
+            features: [
+              '28+ Marketing Frameworks',
+              '50+ Examples, Real-world Insights',
+              'From Fundamentals to Advanced Strategies'
+            ],
+            keywords: ['marketing','frameworks','examples','strategy','ebook']
+          },
+          'Strategic Management Explained': {
+            price: 29,
+            desc: 'Navigate the strategic journey using field-tested tools and examples from top companies.',
+            features: [
+              'Navigate the Strategic Journey',
+              'Use PESTLE, Porter’s, SWOT, VRIO and more',
+              'Examples From Top Companies'
+            ],
+            keywords: ['strategy','pestle','porter','swot','vrio','ebook']
+          },
+          'Process Improvement Strategies Explained': {
+            price: 29, pages: 77,
+            desc: '9 methodologies and 10 tools to improve processes, from Lean and Six Sigma to Kaizen and beyond.',
+            features: [
+              '9 Methodologies & 10 Tools for Process Improvement',
+              'Lean, Six Sigma, Kaizen and more',
+              'From Fundamentals to Advanced Strategies'
+            ],
+            keywords: ['process improvement','lean','six sigma','kaizen','tools','ebook']
+          },
+          'Human Resources Explained': {
+            price: 29, pages: 76,
+            desc: 'Essential HR concepts with best practices from recruitment to retention, with real-world guidance.',
+            features: [
+              'Essential HR Concepts With Best Practices',
+              'From Recruitment to Retention',
+              'Real-world Guidance & Examples'
+            ],
+            keywords: ['human resources','recruitment','retention','hr','best practices','ebook']
+          },
+          'Leadership Strategies Explained': {
+            price: 29, pages: 114,
+            desc: 'Lead with confidence using 14+ proven strategies, examples, and a personalized development plan.',
+            features: [
+              '14+ Leadership Strategies',
+              'Create a Personalized Development Plan',
+              'Learn With Real-life Leadership Examples'
+            ],
+            keywords: ['leadership','development plan','examples','ebook']
+          },
+          'Negotiation Strategies Explained': {
+            price: 29, pages: 64,
+            desc: 'Master 15+ negotiation strategies to navigate complex talks and communicate with impact.',
+            features: [
+              '15+ Negotiation Strategies',
+              'Navigate Complex Talks Confidently',
+              'Master Communication for Success'
+            ],
+            keywords: ['negotiation','communication','strategy','ebook']
+          },
+          'Productivity Strategies Explained': {
+            price: 29, pages: 79,
+            desc: '14 productivity strategies distilled into actionable methods to save hours every week.',
+            features: [
+              '14 Productivity Strategies',
+              'Save Hours Weekly With These Methods',
+              'Hours of research simplified'
+            ],
+            keywords: ['productivity','time management','methods','ebook']
+          },
+          'Financial Management Explained': {
+            price: 29, pages: 74,
+            desc: '13 financial management strategies with the latest trends explained clearly and concisely.',
+            features: [
+              '13 Financial Management Strategies',
+              'Stay Ahead With Latest Trends',
+              'Hours of Research Simplified'
+            ],
+            keywords: ['finance','financial management','trends','ebook']
+          },
+          'Soft Skills Explained': {
+            price: 29, pages: 76,
+            desc: 'Build soft skills like active listening and emotional intelligence with practical techniques and methods.',
+            features: [
+              'Active Listening and Emotional Intelligence',
+              'Techniques for Personal and Professional Growth',
+              'Pomodoro, “Eat the Frog”, “2-Minute Rule” and more'
+            ],
+            keywords: ['soft skills','emotional intelligence','productivity','ebook']
+          },
+          'Risk Management Explained': {
+            price: 29, pages: 85,
+            desc: 'Assess and mitigate risks using 9 methods including SWOT, Monte Carlo, and EMV.',
+            features: [
+              '9 Risk Analysis Methods',
+              'SWOT, Monte Carlo, EMV and more',
+              'Easy 1-click PDF Download'
+            ],
+            keywords: ['risk','monte carlo','emv','swot','ebook']
+          },
+          'Change Management Strategies Explained': {
+            price: 29, pages: 97,
+            desc: '10 strategies with a practical blueprint covering internal and external factors for successful change.',
+            features: [
+              '10 Change Management Strategies',
+              'Change Management Blueprint, Internal & External factors',
+              'Hours of Research Simplified'
+            ],
+            keywords: ['change management','blueprint','strategy','ebook']
+          },
+          '360-Degree Feedback Explained': {
+            price: 19, pages: 45,
+            desc: 'Complete 360-degree feedback guide covering design, ethics, and implementation in practice.',
+            features: [
+              'Complete 360-Degree Feedback Guide',
+              'Design, ethics, and implementation',
+              'HR principles in practice'
+            ],
+            keywords: ['360 feedback','hr','implementation','ebook']
+          },
+          'Talent Management & Onboarding Explained': {
+            price: 29, pages: 38,
+            desc: 'Plan, perform, and develop talent with effective onboarding from preboarding to assimilation.',
+            features: [
+              'Talent Management: Planning, Performance, Development',
+              'Effective Onboarding: From Preboarding to Assimilation',
+              'HR Principles in Practice'
+            ],
+            keywords: ['talent management','onboarding','hr','ebook']
+          },
+          'Performance Management Strategies Explained': {
+            price: 29, pages: 68,
+            desc: '17 strategies to improve performance, engagement, and productivity with real-world cases.',
+            features: [
+              '17 Performance Management Strategies',
+              'Enhance Engagement and Productivity',
+              'Real-world Case Studies Included'
+            ],
+            keywords: ['performance management','engagement','case studies','ebook']
+          },
+          'Brand Development Explained': {
+            price: 29, pages: 58,
+            desc: 'Master the five elements of a strong brand and design a complete strategy you can measure.',
+            features: [
+              'Master the 5 elements of a strong brand',
+              'Design a comprehensive brand strategy',
+              'Monitor your brand’s performance'
+            ],
+            keywords: ['brand','strategy','measurement','ebook']
+          },
+          'Ecommerce Explained': {
+            price: 29, pages: 70,
+            desc: 'Understand e-commerce models, distribution, and success factors with practical growth tactics.',
+            features: [
+              'E-commerce Business Models, Distribution, Success Factors',
+              'Cross-selling, Upselling, and SMART Goals',
+              'Hours of Research Simplified'
+            ],
+            keywords: ['ecommerce','business models','upselling','smart goals','ebook']
+          },
+          'Financial Crisis Explained': {
+            price: 29, pages: 94,
+            desc: 'All key factors of financial crises explained with timely guidance for today’s environment.',
+            features: [
+              'All Factors of Financial Crises',
+              'Must-have Guide for the Current Times',
+              'Hours of Research Simplified'
+            ],
+            keywords: ['financial crisis','economics','guide','ebook']
+          },
+          'Housing Crisis Explained': {
+            price: 29, pages: 70,
+            desc: 'Overview of the housing crisis with causes, impacts, and actionable solutions.',
+            features: [
+              'Overview of the Housing Crisis',
+              'Causes, Impacts, Solutions',
+              'Key Contributing Factors'
+            ],
+            keywords: ['housing','policy','real estate','ebook']
+          },
+          'Customer Relationship Explained': {
+            price: 29, pages: 79,
+            desc: '21 customer relationship strategies distilled for business enthusiasts to apply immediately.',
+            features: [
+              '21 Customer Relationship Strategies',
+              'Must-have Guide for Business Enthusiasts',
+              'Hours of Research Simplified'
+            ],
+            keywords: ['customer relationship','crm','strategy','ebook']
+          },
+          'Scrum Manual': {
+            price: 19, pages: 40,
+            desc: 'Master Scrum fundamentals for agile projects from sprint planning to daily scrums.',
+            features: [
+              'Master the Art of Scrum and Agile Projects',
+              'Sprint Planning, Daily Scrums and more',
+              'Hours of Research Simplified'
+            ],
+            keywords: ['scrum','agile','sprint planning','ebook']
+          },
+          'Kanban Manual': {
+            price: 19, pages: 42,
+            desc: 'Learn the Kanban workflow, cards, and rules with practical real-world examples.',
+            features: [
+              'Master the Art of Kanban',
+              'Kanban Workflow, Kanban Cards, & Kanban Rules',
+              'Filled With Real-world Examples'
+            ],
+            keywords: ['kanban','workflow','examples','ebook']
+          },
+          'Agile Manual': {
+            price: 19, pages: 44,
+            desc: 'Discover cutting-edge agile strategies for teams, roadmaps, planning, and scaling.',
+            features: [
+              'Discover Cutting Edge Strategies in Agile',
+              'Agile Teams, Advanced Roadmaps, Planning, Scaling and more',
+              'Hours of Research Simplified'
+            ],
+            keywords: ['agile','roadmaps','planning','scaling','ebook']
+          },
+          'Artificial Intelligence in Business Explained': {
+            price: 29, pages: 75,
+            desc: 'A comprehensive AI introduction covering ML, DL, NLP, computer vision, and real applications.',
+            features: [
+              'Comprehensive AI Introduction',
+              'Machine and Deep Learning, NLP, Computer Vision',
+              'AI’s Potential Everyday Applications'
+            ],
+            keywords: ['ai','machine learning','deep learning','nlp','computer vision','ebook']
+          },
+          'Cyber Security Explained': {
+            price: 29, pages: 69,
+            desc: 'In-depth basics of cybersecurity including encryption, best practices, and insurance.',
+            features: [
+              'In-depth Cybersecurity Basics',
+              'Encryption, Best Practices, Insurance',
+              'Protect Against Online Threats'
+            ],
+            keywords: ['cybersecurity','encryption','best practices','ebook']
+          },
+          'Machine Learning Explained': {
+            price: 29, pages: 83,
+            desc: 'ML fundamentals: key concepts, algorithms, data processing, and industry applications.',
+            features: [
+              'ML Fundamentals in-depth',
+              'Key Concepts, Algorithms, Data Processing',
+              'Applications Across Industries'
+            ],
+            keywords: ['machine learning','algorithms','data processing','ebook']
+          },
+          'Virtual Reality Explained': {
+            price: 19, pages: 62,
+            desc: 'VR and AR fundamentals with applications in gaming, education, and more.',
+            features: [
+              'VR and AR Basics in-depth',
+              'Applications in Gaming, Education and more',
+              'Hours of Research Simplified'
+            ],
+            keywords: ['virtual reality','augmented reality','applications','ebook']
           }
-        }
-        // Product-specific bullets (example for Housing Crisis)
-        const featuresById = {
-          hr1: [
-            'Overview of the Housing Crisis',
-            'Causes, Impacts, Solutions',
-            'Key Contributing Factors'
-          ]
         };
-        const featList = document.querySelector('.pd-feature-list');
-        if (featList && featuresById[id]) {
-          featList.innerHTML = featuresById[id].map(t => '<li>'+t+'</li>').join('');
+
+        const metaDefaults = {
+          sub: 'Digital download • Instant access'
+        };
+        const prod = catalog[name] || null;
+        const computedPrice = prod && typeof prod.price === 'number' ? prod.price : defaultPrice;
+        const finalPriceFromCatalog = hasUrlPrice ? price : computedPrice;
+        if (!isBundle) {
+          if (pagesEl) {
+            var pagesWrap = pagesEl.parentElement && pagesEl.parentElement.parentElement;
+            if (pagesWrap) pagesWrap.style.display = '';
+            pagesEl.textContent = (prod && prod.pages) ? prod.pages : 70;
+          }
+          if (prod && Array.isArray(prod.features)) {
+            const featList = document.querySelector('.pd-feature-list');
+            if (featList) featList.innerHTML = prod.features.map(t => '<li>'+t+'</li>').join('');
+          }
+          if (descEl && prod && prod.desc) {
+            descEl.textContent = prod.desc;
+          }
+          if (subEl) subEl.textContent = (prod && prod.sub) || metaDefaults.sub;
+          priceEl.textContent = finalPriceFromCatalog + '€';
+          if (!buyEl.classList.contains('gumroad-button')) {
+            buyEl.setAttribute('data-price', String(finalPriceFromCatalog));
+            buyEl.textContent = 'Add to cart for ' + finalPriceFromCatalog + '€';
+          }
         }
 
         // --- SEO: dynamic meta tags and JSON-LD ---
@@ -311,10 +586,10 @@
         }
         const url = location.href;
         const title = name + ' — Business Explique';
-        const desc = (featuresById[id] ? featuresById[id].join('. ') : 'Premium digital product eBook by Business Explique.') + ' Instant access.';
+        const desc = (prod && prod.desc) ? (prod.desc + ' Instant access.') : ((prod && prod.features ? prod.features.join('. ') : 'Premium digital product eBook by Business Explique.') + ' Instant access.');
         document.title = title;
         setMeta('description', desc);
-        setMeta('keywords', [name, 'digital product', 'ebook', 'business explained', 'business explique', 'business', 'explained', 'pdf ebook', 'bundle'].join(', '));
+        setMeta('keywords', [name].concat(prod && prod.keywords ? prod.keywords : ['digital product','ebook','business explained','business','explained','pdf ebook']).join(', '));
         setMetaProp('og:title', name);
         setMetaProp('og:description', desc);
         setMetaProp('og:type', 'product');
