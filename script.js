@@ -294,7 +294,8 @@
     // Fallback catalog if not on products page (no cards available)
     if (!products.length) {
       const underscored = (s) => String(s||'').trim().replace(/[^A-Za-z0-9]+/g,'_').replace(/^_+|_+$/g,'');
-      const imgFor = (title) => `images/ebooks/${underscored(title)}.png`;
+      const imgPng = (title) => `images/ebooks/${underscored(title)}.png`;
+      const imgJpg = (title) => `images/ebooks/${underscored(title)}.jpg`;
       const base = [
         { id: 'o1',  name: 'Organizational Management Explained', price: 29 },
         { id: 'ent1',name: 'Entrepreneurship Explained', price: 29 },
@@ -329,7 +330,13 @@
         { id: 'vr1x',name: 'Virtual Reality Explained', price: 19 },
         { id: 'pack',name: 'Everything Explained Bundle', price: 139 }
       ];
-      products = base.map((p) => ({ ...p, img: imgFor(p.name) }));
+      products = base.map((p) => {
+        // Special image for the bundle
+        if (p.id === 'pack' || /everything explained bundle/i.test(p.name)) {
+          return { ...p, img: 'images/ebooks/all_pack.png', imgFallback: 'images/ebooks/all_pack2.png' };
+        }
+        return { ...p, img: imgPng(p.name), imgFallback: imgJpg(p.name) };
+      });
     }
 
     function productUrl(p) {
@@ -348,12 +355,20 @@
       }
       panel.innerHTML = list
         .slice(0, 20)
-        .map((p) => `
-          <a class="search-result" href="${productUrl(p)}">
-            <img class="search-thumb" src="${p.img}" alt="" />
-            <div class="search-title">${p.name}</div>
-          </a>
-        `)
+        .map((p) => {
+          const fallback = p.imgFallback || '';
+          const placeholder = 'https://images.unsplash.com/photo-1556761175-b413da4baf72?w=160&q=70&auto=format&fit=crop';
+          // inline onerror tries JPG then placeholder
+          const onerr = fallback
+            ? `this.onerror=function(){this.onerror=null;this.src='${placeholder}';};this.src='${fallback}';`
+            : `this.onerror=function(){this.onerror=null;this.src='${placeholder}';}`;
+          return `
+            <a class="search-result" href="${productUrl(p)}">
+              <img class="search-thumb" src="${p.img}" alt="" onerror="${onerr}" />
+              <div class="search-title">${p.name}</div>
+            </a>
+          `;
+        })
         .join('');
       panel.hidden = false;
     }
