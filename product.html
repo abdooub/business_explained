@@ -49,6 +49,17 @@
       .bundle-item .title { font-weight:600; }
       .bundle-item .price { margin-left:auto; color:#6b7280; font-weight:700; }
       .bundle-item .thumb { width:40px; height:40px; border-radius:8px; object-fit:cover; background:#f3f4f6; }
+      /* Header search */
+      .header-actions { display:flex; align-items:center; gap:10px; margin-left:auto; }
+      .header-search { position: relative; width: min(380px, 42vw); }
+      .header-search input[type="search"] { width:100%; background:#fff; border:1px solid #e4e8f1; border-radius:999px; padding:10px 14px; outline:none; }
+      .header-search input[type="search"]:focus { border-color:#3b82f6; box-shadow:0 0 0 3px rgba(59,130,246,.2); }
+      .search-panel { position:absolute; top:calc(100% + 8px); right:0; width:min(420px,85vw); max-height:380px; overflow:auto; background:#fff; border:1px solid #e4e8f1; border-radius:14px; box-shadow:0 14px 34px rgba(15,23,42,.12); padding:10px; z-index:1000; }
+      .search-result { display:flex; gap:10px; align-items:center; padding:10px; border-bottom:1px solid #f1f5fb; text-decoration:none; color:inherit; }
+      .search-result:last-child { border-bottom:0; }
+      .search-result:hover { background:#f8fafc; }
+      .search-thumb { width:54px; height:54px; border-radius:10px; object-fit:cover; background:#f3f4f6; }
+      .search-title { font-weight:600; }
     </style>
   </head>
   <body>
@@ -84,6 +95,14 @@
           <span class="brand-logo" aria-hidden="true">B</span>
           <span class="brand-text">Business Explique</span>
         </a>
+        <div class="header-actions">
+          <div class="header-search" role="search">
+            <input id="hdr-search" type="search" placeholder="Search for products" aria-label="Search for products" autocomplete="off" />
+            <div id="hdr-search-results" class="search-panel" hidden></div>
+          </div>
+          <a class="icon-link" href="#" aria-label="Account">👤</a>
+          <button class="icon-link cart-button" data-cart-open aria-label="Cart">🛒<span class="cart-badge">0</span></button>
+        </div>
       </div>
     </header>
 
@@ -307,7 +326,7 @@
             keywords: ['process improvement','lean','six sigma','kaizen','tools','ebook']
           },
           'Human Resources Explained': {
-            price: 29, pages: 76,
+            price: 19, pages: 76,
             desc: 'Essential HR concepts with best practices from recruitment to retention, with real-world guidance.',
             features: [
               'Essential HR Concepts With Best Practices',
@@ -543,7 +562,8 @@
         };
         const prod = catalog[name] || null;
         const computedPrice = prod && typeof prod.price === 'number' ? prod.price : defaultPrice;
-        const finalPriceFromCatalog = hasUrlPrice ? price : computedPrice;
+        // Prefer catalog-defined price when available; ignore URL price for consistency across the site
+        const finalPriceFromCatalog = (prod && typeof prod.price === 'number') ? prod.price : (hasUrlPrice ? price : computedPrice);
         if (!isBundle) {
           if (pagesEl) {
             var pagesWrap = pagesEl.parentElement && pagesEl.parentElement.parentElement;
@@ -620,7 +640,7 @@
           'offers': {
             '@type':'Offer',
             'priceCurrency':'EUR',
-            'price': String(finalPrice),
+            'price': String((typeof finalPriceFromCatalog !== 'undefined') ? finalPriceFromCatalog : finalPrice),
             'availability':'https://schema.org/InStock',
             'url': url
           }

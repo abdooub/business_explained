@@ -493,9 +493,20 @@
     <script>
       document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.product-card').forEach(function(card){
-          card.setAttribute('data-price', '29');
+          var name = (card.getAttribute('data-name') || '').trim();
+          var price = 29;
+          if (
+            name === 'Human Resources Explained' ||
+            name === '360-Degree Feedback Explained' ||
+            name === 'Scrum Manual' ||
+            name === 'Kanban Manual' ||
+            name === 'Agile Manual'
+          ) {
+            price = 19;
+          }
+          card.setAttribute('data-price', String(price));
           var priceEl = card.querySelector('.product-meta .price');
-          if (priceEl) priceEl.textContent = '29€';
+          if (priceEl) priceEl.textContent = price + '€';
         });
         // Replace product images with local assets by slug, fallback to original URL
         function slugify(s){ return String(s||'').toLowerCase().trim().replace(/&/g,' and ').replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,''); }

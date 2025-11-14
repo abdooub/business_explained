@@ -303,7 +303,7 @@
         { id: 'sm1', name: 'Strategic Management Explained', price: 29 },
         { id: 'pim1',name: 'Process Improvement Strategies Explained', price: 29 },
         { id: 'pm1', name: 'Project Management Explained', price: 29 },
-        { id: 'hr1', name: 'Human Resources Explained', price: 29 },
+        { id: 'hr1', name: 'Human Resources Explained', price: 19 },
         { id: 'ls1', name: 'Leadership Strategies Explained', price: 29 },
         { id: 'ns1', name: 'Negotiation Strategies Explained', price: 29 },
         { id: 'ps1', name: 'Productivity Strategies Explained', price: 29 },
