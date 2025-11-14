@@ -4,11 +4,58 @@
   const navToggle = document.querySelector('.nav-toggle');
   const nav = document.getElementById('primary-nav');
 
-  if (navToggle && nav) {
+  function ensureMobileMenu() {
+    if (document.querySelector('.mobile-menu')) return document.querySelector('.mobile-menu');
+    const wrap = document.createElement('div');
+    wrap.className = 'mobile-menu';
+    wrap.innerHTML = `
+      <div class="sheet" role="dialog" aria-modal="true" aria-label="Menu">
+        <div class="sheet-header">
+          <strong>Menu</strong>
+          <button class="close" type="button" aria-label="Close">✕ Close</button>
+        </div>
+        <div class="sheet-search">
+          <input type="search" placeholder="Search for products" autocomplete="off" />
+        </div>
+        <div class="sheet-body">
+          <ul class="menu-list">
+            <li><a href="/products.html">Homepage</a></li>
+            <li><a href="/products.html">Products</a></li>
+            <li><a href="/about.html">About Us</a></li>
+            <li><a href="/blog.html">Blog</a></li>
+            <li><a href="/support.html">Support</a></li>
+            <li><a href="/faq.html">FAQs</a></li>
+          </ul>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(wrap);
+    const close = () => { wrap.classList.remove('open'); document.body.style.overflow = ''; };
+    wrap.addEventListener('click', (e) => { if (e.target === wrap) close(); });
+    wrap.querySelector('.close')?.addEventListener('click', close);
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+    return wrap;
+  }
+
+  function openMobileMenu() {
+    const menu = ensureMobileMenu();
+    menu.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  if (navToggle) {
     navToggle.addEventListener('click', () => {
-      const isOpen = nav.classList.toggle('open');
-      navToggle.setAttribute('aria-expanded', String(isOpen));
-      navToggle.setAttribute('aria-label', isOpen ? 'Fermer le menu' : 'Ouvrir le menu');
+      if (window.innerWidth <= 768) {
+        openMobileMenu();
+        return;
+      }
+      if (nav) {
+        const isOpen = nav.classList.toggle('open');
+        navToggle.setAttribute('aria-expanded', String(isOpen));
+        navToggle.setAttribute('aria-label', isOpen ? 'Fermer le menu' : 'Ouvrir le menu');
+      } else {
+        openMobileMenu();
+      }
     });
   }
 
@@ -333,7 +380,7 @@
       products = base.map((p) => {
         // Special image for the bundle
         if (p.id === 'pack' || /everything explained bundle/i.test(p.name)) {
-          return { ...p, img: 'images/ebooks/all_pack.png', imgFallback: 'images/ebooks/all_pack0.png' };
+          return { ...p, img: 'images/ebooks/all_pack0.png', imgFallback: 'images/ebooks/all_pack0.png' };
         }
         return { ...p, img: imgPng(p.name), imgFallback: imgJpg(p.name) };
       });
