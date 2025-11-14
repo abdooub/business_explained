@@ -115,6 +115,27 @@
       .search-result:hover { background:#f8fafc; }
       .search-thumb { width:54px; height:54px; border-radius:10px; object-fit:cover; background:#f3f4f6; }
       .search-title { font-weight:600; }
+      /* Mobile compaction for header bar */
+      @media (max-width: 560px) {
+        .header-inner {
+          display: grid;
+          grid-template-columns: auto 1fr auto;
+          align-items: center;
+          gap: 4px;
+          min-height: 52px;
+        }
+        .brand { gap: 8px; }
+        .brand-text { font-size: 13px; line-height: 1; white-space: nowrap; }
+        .header-actions { gap: 6px; }
+        .header-search { width: min(180px, 42vw); }
+        .header-search input[type="search"] {
+          height: 30px;
+          padding: 4px 10px;
+          font-size: 12.5px;
+          border-radius: 999px;
+        }
+        .icon-link, .cart-button { width: 32px; height: 32px; }
+      }
     </style>
     
   </head>
