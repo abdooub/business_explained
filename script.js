@@ -276,6 +276,109 @@
     });
   }
 
+  // Header search with dropdown results
+  function attachHeaderSearch() {
+    const input = document.getElementById('hdr-search');
+    const panel = document.getElementById('hdr-search-results');
+    if (!input || !panel) return;
+
+    const cards = Array.from(document.querySelectorAll('.product-card'));
+    let products = cards.map((card) => {
+      const id = card.getAttribute('data-id') || '';
+      const name = card.getAttribute('data-name') || (card.querySelector('h3')?.textContent?.trim()) || 'Product';
+      const price = Number(card.getAttribute('data-price') || 0) || 0;
+      const img = card.querySelector('img')?.getAttribute('src') || '';
+      return { id, name, price, img };
+    });
+
+    // Fallback catalog if not on products page (no cards available)
+    if (!products.length) {
+      const underscored = (s) => String(s||'').trim().replace(/[^A-Za-z0-9]+/g,'_').replace(/^_+|_+$/g,'');
+      const imgFor = (title) => `images/ebooks/${underscored(title)}.png`;
+      const base = [
+        { id: 'o1',  name: 'Organizational Management Explained', price: 29 },
+        { id: 'ent1',name: 'Entrepreneurship Explained', price: 29 },
+        { id: 'm1',  name: 'Marketing Frameworks Explained', price: 29 },
+        { id: 'mr1', name: 'Market Research Explained', price: 29 },
+        { id: 'sm1', name: 'Strategic Management Explained', price: 29 },
+        { id: 'pim1',name: 'Process Improvement Strategies Explained', price: 29 },
+        { id: 'pm1', name: 'Project Management Explained', price: 29 },
+        { id: 'hr1', name: 'Human Resources Explained', price: 29 },
+        { id: 'ls1', name: 'Leadership Strategies Explained', price: 29 },
+        { id: 'ns1', name: 'Negotiation Strategies Explained', price: 29 },
+        { id: 'ps1', name: 'Productivity Strategies Explained', price: 29 },
+        { id: 'fm1x',name: 'Financial Management Explained', price: 29 },
+        { id: 'rk1', name: 'Risk Management Explained', price: 29 },
+        { id: 'ss1', name: 'Soft Skills Explained', price: 29 },
+        { id: 'cms1',name: 'Change Management Strategies Explained', price: 29 },
+        { id: 'ees1',name: 'Employee Engagement Strategies Explained', price: 29 },
+        { id: 'fdb1',name: '360-Degree Feedback Explained', price: 19 },
+        { id: 'tmo1',name: 'Talent Management & Onboarding Explained', price: 29 },
+        { id: 'pms1x',name: 'Performance Management Strategies Explained', price: 29 },
+        { id: 'bd1x',name: 'Brand Development Explained', price: 29 },
+        { id: 'ec1', name: 'Ecommerce Explained', price: 29 },
+        { id: 'fc1', name: 'Financial Crisis Explained', price: 29 },
+        { id: 'hc1x',name: 'Housing Crisis Explained', price: 29 },
+        { id: 'cr1x',name: 'Customer Relationship Explained', price: 29 },
+        { id: 'scr1',name: 'Scrum Manual', price: 19 },
+        { id: 'kan1',name: 'Kanban Manual', price: 19 },
+        { id: 'ag1', name: 'Agile Manual', price: 19 },
+        { id: 'ai1', name: 'Artificial Intelligence in Business Explained', price: 29 },
+        { id: 'cs1x',name: 'Cyber Security Explained', price: 29 },
+        { id: 'ml1x',name: 'Machine Learning Explained', price: 29 },
+        { id: 'vr1x',name: 'Virtual Reality Explained', price: 19 },
+        { id: 'pack',name: 'Everything Explained Bundle', price: 139 }
+      ];
+      products = base.map((p) => ({ ...p, img: imgFor(p.name) }));
+    }
+
+    function productUrl(p) {
+      const url = new URL(location.origin + '/product.html');
+      url.searchParams.set('id', p.id || 'product');
+      url.searchParams.set('name', p.name || 'Product');
+      if (p.price) url.searchParams.set('price', String(p.price));
+      return url.toString();
+    }
+
+    function render(list) {
+      if (!list.length) {
+        panel.innerHTML = '<div class="search-result" style="justify-content:center;color:#6b7280;">No results</div>';
+        panel.hidden = false;
+        return;
+      }
+      panel.innerHTML = list
+        .slice(0, 20)
+        .map((p) => `
+          <a class="search-result" href="${productUrl(p)}">
+            <img class="search-thumb" src="${p.img}" alt="" />
+            <div class="search-title">${p.name}</div>
+          </a>
+        `)
+        .join('');
+      panel.hidden = false;
+    }
+
+    function filter(q) {
+      const s = String(q || '').toLowerCase();
+      if (!s) { panel.hidden = true; return; }
+      const out = products.filter((p) => p.name.toLowerCase().includes(s));
+      render(out);
+    }
+
+    input.addEventListener('input', () => filter(input.value));
+    input.addEventListener('focus', () => { if (input.value) filter(input.value); });
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') { panel.hidden = true; input.blur(); }
+    });
+
+    document.addEventListener('click', (e) => {
+      const t = e.target;
+      if (!(t instanceof Element)) return;
+      if (t.closest('.header-search')) return; // inside
+      panel.hidden = true;
+    });
+  }
+
   function attachSort() {
     const select = document.getElementById('sort');
     const grid = document.getElementById('productGrid');
@@ -644,6 +747,7 @@
   attachMoreInfoLinks();
   attachCardNavigation();
   attachCartHandlers();
+  attachHeaderSearch();
   attachSearch();
   attachSort();
   attachCouponForm();
