@@ -801,6 +801,171 @@
     });
   }
 
+  // === Gumroad integration: replace "Add" / "Add to cart" with Gumroad "Buy" buttons ===
+
+  const GUMROAD_BY_ID = {
+    o1:   'https://businessexplique.gumroad.com/l/OrganizationalManagementExplained',
+    ent1: 'https://businessexplique.gumroad.com/l/EntrepreneurshipExplained',
+    m1:   'https://businessexplique.gumroad.com/l/MarketingFrameworksExplained',
+    mr1:  'https://businessexplique.gumroad.com/l/MarketResearchExplained',
+    sm1:  'https://businessexplique.gumroad.com/l/StrategicManagementExplained',
+    pim1: 'https://businessexplique.gumroad.com/l/ProcessImprovementStrategiesExplained',
+    pm1:  'https://businessexplique.gumroad.com/l/ProjectManagementExplained',
+    hr1:  'https://businessexplique.gumroad.com/l/HumanResourcesExplained',
+    ls1:  'https://businessexplique.gumroad.com/l/LeadershipStrategiesExplained',
+    ns1:  'https://businessexplique.gumroad.com/l/NegotiationStrategiesExplained',
+    ps1:  'https://businessexplique.gumroad.com/l/ProductivityStrategiesExplained',
+    fm1x: 'https://businessexplique.gumroad.com/l/FinancialManagementExplained',
+    rk1:  'https://businessexplique.gumroad.com/l/RiskManagementExplained',
+    ss1:  'https://businessexplique.gumroad.com/l/SoftSkillsExplained',
+    cms1: 'https://businessexplique.gumroad.com/l/ChangeManagementStrategiesExplained',
+    ees1: 'https://businessexplique.gumroad.com/l/EmployeeEngagementStrategiesExplained',
+    fdb1: 'https://businessexplique.gumroad.com/l/Feedback360DegreeExplained',
+    tmo1: 'https://businessexplique.gumroad.com/l/TalentManagementOnboardingExplained',
+    pms1x:'https://businessexplique.gumroad.com/l/PerformanceManagementStrategiesExplained',
+    bd1x: 'https://businessexplique.gumroad.com/l/BrandDevelopmentExplained',
+    ec1:  'https://businessexplique.gumroad.com/l/EcommerceExplained',
+    fc1:  'https://businessexplique.gumroad.com/l/FinancialCrisisExplained',
+    hc1x: 'https://businessexplique.gumroad.com/l/HousingCrisisExplained',
+    cr1x: 'https://businessexplique.gumroad.com/l/CustomerRelationshipExplained',
+    scr1: 'https://businessexplique.gumroad.com/l/ScrumManual',
+    kan1: 'https://businessexplique.gumroad.com/l/KanbanManual',
+    ag1:  'https://businessexplique.gumroad.com/l/AgileManual',
+    ai1:  'https://businessexplique.gumroad.com/l/ArtificialIntelligenceInBusinessExplained',
+    cs1x: 'https://businessexplique.gumroad.com/l/CyberSecurityExplained',
+    ml1x: 'https://businessexplique.gumroad.com/l/MachineLearningExplained',
+    vr1x: 'https://businessexplique.gumroad.com/l/VirtualRealityExplained',
+    pack: 'https://businessexplique.gumroad.com/l/EverythingExplainedBundle'
+  };
+
+  const GUMROAD_BY_NAME = {
+    'Organizational Management Explained': GUMROAD_BY_ID.o1,
+    'Entrepreneurship Explained': GUMROAD_BY_ID.ent1,
+    'Marketing Frameworks Explained': GUMROAD_BY_ID.m1,
+    'Market Research Explained': GUMROAD_BY_ID.mr1,
+    'Strategic Management Explained': GUMROAD_BY_ID.sm1,
+    'Process Improvement Strategies Explained': GUMROAD_BY_ID.pim1,
+    'Project Management Explained': GUMROAD_BY_ID.pm1,
+    'Human Resources Explained': GUMROAD_BY_ID.hr1,
+    'Leadership Strategies Explained': GUMROAD_BY_ID.ls1,
+    'Negotiation Strategies Explained': GUMROAD_BY_ID.ns1,
+    'Productivity Strategies Explained': GUMROAD_BY_ID.ps1,
+    'Financial Management Explained': GUMROAD_BY_ID.fm1x,
+    'Risk Management Explained': GUMROAD_BY_ID.rk1,
+    'Soft Skills Explained': GUMROAD_BY_ID.ss1,
+    'Change Management Strategies Explained': GUMROAD_BY_ID.cms1,
+    'Employee Engagement Strategies Explained': GUMROAD_BY_ID.ees1,
+    '360-Degree Feedback Explained': GUMROAD_BY_ID.fdb1,
+    'Talent Management & Onboarding Explained': GUMROAD_BY_ID.tmo1,
+    'Performance Management Strategies Explained': GUMROAD_BY_ID.pms1x,
+    'Brand Development Explained': GUMROAD_BY_ID.bd1x,
+    'Ecommerce Explained': GUMROAD_BY_ID.ec1,
+    'Financial Crisis Explained': GUMROAD_BY_ID.fc1,
+    'Housing Crisis Explained': GUMROAD_BY_ID.hc1x,
+    'Customer Relationship Explained': GUMROAD_BY_ID.cr1x,
+    'Scrum Manual': GUMROAD_BY_ID.scr1,
+    'Kanban Manual': GUMROAD_BY_ID.kan1,
+    'Agile Manual': GUMROAD_BY_ID.ag1,
+    'Artificial Intelligence in Business Explained': GUMROAD_BY_ID.ai1,
+    'Cyber Security Explained': GUMROAD_BY_ID.cs1x,
+    'Machine Learning Explained': GUMROAD_BY_ID.ml1x,
+    'Virtual Reality Explained': GUMROAD_BY_ID.vr1x,
+    'Everything Explained Bundle': GUMROAD_BY_ID.pack
+  };
+
+  function getGumroadUrlForElement(el) {
+    if (!el) return '';
+    const card = el.closest('.product-card') || el.closest('.offer-card');
+    const explicitHref = el.getAttribute('data-gumroad') || el.getAttribute('href');
+    if (explicitHref && /gumroad\.com\//i.test(explicitHref)) return explicitHref;
+    const id =
+      el.getAttribute('data-id') ||
+      (card && card.getAttribute('data-id')) ||
+      '';
+    const titleEl = document.getElementById('pd-title');
+    const name =
+      el.getAttribute('data-name') ||
+      (card && card.getAttribute('data-name')) ||
+      (titleEl && titleEl.textContent ? titleEl.textContent.trim() : '');
+    if (id && GUMROAD_BY_ID[id]) return GUMROAD_BY_ID[id];
+    if (name && GUMROAD_BY_NAME[name]) return GUMROAD_BY_NAME[name];
+    return '';
+  }
+
+  function replaceAddToCartWithGumroad(root) {
+    const scope = root || document;
+    const candidates = Array.from(
+      scope.querySelectorAll('.add-to-cart, a.btn, button.btn')
+    );
+
+    candidates.forEach((node) => {
+      let btn = node;
+      const text = (btn.textContent || '').toLowerCase();
+      if (!/add/.test(text)) return;
+
+      const url = getGumroadUrlForElement(btn);
+      if (!url) return;
+
+      const card = btn.closest('.product-card') || btn.closest('.offer-card');
+      const id =
+        btn.getAttribute('data-id') ||
+        (card && card.getAttribute('data-id')) ||
+        '';
+      const titleEl = document.getElementById('pd-title');
+      const name =
+        btn.getAttribute('data-name') ||
+        (card && card.getAttribute('data-name')) ||
+        (titleEl && titleEl.textContent ? titleEl.textContent.trim() : 'Product');
+
+      // Turn into Gumroad overlay button
+      btn.classList.remove('add-to-cart');
+      btn.classList.add('gumroad-button');
+
+      if (btn.tagName === 'BUTTON') {
+        const link = document.createElement('a');
+        link.className = btn.className;
+        link.textContent = btn.textContent;
+        Array.from(btn.attributes).forEach((attr) => {
+          if (attr.name === 'class') return;
+          link.setAttribute(attr.name, attr.value);
+        });
+        btn.replaceWith(link);
+        btn = link;
+      }
+
+      btn.setAttribute('href', url);
+      btn.removeAttribute('data-id');
+      btn.removeAttribute('data-name');
+      btn.removeAttribute('data-price');
+
+      if (id === 'pack' || /everything explained bundle/i.test(name)) {
+        btn.textContent = 'Buy Bundle';
+      } else {
+        btn.textContent = 'Buy';
+      }
+
+      console.log('[Gumroad] Button updated', {
+        id: id || null,
+        name,
+        url
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    try { replaceAddToCartWithGumroad(); } catch (_) {}
+    try {
+      const mo = new MutationObserver(() => {
+        replaceAddToCartWithGumroad();
+      });
+      mo.observe(document.body, { childList: true, subtree: true });
+    } catch (_) {}
+  });
+
+  window.addEventListener('load', () => {
+    try { replaceAddToCartWithGumroad(); } catch (_) {}
+  });
+
   // Init
   loadCart();
   renderCart();
