@@ -901,15 +901,19 @@
     candidates.forEach((node) => {
       let btn = node;
       const text = (btn.textContent || '').toLowerCase();
-      if (!/add/.test(text)) return;
+
+      const card = btn.closest('.product-card') || btn.closest('.offer-card');
+      const idAttr = btn.getAttribute('data-id') || (card && card.getAttribute('data-id')) || '';
+
+      // Normal produits : seulement si le texte contient "add".
+      // Bundle (id=pack) : on le convertit même si le texte ne contient pas "add".
+      if (!/add/.test(text) && idAttr !== 'pack') return;
 
       const url = getGumroadUrlForElement(btn);
       if (!url) return;
 
-      const card = btn.closest('.product-card') || btn.closest('.offer-card');
       const id =
-        btn.getAttribute('data-id') ||
-        (card && card.getAttribute('data-id')) ||
+        idAttr ||
         '';
       const titleEl = document.getElementById('pd-title');
       const name =
