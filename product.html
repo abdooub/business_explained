@@ -243,104 +243,10 @@
     </footer>
 
     <script src="./script.js?v=13" defer></script>
+    <script src="./product.js?v=1" defer></script>
     <script src="https://gumroad.com/js/gumroad.js"></script>
-    <script>
-      (function(){
-        const qp = new URLSearchParams(location.search);
-        const id = qp.get('id') || 'product';
-        const name = qp.get('name') || 'Product';
-        const price = Number(qp.get('price') || 0);
-        const hasUrlPrice = qp.has('price') && !isNaN(price) && price > 0;
-        const defaultPrice = (name === 'Everything Explained Bundle' || id === 'pack') ? 139 : 29;
-        const finalPrice = hasUrlPrice ? price : defaultPrice;
-        const isBundle = (name === 'Everything Explained Bundle' || id === 'pack');
-        // Fallback map (will be used only if local image is missing)
-        const imgMap = {
-          t1: 'images/ebooks/t1.png',
-          o1: 'images/ebooks/Organizational_Management_Explained.png',
-          c1: 'images/ebooks/c1.png',
-          b1: 'images/ebooks/b1.png',
-          m1: 'images/ebooks/m1.png',
-          ca1:'images/ebooks/ca1.png',
-          s1: 'images/ebooks/s1.png',
-          sm1:'images/ebooks/sm1.png',
-          pim1:'images/ebooks/pim1.png',
-          pm1: 'images/ebooks/pm1.png',
-          hr1: 'images/ebooks/hr1.png',
-          pack:'images/ebooks/all_pack.png'
-        };
-        const titleEl = document.getElementById('pd-title');
-        const priceEl = document.getElementById('pd-price');
-        const imgEl = document.getElementById('pd-image');
-        const buyEl = document.getElementById('pd-buy');
-        const subEl = document.getElementById('pd-sub');
-        const descEl = document.getElementById('pd-desc');
-        const pagesEl = document.getElementById('pd-pages');
-        function slugify(s){ return String(s||'').toLowerCase().trim().replace(/&/g,' and ').replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,''); }
-        function underscored(s){ return String(s||'').trim().replace(/[^A-Za-z0-9]+/g,'_').replace(/^_+|_+$/g,''); }
-        function candidateImages(name, id){
-          var base = 'images/ebooks/';
-          var dash = slugify(name);
-          var under = underscored(name);
-          var out = [
-            // Prioritize your current naming style
-            base + under + '.png',
-            base + under + '.jpg',
-            base + dash + '.png',
-            base + dash + '.jpg',
-            // Uppercase extension variants (some servers are case-sensitive)
-            base + under + '.PNG',
-            base + under + '.JPG',
-            base + dash + '.PNG',
-            base + dash + '.JPG',
-            // JPEG long variant
-            base + under + '.jpeg',
-            base + dash + '.jpeg'
-          ];
-          if (id) {
-            out.push(base + id + '.png', base + id + '.jpg', base + id + '.PNG', base + id + '.JPG', base + id + '.jpeg');
-          }
-          return out;
-        }
-        function setSrcWithFallback(img, candidates, fallback){
-          var list = Array.isArray(candidates) ? candidates.slice() : [];
-          function tryNext(){
-            if (!list.length){ img.onerror = null; img.src = fallback; return; }
-            var next = list.shift();
-            img.onerror = tryNext; img.src = next;
-          }
-          try { console.debug('[image-candidates]', candidates); } catch(_) {}
-          tryNext();
-        }
-        titleEl.textContent = name;
-        priceEl.textContent = finalPrice + '€';
-        var fallbackSrc = imgMap[id] || imgEl.src;
-        setSrcWithFallback(imgEl, candidateImages(name, id), fallbackSrc);
-        imgEl.alt = name;
-        buyEl.setAttribute('data-id', id);
-        buyEl.setAttribute('data-name', name);
-        buyEl.setAttribute('data-price', String(finalPrice));
-        buyEl.textContent = 'Add to cart for ' + finalPrice + '€';
-
-        // Gumroad overlay for Soft Skills Explained
-        if (name === 'Soft Skills Explained') {
-          try {
-            buyEl.classList.remove('add-to-cart');
-            buyEl.classList.add('gumroad-button');
-            buyEl.setAttribute('href', 'https://businessexplique.gumroad.com/l/SoftSkillsExplained');
-            buyEl.removeAttribute('data-id');
-            buyEl.removeAttribute('data-name');
-            buyEl.removeAttribute('data-price');
-            buyEl.textContent = 'Buy Now — ' + finalPrice + '€';
-          } catch(_) {}
-        }
-
-        // Optional: pages/features/price/desc/keywords/subtext per product (catalog by name)
-        const catalog = {
-          'Organizational Management Explained': {
-            price: 29, pages: 359,
-            desc: 'How to run and improve any organization, explained strategy by strategy across 359 pages of usable knowledge.',
-            features: [
+  </body>
+</html>
               'Explore Modern Management Strategies',
               'Strategic Planning, PM & HR Management, Operations and Quality Management',
               'Value Stream Mapping, SMART Goals, SWOT Analysis and more'
