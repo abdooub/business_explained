@@ -763,7 +763,11 @@
         : (prod && Array.isArray(prod.features) ? prod.features : null);
       if (tocSource && tocSection && tocEl) {
         tocSection.style.display = 'block';
-        tocEl.innerHTML = tocSource.map(function(item){ return '<li>'+item+'</li>'; }).join('');
+        tocEl.innerHTML = tocSource.map(function(item){
+          var isPart = /^<strong>Part\s+\d+/i.test(item || '');
+          var cls = isPart ? ' class="toc-part-item"' : '';
+          return '<li'+cls+'>'+item+'</li>';
+        }).join('');
       }
       if (subEl) subEl.textContent = (prod && prod.sub) || metaDefaults.sub;
       if (priceEl) priceEl.textContent = finalPrice + '';

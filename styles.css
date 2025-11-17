@@ -254,6 +254,12 @@ a { color: inherit; text-decoration: none; }
   gap: 4px;
 }
 
+.toc-part-item {
+  margin-top: 12px;
+  font-weight: 600;
+  color: #4c1d95;
+}
+
 /* Product page about section styling */
 .about-wrapper {
   margin-top: 32px;
