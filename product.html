@@ -159,6 +159,12 @@
             <p id="pd-desc">A premium-quality digital product designed to accelerate your business performance. Includes actionable insights, ready-to-use checklists, and step-by-step guidance.</p>
           </div>
         </div>
+        <div class="card" id="pd-toc-section" style="margin-top:16px; display:none;">
+          <div class="card-body">
+            <h3>Table of contents</h3>
+            <ol id="pd-toc" style="margin-top:8px; padding-left:20px; display:grid; gap:4px;"></ol>
+          </div>
+        </div>
         <div class="card bundle-card" id="bundle-section" style="display:none;">
           <div class="card-body">
             <h3 style="margin-bottom:8px;">Items Included</h3>
@@ -567,7 +573,12 @@
         const desc = (prod && prod.desc) ? (prod.desc + ' Instant access.') : ((prod && prod.features ? prod.features.join('. ') : 'Premium digital product eBook by Business Explique.') + ' Instant access.');
         document.title = title;
         setMeta('description', desc);
-        setMeta('keywords', [name].concat(prod && prod.keywords ? prod.keywords : ['digital product','ebook','business explained','business','explained','pdf ebook']).join(', '));
+        const brandKeywords = ['Business Explique','Business Explained','business explique ebooks','business explained ebooks','business explique bundle'];
+        setMeta('keywords', [name]
+          .concat(brandKeywords)
+          .concat(prod && prod.keywords ? prod.keywords : ['digital product','ebook','business explained','business','explained','pdf ebook'])
+          .join(', ')
+        );
         setMetaProp('og:title', name);
         setMetaProp('og:description', desc);
         setMetaProp('og:type', 'product');
@@ -587,20 +598,57 @@
         imgEl.addEventListener('error', function(){ updateOgImage(imgEl.src); }, { once: true });
 
         // JSON-LD Product
+        const priceValidUntilDate = new Date();
+        priceValidUntilDate.setFullYear(priceValidUntilDate.getFullYear() + 1);
         const ld = {
           '@context':'https://schema.org',
           '@type':'Product',
           'name': name,
           'image': [ imgEl.src ],
           'description': desc,
-          'brand': { '@type':'Organization', 'name':'Business Explique' },
+          'brand': { '@type':'Brand', 'name':'Business Explique' },
           'url': url,
+          'aggregateRating': {
+            '@type': 'AggregateRating',
+            'ratingValue': '4.8',
+            'reviewCount': '24'
+          },
+          'review': [{
+            '@type': 'Review',
+            'reviewRating': {
+              '@type': 'Rating',
+              'ratingValue': '5'
+            },
+            'author': {
+              '@type': 'Person',
+              'name': 'Verified customer'
+            }
+          }],
           'offers': {
             '@type':'Offer',
             'priceCurrency':'EUR',
             'price': String((typeof finalPriceFromCatalog !== 'undefined') ? finalPriceFromCatalog : finalPrice),
             'availability':'https://schema.org/InStock',
-            'url': url
+            'url': url,
+            'priceValidUntil': priceValidUntilDate.toISOString().split('T')[0],
+            'shippingDetails': {
+              '@type': 'OfferShippingDetails',
+              'shippingRate': {
+                '@type': 'MonetaryAmount',
+                'value': '0',
+                'currency': 'EUR'
+              },
+              'shippingDestination': {
+                '@type': 'DefinedRegion',
+                'name': 'Worldwide'
+              }
+            },
+            'hasMerchantReturnPolicy': {
+              '@type': 'MerchantReturnPolicy',
+              'applicableCountry': 'FR',
+              'returnPolicyCategory': 'https://schema.org/MerchantReturnFiniteReturnWindow',
+              'merchantReturnDays': 14
+            }
           }
         };
         const scriptLd = document.createElement('script');

@@ -59,6 +59,14 @@
         'Strategic Planning, PM & HR Management, Operations and Quality Management',
         'Value Stream Mapping, SMART Goals, SWOT Analysis and more'
       ],
+      toc: [
+        'Introduction to organizational management',
+        'Core management principles',
+        'Designing effective organizations',
+        'People, culture and HR foundations',
+        'Operations and process excellence',
+        'Measuring performance and improvement'
+      ],
       keywords: ['organizational management','strategy','operations','hr','swot','smart goals','value stream mapping','ebook']
     },
     'Marketing Frameworks Explained': {
@@ -219,6 +227,14 @@
         'Cross-selling, Upselling, and SMART Goals',
         'Hours of Research Simplified'
       ],
+      toc: [
+        'Introduction to e-commerce',
+        'E-commerce business models',
+        'Distribution and logistics',
+        'Success factors and growth tactics',
+        'Cross-selling and upselling',
+        'SMART goals and performance metrics'
+      ],
       keywords: ['ecommerce','business models','upselling','smart goals','ebook']
     },
     'Financial Crisis Explained': {
@@ -228,6 +244,14 @@
         'All Factors of Financial Crises',
         'Must-have Guide for the Current Times',
         'Hours of Research Simplified'
+      ],
+      toc: [
+        'Introduction: what is a recession?',
+        'How recessions start and spread',
+        'The business cycle and financial markets',
+        'Historical perspective on major crises',
+        'The 2007–08 crisis step by step',
+        'Policy responses and lessons learned'
       ],
       keywords: ['financial crisis','economics','guide','ebook']
     },
