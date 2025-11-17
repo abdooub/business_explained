@@ -295,6 +295,19 @@ a { color: inherit; text-decoration: none; }
   line-height: 1.6;
 }
 
+/* Per-product theming: Organizational Management Explained (code: o1) */
+.theme-o1 .about-badge,
+.theme-o1 .toc-badge,
+.theme-o1 .toc-part-item {
+  color: #166534;
+}
+
+.theme-o1 .about-badge,
+.theme-o1 .toc-badge {
+  background: #ecfdf3;
+  border-color: rgba(22,101,52,.25);
+}
+
 /* Announcement bar */
 .announcement { background: linear-gradient(90deg, #dc2626, #f97316); color: #fff; font-weight: 700; font-size: 13px; letter-spacing: .2px; }
 .announcement-inner { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 38px; }

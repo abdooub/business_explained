@@ -940,6 +940,120 @@
       ],
       keywords: ['performance management','engagement','case studies','ebook']
     },
+    'Project Management Explained': {
+      price: 29, pages: 68,
+      desc: '27 project management methodologies, including Waterfall, Agile, Scrum, PRiSM, PRINCE2, and more.',
+      features: [
+        '27 Project Management Methodologies',
+        'Waterfall, Agile, Scrum, PRiSM, PRINCE2 and more',
+        'Real-world Case Studies Included'
+      ],
+      aboutHtml:
+        '<p>With our eBook <strong>Project Management Explained</strong>, you will gain a deep understanding of the key concepts and techniques behind successful project management.</p>' +
+        '<p>This book explores 27 different project management methodologies, including Waterfall, Agile, Scrum, PRiSM, PRINCE2, and more. You will also learn about the different project management phases, including planning, analysis, design, development, testing, implementation and maintenance.</p>' +
+        '<p>Additionally, the eBook covers topics such as project management roles, tools, and the importance of project timelines and risk management, giving you a complete view of how to manage projects effectively from start to finish.</p>',
+      toc: [
+        'Introduction',
+        'Demystifying project vs. project management',
+        'What is a project?',
+        'What is project management?',
+        'A comprehensive guide to understanding the project lifecycle',
+        'Stages of the project life cycle',
+        'Types of project life cycle',
+        'Significance of the project life cycle',
+        'Limitations of the project life cycle',
+        'Navigating project management phases for excellence',
+        'Planning',
+        'Analysis',
+        'Design and analysis',
+        'Development',
+        'Testing',
+        'Implementation',
+        'Maintenance',
+        'Expert tips for choosing the right project management methodology',
+        'Importance of project management methodology',
+        'Tips on choosing a project management methodology',
+        'Common project management approaches',
+        'Common project management roles',
+        'Choosing the right project management methodology made simple',
+        'Waterfall',
+        'Agile',
+        'PERT',
+        'Scrum',
+        'Kanban',
+        'Extreme Programming (XP) methodology',
+        'Adaptive Project Framework (APF) methodology',
+        'Lean methodology',
+        'Critical Path Method',
+        'Critical Chain Project Management',
+        'New Product Introduction (NPI)',
+        'Package-Enabled Reengineering (PER)',
+        'Outcome Mapping',
+        'Six Sigma',
+        'PMI’s PMBOK',
+        'PRINCE2 methodology',
+        'Rapid Application Development (RAD) methodology',
+        'Event Chain Methodology',
+        'Hybrid',
+        'Integrated Project Management (IPM)',
+        'PRiSM',
+        'Crystal',
+        'Rational Unified Process (RUP)',
+        'Feature-Driven Development (FDD)',
+        'Adaptive Software Development (ASD)',
+        'Scrumban methodology',
+        'Dynamic Systems Development Method (DSDM)',
+        'Expert tips for choosing the right project management methodology (advanced view)',
+        'Project Integration Management',
+        'Project Scope Management',
+        'Project Time Management',
+        'Project Cost Management',
+        'Project Quality Management',
+        'Project Resource Management',
+        'Project Communications Management',
+        'Project Risk Management',
+        'Project Procurement Management',
+        'Stakeholder Project Management',
+        'Implementing the Seven C’s for project excellence',
+        'Customers',
+        'Capabilities',
+        'Capital',
+        'Channels',
+        'Communication',
+        'Coordination',
+        'Competitors',
+        'Empowering projects with robust management timelines',
+        'Significance of project timelines',
+        'Project management timeline best practices',
+        'A step-by-step guide to crafting an effective risk management plan',
+        'Risk identification',
+        'Risk assessment',
+        'Creating a risk response plan',
+        'Assigning risk owners',
+        'Understanding your triggers',
+        'Making a backup plan',
+        'Measuring your risk threshold',
+        'The power of value delivery',
+        'The foundation of business success',
+        'Departments as autonomous entities',
+        'Ready-to-use project management templates',
+        'NYU Microsoft Word project charter template',
+        'ClickUp project charter template',
+        'ClickUp product brief template',
+        'ClickUp schedule blocking template',
+        'Excel four-week timeline template',
+        'Discover the top project management tools',
+        'Board view',
+        'List view',
+        'Zoho Projects',
+        'Wrike',
+        'Monday.com',
+        'ProofHub',
+        'Clarizen',
+        'Conclusion'
+      ],
+      keywords: ['project management','methodologies','scrum','waterfall','tools','ebook']
+    },
     'Brand Development Explained': {
       price: 29, pages: 58,
       desc: 'Master the five elements of a strong brand and design a complete strategy you can measure.',
@@ -1144,6 +1258,17 @@
     var name = resolved.name || 'Product';
     var price = resolved.price;
     var isBundle = (name === 'Everything Explained Bundle' || code === 'pack');
+
+    // Apply per-product theme class on body (e.g. theme-o1, theme-m1)
+    try {
+      var body = document.body;
+      if (body) {
+        Array.from(body.classList || []).forEach(function(cls){
+          if (/^theme-/.test(cls)) body.classList.remove(cls);
+        });
+        if (code) body.classList.add('theme-' + String(code));
+      }
+    } catch(_) {}
 
     var titleEl = document.getElementById('pd-title');
     var priceEl = document.getElementById('pd-price');
