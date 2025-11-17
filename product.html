@@ -159,10 +159,17 @@
             <p id="pd-desc">A premium-quality digital product designed to accelerate your business performance. Includes actionable insights, ready-to-use checklists, and step-by-step guidance.</p>
           </div>
         </div>
-        <div class="card" id="pd-toc-section" style="margin-top:16px; display:none;">
-          <div class="card-body">
-            <h3>Table of contents</h3>
-            <ol id="pd-toc" style="margin-top:8px; padding-left:20px; display:grid; gap:4px;"></ol>
+        <div id="pd-extra" style="margin-top:20px;"></div>
+
+        <div class="toc-wrapper" id="pd-toc-section" style="display:none;">
+          <div class="toc-header">
+            <span class="toc-badge">What's inside this eBook</span>
+            <h2 class="toc-title">Table of contents</h2>
+          </div>
+          <div class="card toc-card">
+            <div class="card-body">
+              <ol id="pd-toc" class="toc-list"></ol>
+            </div>
           </div>
         </div>
         <div class="card bundle-card" id="bundle-section" style="display:none;">
@@ -497,6 +504,75 @@
               'Encryption, Best Practices, Insurance',
               'Protect Against Online Threats'
             ],
+            longHtml: `
+              <section class="card" style="margin-top:16px;">
+                <div class="card-body">
+                  <h3>About Cyber Security Explained</h3>
+                  <p>From types of cyber attacks and threats, to malware and virus protection, this book covers everything you need to know to protect yourself and your systems from cyber attacks. You will also learn about firewalls and network security, mobile device security, and the importance of keeping your systems up-to-date.</p>
+                  <p>Additionally, this book explores the role of encryption, best practices, and cyber insurance in cyber security. You will also learn about cyber security risks for small businesses, and how to protect yourself from email scams, phishing attacks, and other common threats.</p>
+                </div>
+              </section>
+              <section style="margin-top:16px;">
+                <h3 style="margin-bottom:8px;">Table of contents</h3>
+                <div class="card">
+                  <div class="card-body">
+                    <ol style="padding-left:20px;">
+                      <li>Introduction to Cyber Security</li>
+                      <li>Types of Cyber Attacks and Threats</li>
+                      <li>Understanding Malware and Virus Protection</li>
+                      <li>Protecting Your Computer and Network</li>
+                      <li>Securing Your Online Accounts</li>
+                      <li>Managing Passwords and Other Security Measures</li>
+                      <li>Safeguarding Your Personal Information</li>
+                      <li>Responding to Cyber Attacks</li>
+                      <li>Keeping Your Systems Up-to-Date</li>
+                      <li>Understanding Firewalls and Network Security</li>
+                      <li>Securing Your Mobile Devices</li>
+                      <li>Protecting Yourself from Social Engineering Attacks</li>
+                      <li>Understanding Encryption and Its Role in Cybersecurity
+                        <ul>
+                          <li>Symmetric and Asymmetric Encryption</li>
+                        </ul>
+                      </li>
+                      <li>Staying Safe on Public Wi-Fi Networks
+                        <ul>
+                          <li>What is Public Wi-Fi?</li>
+                          <li>The Dangers of Using a Public Wi-Fi Network</li>
+                          <li>How to Stay Safe on Public Wi-Fi Networks</li>
+                        </ul>
+                      </li>
+                      <li>Understanding the Importance of Backing Up Your Data
+                        <ul>
+                          <li>Why Back Up Your Data?</li>
+                          <li>Types of Backup</li>
+                          <li>Creating a Backup Plan</li>
+                        </ul>
+                      </li>
+                      <li>Understanding Cybersecurity Risks for Small Businesses</li>
+                      <li>Protecting Yourself from Email Scams and Phishing Attacks</li>
+                      <li>The Role of Cyber Insurance in Cyber Security</li>
+                      <li>Learning About Cyber Security for Home Automation and IoT Devices</li>
+                      <li>Understanding Cyber Security for Cloud Computing</li>
+                      <li>Protecting Your Privacy on Social Media
+                        <ul>
+                          <li>Be Wary of Third-Party Applications</li>
+                          <li>Avoid Clicking on Suspicious Links</li>
+                          <li>Change Your Password Regularly</li>
+                        </ul>
+                      </li>
+                      <li>Cyber Security for Remote Workers</li>
+                      <li>Understanding Cyber Security for Cryptocurrency and Blockchain</li>
+                      <li>Cyber Security for Travelers</li>
+                      <li>The Future of Cyber Security and Emerging Trends</li>
+                      <li>Understanding the Role of Governments in Cybersecurity</li>
+                      <li>The Ethics of Cyber Security</li>
+                      <li>Cyber Security Resources and Further Reading</li>
+                      <li>Conclusion</li>
+                    </ol>
+                  </div>
+                </div>
+              </section>
+            `,
             keywords: ['cybersecurity','encryption','best practices','ebook']
           },
           'Machine Learning Explained': {
@@ -540,6 +616,10 @@
           }
           if (descEl && prod && prod.desc) {
             descEl.textContent = prod.desc;
+          }
+          const extraEl = document.getElementById('pd-extra');
+          if (extraEl) {
+            extraEl.innerHTML = prod && prod.longHtml ? prod.longHtml : '';
           }
           if (subEl) subEl.textContent = (prod && prod.sub) || metaDefaults.sub;
           priceEl.textContent = finalPriceFromCatalog + '€';

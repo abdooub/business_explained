@@ -84,10 +84,213 @@
       desc: 'Navigate the strategic journey using field-tested tools and examples from top companies.',
       features: [
         'Navigate the Strategic Journey',
-        'Use PESTLE, Porters, SWOT, VRIO and more',
+        'Use PESTLE, Porter’s, SWOT, VRIO and more',
         'Examples From Top Companies'
       ],
       keywords: ['strategy','pestle','porter','swot','vrio','ebook']
+    },
+    'Entrepreneurship Explained': {
+      price: 29,
+      desc: 'Practical guide to turning ideas into scalable businesses with structure, strategy, and tools you can apply immediately.',
+      features: [
+        'Shape and validate your business ideas',
+        'Build a solid business plan and funding strategy',
+        'Hire, lead, and scale with proven frameworks'
+      ],
+      aboutHtml:
+        '<h3>About this eBook</h3>' +
+        '<p>Entrepreneurship Explained is your practical guide to turning ideas into scalable businesses. Whether you’re just starting out or already building momentum, this eBook gives you the structure, strategy, and real-world tools to move forward with clarity.</p>' +
+        '<p>You’ll start by shaping your core idea, identifying market gaps, validating demand, and refining your concept for real-world fit. From there, you’ll learn how to craft a business plan that attracts funding, make smart financial decisions early, and lay the operational groundwork for growth.</p>' +
+        '<p>But this isn’t just about getting started, it’s about building with purpose. You’ll learn how to position your offer, reach the right customers, and convert consistently. Inside, you’ll also find proven frameworks for hiring, leadership, and scaling – everything you need to stop guessing and start building like a founder.</p>',
+      toc: [
+        'Preface',
+        'Chapter 1: Understanding Entrepreneurship',
+        '1. The Essence of Entrepreneurship',
+        '1.1 Decoding Entrepreneurship: What It Means and Why It Matters?',
+        '1.2 The Entrepreneurial Spirit Defined',
+        '1.3 Exploring Different Entrepreneurial and Entrepreneurship Types',
+        '1.4 Are You Cut Out to Be Your Own Boss?',
+        '1.5 Entrepreneur’s Story: From Humble Beginnings to Iconic Success',
+        '2. Building the Mindset for Success',
+        '2.1 Key Characteristics of Successful Entrepreneurs',
+        '2.2 Cultivating Winning Entrepreneurial Habits',
+        '2.3 The Power of Passion and Perseverance',
+        '3. Spotting Opportunities and Validating Your Ideas',
+        '3.1 Uncovering Needs and Market Gaps',
+        '3.2 Evaluating Business Ideas for Viability: Is it a good fit?',
+        '3.3 Tools to Analyze Opportunities Effectively',
+        '3.4 A Real-life Case Study: From Need to Success',
+        'Chapter 2: Developing a Business Idea',
+        '1. Turning Ideas into Action',
+        '1.1 Powerful Brainstorming Techniques',
+        '1.2 Refining Your Idea for Maximum Impact',
+        '1.3 Case Study: From Concept to Launch – How Airbnb Became a Billion-dollar Business',
+        '1.4 The Entrepreneurial Journey Visualization',
+        '1.5 Famous Entrepreneur Early Struggles',
+        '2. Market Research: Knowing Your Business Landscape and Target Audience',
+        '2.1 Understanding Market Dynamics: Trends and Forces',
+        '2.2 Identifying Your Target Audience: Who Is Your Ideal Customer?',
+        '2.3 Competitive Analysis: Who’s Who in the Zoo?',
+        '2.4 Tools and Methods for Effective Market Research',
+        '2.5 Competitive Analysis Example: The Case of the Aspiring Cupcake Entrepreneur',
+        '3. Validating Your Idea',
+        '3.1 Putting Your Idea to the Test',
+        '3.2 Creating Prototypes and Minimum Viable Products (MVPs)',
+        '3.3 The Power of Feedback Loops: Learn, Adapt, and Improve',
+        '3.4 Real-world Validation Story: The Sticky Note Spark that Launched Evernote',
+        '4. Pricing Essentials: Cracking the Code to Profitability',
+        '4.1 Cost Analysis: Knowing Your Numbers',
+        '4.2 Competitive Landscape: Navigating the Business Jungle Without Getting Eaten Alive',
+        '4.3 Value Proposition: What Makes You Worth It?',
+        '4.4 Pricing Strategies: Finding the Sweet Spot',
+        '4.5 Psychological Pricing: The Power of Perception',
+        'Chapter 3: Building a Winning Business Plan',
+        '1. Blueprint for Success',
+        '1.1 Why Do You Need a Business Plan?',
+        '1.2 Setting Clear SMART Objectives for Your Business',
+        '1.3 Expert Tips for Creating a Winning Business Plan',
+        '2. Key Elements of a Winning Business Plan',
+        '2.1 Executive Summary',
+        '2.2 Company Description',
+        '2.3 Market Analysis',
+        '2.4 Marketing Plan',
+        '2.5 Management Team',
+        '2.6 Financial Projections',
+        '2.7 Funding Request (if applicable)',
+        '2.8 Additional Elements to Consider',
+        '3. Business Plan Templates',
+        '3.1 Crafting a Winning Tech Startup Business Plan',
+        '3.2 Crafting a Winning Service-based Business Plan',
+        '3.3 Crafting a Winning E-commerce Ventures Business Plan',
+        '4. Business Plan Example: Bean There, Spilled That Coffee Shop',
+        '5. Resources for Building Your Business Plan',
+        'Chapter 4: Securing Funding',
+        '1. Funding Options: Launching without Breaking the Bank',
+        '1.1 Bootstrapping: Building from the Ground Up',
+        '1.2 Debt Financing: Borrowing for Growth',
+        '1.3 Equity Financing: Selling Ownership for Investment',
+        '1.4 Choosing the Right Funding Mix',
+        '1.5 Alternative Funding Options',
+        '1.6 The Importance of Financial Projections',
+        '2. Pitching to Investors: Captivating Your Audience and Securing Funding',
+        '2.1 Crafting Your Pitch: The Art of Storytelling',
+        '2.2 Investor Expectations: What Investors Look For',
+        '2.3 Fundraising Success Stories: Inspiration for Aspiring Entrepreneurs',
+        '2.4 Financial Freedom: Understanding Your Business Numbers',
+        '2.5 Case Studies: Plan in Action – Funding Strategies for Global Expansion',
+        'Chapter 5: Building Your Dream Team',
+        '1. Hiring the Right People',
+        '1.1 Identifying Key Roles',
+        '1.2 Recruitment Strategies',
+        '2. Creating a Winning Culture',
+        '2.1 Fostering Innovation: Thinking Beyond the Status Quo',
+        '2.2 Building Trust and Collaboration: A Team That Works Together, Wins Together',
+        '2.3 Case Study: Culture-driven Success – Patagonia',
+        '3. Leadership Tips to Steer Your Team to Success',
+        '3.1 Lead by Example: Be the Walking, Talking Embodiment of Your Values',
+        '3.2 Effective Communication: Bridging the Gap and Fostering Trust',
+        '3.3 Inspirational Leadership Stories: Giants Whose Shoulders We Stand On',
+        'Chapter 6: Marketing and Sales Strategies – Reaching Your Ideal Customers',
+        '1. Marketing Alchemy: Formula for Sales Growth',
+        '1.1 Identifying Your Ideal Customers: The Foundation of Your Strategy',
+        '1.2 Building Brand Awareness: Leaving a Lasting Impression',
+        '1.3 Marketing Essentials: Reach and Convert',
+        '1.4 Digital Marketing: Mastering the Online Landscape',
+        '1.5 Case Study: Dollar Shave Club – Viral Video Marketing Success',
+        '2. Building a Strong Brand: The Cornerstone of Business Success',
+        '2.1 Brand Identity and Positioning: Standing Out from the Crowd',
+        '2.2 Consistency and Trust: The Pillars of a Powerful Brand',
+        '2.3 Expert Insights on Branding: Crafting Your Unique Selling Proposition (USP)',
+        '2.4 Venn Diagram: Focus on Your Strengths, Not Weaknesses',
+        '3. The Conversion Code: How to Build Trust and Convert?',
+        '3.1 Understanding the Sales Funnel: The Customer Journey',
+        '3.2 Customer Relationship Management (CRM): Building Trust and Loyalty',
+        '3.3 Real-life Success Stories: The Power of Networking – From Lone Wolf to Leader',
+        'Chapter 7: Managing Operations – The Backbone of Business Success',
+        '1. Operational Efficiency',
+        '1.1 Streamlining Processes: Doing More with Less',
+        '1.2 Inventory and Supply Chain Management: The Right Products, Right Time',
+        '1.3 Case Study: Zappos – Operational Excellence',
+        '2. Technology and Tools',
+        '2.1 Essential Business Tools',
+        '2.2 Automation and AI',
+        '2.3 Expert Tips on Tech Adoption',
+        '3. Financial Management',
+        '3.1 Financial Side of Your Business',
+        '3.2 Understanding Financial Statements',
+        '3.3 Art of Creating a Solid Budget',
+        '4. Risk Management: Safeguarding Your Business',
+        '4.1 How to Identify Potential Risk',
+        '4.2 Assess Risk Likelihood and Impact',
+        '4.3 Strategies to Mitigate Risk',
+        '5. Deconstructing Success: Real-world Examples for Entrepreneurs',
+        '5.1 Tech-savvy Businesses: Mastering the Digital Age',
+        '5.2 Lean Operations Success: Doing More with Less',
+        '5.3 Innovative Solutions in Operations: Redefining the Game',
+        'Chapter 8: Scaling Your Business – Strategies for Sustainable Growth',
+        '1. Growth Strategies',
+        '1.1 Market Expansion: Reaching New Horizons',
+        '1.2 Mergers and Acquisitions',
+        '1.3 Franchising and Licensing',
+        '1.4 Product Diversification: Broadening Your Appeal',
+        '1.5 Customer Retention and Loyalty Programs',
+        '1.6 Success Story in Scaling: Apple – A Masterclass in Scaling',
+        '2. Managing Growth: Scaling Your Business Effectively',
+        '2.1 Infrastructure and Resources: Building a Strong Foundation',
+        '2.2 Handling Increased Demand: Keeping Up with the Flow',
+        '2.3 Expert Advice on Scaling: From Startup to Enterprise',
+        '3. Case Studies: Unveiling the Secrets of Growth',
+        '3.1 Explosive Growth: Scaling at Breakneck Speed',
+        '3.2 Sustainable Growth: Building for the Long Haul',
+        '3.3 Lessons from Scaled Businesses',
+        'Chapter 9: Overcoming Challenges',
+        '1. Common Obstacles',
+        '1.1 Financial Hurdles – Making the Money Flow',
+        '1.2 Market Competition – Standing Out from the Crowd',
+        '1.3 Attracting New Customers and Establishing a Loyal Customer Base',
+        '2. Resilience and Adaptability in Business: Tips for Navigating the Entrepreneurial Rollercoaster',
+        '2.1 Building Resilience: The Bounce-back Factor',
+        '2.2 Adapting to Change: Succeeding in a Dynamic Landscape',
+        '2.3 Inspiration from Real-world Entrepreneurs: Stories of Overcoming Adversity',
+        '2.4 The Power of Persistence: How Persistence Pays Off in Entrepreneurship',
+        '3. E-commerce: Thriving in the Digital Marketplace',
+        '3.1 Setting Up an Online Store: Your Digital Shopfront',
+        '3.2 Optimizing Product Listings: The Art of Getting Found',
+        '3.3 Managing Online Marketing Campaigns: Spreading the Word',
+        '3.4 Fulfilling Orders Efficiently: Keeping the Wheels Turning',
+        '3.5 Common E-commerce Mistakes: Learning from Others’ Missteps',
+        '4. Case Studies in Business Resilience',
+        '4.1 Rising from the Ashes',
+        '4.2 Turning Setbacks into Stepping Stones',
+        '4.3 Learning from the Falls: Wisdom from Failures',
+        'Chapter 10: Real-life Entrepreneurial Success Stories',
+        '1. Inspiring Case Studies',
+        '1.1 Tech Titans: Shaping the E-commerce Firmament',
+        '1.2 Innovative Startups: Disrupting the Established Order',
+        '1.3 Social Entrepreneurs: Weaving Social Good',
+        '2. Unveiling the Gems: Wisdom from Business Victories',
+        '2.1 Crystallizing Learnings: Key Takeaways from Success Stories',
+        '2.2 Bridging the Gap: Applying Lessons to Your Business',
+        '2.3 Expert Reflections on Success',
+        '3. Facts, Stats, and Inspiration: Did you know?',
+        '3.1 Interesting Entrepreneurial Facts',
+        '3.2 Motivational Metrics: Inspiring Business Growth',
+        '3.3 Words of Wisdom: Inspirational Quotes from Entrepreneurs',
+        'Chapter 11: Conclusion',
+        '1. Recap and Encouragement for Your Business Adventure',
+        '1.1 Key Takeaways',
+        '1.2 The Power of Belief: Embracing the Entrepreneurial Spirit',
+        '1.3 Reflecting on Your Entrepreneurial Journey',
+        '2. Take Action and Ignite Your Entrepreneurial Journey',
+        '2.1 Guidance on Moving Forward: Take the First Step Toward Your Dream',
+        '2.2 Continuous Learning: Essential Resources for Aspiring Entrepreneurs',
+        '2.3 Planning Your Next Venture',
+        '3. Final Thoughts',
+        '3.1 Inspirational Closing Remarks',
+        '3.2 Motivational Takeaways',
+        'Bibliography'
+      ],
+      keywords: ['entrepreneurship','startup','business plan','funding','scaling','ebook']
     },
     'Process Improvement Strategies Explained': {
       price: 29, pages: 77,
@@ -323,6 +526,40 @@
         'Encryption, Best Practices, Insurance',
         'Protect Against Online Threats'
       ],
+      aboutHtml: '<h3>About Cyber Security Explained<\/h3>' +
+        '<p>From types of cyber attacks and threats, to malware and virus protection, this book covers everything you need to know to protect yourself and your systems from cyber attacks. You will also learn about firewalls and network security, mobile device security, and the importance of keeping your systems up-to-date.<\/p>' +
+        '<p>Additionally, this book explores the role of encryption, best practices, and cyber insurance in cyber security. You will also learn about cyber security risks for small businesses, and how to protect yourself from email scams, phishing attacks, and other common threats.<\/p>',
+      toc: [
+        'Introduction to Cyber Security',
+        'Types of Cyber Attacks and Threats',
+        'Understanding Malware and Virus Protection',
+        'Protecting Your Computer and Network',
+        'Securing Your Online Accounts',
+        'Managing Passwords and Other Security Measures',
+        'Safeguarding Your Personal Information',
+        'Responding to Cyber Attacks',
+        'Keeping Your Systems Up-to-Date',
+        'Understanding Firewalls and Network Security',
+        'Securing Your Mobile Devices',
+        'Protecting Yourself from Social Engineering Attacks',
+        'Understanding Encryption and Its Role in Cybersecurity (Symmetric and Asymmetric Encryption)',
+        'Staying Safe on Public Wi-Fi Networks (What is Public Wi-Fi?, Dangers, How to Stay Safe)',
+        'Understanding the Importance of Backing Up Your Data (Why, Types of Backup, Creating a Backup Plan)',
+        'Understanding Cybersecurity Risks for Small Businesses',
+        'Protecting Yourself from Email Scams and Phishing Attacks',
+        'The Role of Cyber Insurance in Cyber Security',
+        'Learning About Cyber Security for Home Automation and IoT Devices',
+        'Understanding Cyber Security for Cloud Computing',
+        'Protecting Your Privacy on Social Media (Apps, Suspicious Links, Password Changes)',
+        'Cyber Security for Remote Workers',
+        'Understanding Cyber Security for Cryptocurrency and Blockchain',
+        'Cyber Security for Travelers',
+        'The Future of Cyber Security and Emerging Trends',
+        'Understanding the Role of Governments in Cybersecurity',
+        'The Ethics of Cyber Security',
+        'Cyber Security Resources and Further Reading',
+        'Conclusion'
+      ],
       keywords: ['cybersecurity','encryption','best practices','ebook']
     },
     'Machine Learning Explained': {
@@ -430,6 +667,41 @@
       }
       if (descEl && prod && prod.desc) {
         descEl.textContent = prod.desc;
+      }
+      // Extra "About" block and table of contents for all products
+      var extraEl = document.getElementById('pd-extra');
+      var tocSection = document.getElementById('pd-toc-section');
+      var tocEl = document.getElementById('pd-toc');
+      if (extraEl) {
+        var safeName = (name || 'This eBook').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        var inner;
+        if (prod && prod.aboutHtml) {
+          inner = prod.aboutHtml;
+        } else if (prod) {
+          var safeDesc = (prod.desc || '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+          inner = safeDesc ? '<p>' + safeDesc + '<\/p>' : '';
+        } else {
+          inner = '';
+        }
+        if (inner) {
+          extraEl.innerHTML =
+            '<div class="about-wrapper">' +
+              '<div class="about-header">' +
+                '<span class="about-badge">' + safeName + '<\/span>' +
+                '<h2 class="about-title">About this eBook<\/h2>' +
+              '<\/div>' +
+              '<div class="about-body">' + inner + '<\/div>' +
+            '<\/div>';
+        } else {
+          extraEl.innerHTML = '';
+        }
+      }
+      var tocSource = prod && Array.isArray(prod.toc)
+        ? prod.toc
+        : (prod && Array.isArray(prod.features) ? prod.features : null);
+      if (tocSource && tocSection && tocEl) {
+        tocSection.style.display = 'block';
+        tocEl.innerHTML = tocSource.map(function(item){ return '<li>'+item+'</li>'; }).join('');
       }
       if (subEl) subEl.textContent = (prod && prod.sub) || metaDefaults.sub;
       if (priceEl) priceEl.textContent = finalPrice + '';
