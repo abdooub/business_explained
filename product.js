@@ -572,6 +572,7 @@
     },
     'Entrepreneurship Explained': {
       price: 29,
+      pages: 314,
       desc: 'Practical guide to turning ideas into scalable businesses with structure, strategy, and tools you can apply immediately.',
       features: [
         'Shape and validate your business ideas',
