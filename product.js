@@ -2736,12 +2736,12 @@
     var computedPrice = prod && typeof prod.price === 'number' ? prod.price : price;
     var finalPrice = computedPrice || price || 29;
 
-    if (priceEl) priceEl.textContent = finalPrice + '';
+    if (priceEl) priceEl.textContent = '$' + finalPrice;
     if (buyEl) {
       buyEl.setAttribute('data-id', code);
       buyEl.setAttribute('data-name', name);
       buyEl.setAttribute('data-price', String(finalPrice));
-      buyEl.textContent = 'Add to cart for ' + finalPrice + '';
+      buyEl.textContent = 'Add to cart for $' + finalPrice;
     }
 
     if (name === 'Soft Skills Explained') {
@@ -2752,7 +2752,7 @@
         buyEl.removeAttribute('data-id');
         buyEl.removeAttribute('data-name');
         buyEl.removeAttribute('data-price');
-        buyEl.textContent = 'Buy Now  ' + finalPrice + '';
+        buyEl.textContent = 'Buy Now $' + finalPrice;
       } catch(_) {}
     }
 
@@ -2809,15 +2809,15 @@
         }).join('');
       }
       if (subEl) subEl.textContent = (prod && prod.sub) || metaDefaults.sub;
-      if (priceEl) priceEl.textContent = finalPrice + '';
+      if (priceEl) priceEl.textContent = '$' + finalPrice;
       if (buyEl && !buyEl.classList.contains('gumroad-button')) {
         buyEl.setAttribute('data-price', String(finalPrice));
-        buyEl.textContent = 'Add to cart for ' + finalPrice + '';
+        buyEl.textContent = 'Add to cart for $' + finalPrice;
       }
     }
 
     var url = location.href;
-    var title = name + '  Business Explique';
+    var title = name + ' | Business Explique';
     var desc = (prod && prod.desc) ? (prod.desc + ' Instant access.') : ((prod && prod.features ? prod.features.join('. ') : 'Premium digital product eBook by Business Explique.') + ' Instant access.');
     document.title = title;
     setMeta('description', desc);
@@ -2835,8 +2835,16 @@
     imgEl.addEventListener('error', function(){ updateOgImage(imgEl.src); }, { once: true });
 
     if (isBundle) {
-      if (subEl) subEl.textContent = 'Digital bundle  Instant access  One-time payment';
-      if (descEl) descEl.innerHTML = '<p>The Everything Explained Bundle is a comprehensive collection of business eBooks covering marketing, leadership, finance, technology and more. See the list of all items included below.</p>';
+      if (subEl) subEl.textContent = 'Digital bundle • Instant access • One-time payment';
+      if (descEl) descEl.innerHTML = '<p>The Everything Explained Bundle is the most comprehensive and valuable business eBook bundle available today.</p>' +
+        '<p>It includes an enormous amount of research, practical advice, and examples all in one click. It is a must-have for entrepreneurs, project managers, consultants, analysts, and everyone who wants to take their business knowledge to another level.</p>';
+      try {
+        var aboutHeading = document.getElementById('bundle-about-heading');
+        if (aboutHeading) {
+          aboutHeading.classList.add('about-bundle-heading');
+          aboutHeading.innerHTML = 'About <span class="about-accent-blue">Bundle:</span> <span class="about-accent-red">Everything Explained</span>';
+        }
+      } catch(_) {}
       try {
         if (pagesEl && pagesEl.parentElement) {
           pagesEl.parentElement.innerHTML = '<strong id="pd-pages">32</strong> Books';
@@ -2850,6 +2858,17 @@
       var sliderPrev = document.getElementById('bundle-prev');
       var sliderNext = document.getElementById('bundle-next');
       function localThumbs(title){ return candidateImages(title); }
+      function bundlePriceForTitle(title){
+        var t = String(title || '').trim();
+        var cheap = (
+          t === 'Human Resources Explained' ||
+          t === '360-Degree Feedback Explained' ||
+          t === 'Scrum Manual' ||
+          t === 'Kanban Manual' ||
+          t === 'Agile Manual'
+        );
+        return cheap ? 19 : 29;
+      }
       var items = [
         'Organizational Management Explained',
         'Entrepreneurship Explained',
@@ -2904,7 +2923,8 @@
       if (bundleEl && listEl) {
         bundleEl.style.display = 'block';
         listEl.innerHTML = items.map(function(t){
-          return '\n          <div class="bundle-item" role="listitem">\n            <img class="thumb" alt="" data-title="'+t.replace(/&/g,'&amp;')+'" />\n            <div class="title">'+t+'</div>\n            <div class="price">29</div>\n          </div>\n        ';
+          var p = bundlePriceForTitle(t);
+          return '\n          <div class="bundle-item" role="listitem">\n            <img class="thumb" alt="" data-title="'+t.replace(/&/g,'&amp;')+'" />\n            <div class="title">'+t+'</div>\n            <div class="price">$'+p+'</div>\n          </div>\n        ';
         }).join('');
         listEl.querySelectorAll('img.thumb').forEach(function(im){
           var t = im.getAttribute('data-title') || '';
@@ -2922,7 +2942,7 @@
         }
         var noteEl = document.getElementById('bundle-note');
         if (noteEl) noteEl.style.display = 'block';
-        var fillBtn = function(btn){ if (!btn) return; btn.setAttribute('data-id', code); btn.setAttribute('data-name', name); btn.setAttribute('data-price', String(finalPrice)); btn.textContent = 'Add to cart  '+finalPrice+''; };
+        var fillBtn = function(btn){ if (!btn) return; btn.setAttribute('data-id', code); btn.setAttribute('data-name', name); btn.setAttribute('data-price', String(finalPrice)); btn.textContent = 'Add to cart for $' + finalPrice; };
         fillBtn(bundleBuy);
         fillBtn(bundleBuyBottom);
       }

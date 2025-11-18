@@ -47,8 +47,31 @@
       .bundle-item { display:flex; align-items:center; gap:12px; padding:12px 14px; border-bottom: 1px solid #eee; }
       .bundle-item:last-child { border-bottom: 0; }
       .bundle-item .title { font-weight:600; }
-      .bundle-item .price { margin-left:auto; color:#6b7280; font-weight:700; }
+      .bundle-item .price { margin-left:auto; color:#9ca3af; font-weight:600; font-size:14px; min-width:48px; text-align:right; }
       .bundle-item .thumb { width:40px; height:40px; border-radius:8px; object-fit:cover; background:#f3f4f6; }
+
+      .bundle-audience { margin-top: 28px; padding: 20px 16px 8px; border-radius: 16px; background: #f9fafb; border: 1px solid #e5e7eb; }
+      .bundle-audience h3 { text-align: center; margin: 0 0 6px; font-size: 20px; }
+      .bundle-audience p.sub { text-align: center; margin: 0 0 18px; color: #6b7280; font-size: 14px; }
+      .audience-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; }
+      .audience-card { background: #fff; border-radius: 14px; padding: 10px 12px; box-shadow: 0 4px 12px rgba(15,23,42,.06); border: 1px solid #e5e7eb; }
+      .audience-card h4 { margin: 0 0 4px; font-size: 14px; color: #111827; }
+      .audience-card p { margin: 0; font-size: 13px; color: #6b7280; }
+      @media (max-width: 768px){ .audience-grid { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+      @media (max-width: 520px){ .audience-grid { grid-template-columns: 1fr; } }
+
+      .about-bundle-heading { text-align: center; font-size: 20px; margin-bottom: 4px; }
+      .about-bundle-heading .about-accent-blue { color: #0ea5e9; }
+      .about-bundle-heading .about-accent-red { color: #ef4444; }
+
+      .bundle-tags { margin-top: 32px; padding: 20px 16px 22px; border-radius: 16px; background: radial-gradient(circle at top, #eef2ff 0, #ffffff 45%, #f9fafb 100%); border: 1px solid #e5e7eb; overflow: hidden; }
+      .bundle-tags h3 { text-align: center; margin: 0 0 6px; font-size: 20px; }
+      .bundle-tags p.sub { text-align: center; margin: 0 0 18px; color: #6b7280; font-size: 14px; }
+      .tag-strip-outer { position: relative; overflow: hidden; mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent); }
+      .tag-strip { display: inline-flex; gap: 10px; white-space: nowrap; animation: tag-scroll 32s linear infinite; padding-bottom: 4px; }
+      .tag-pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,.9); border: 1px solid #e5e7eb; font-size: 13px; color: #111827; box-shadow: 0 6px 14px rgba(15,23,42,.08); }
+      .tag-pill span.icon { font-size: 14px; }
+      @keyframes tag-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
       /* Header search */
       .header-actions { display:flex; align-items:center; gap:10px; margin-left:auto; }
       .header-search { position: relative; width: min(380px, 42vw); }
@@ -157,7 +180,7 @@
       <section id="content" style="margin-top: 28px;">
         <div class="card">
           <div class="card-body">
-            <h3>What you'll get</h3>
+            <h3 id="bundle-about-heading">What you'll get</h3>
             <p id="pd-desc">A premium-quality digital product designed to accelerate your business performance. Includes actionable insights, ready-to-use checklists, and step-by-step guidance.</p>
           </div>
         </div>
@@ -188,6 +211,76 @@
             </div>
           </div>
         </div>
+
+        <section class="bundle-audience" aria-label="Who the Everything Explained Bundle is for">
+          <h3>Who is it for ?</h3>
+          <p class="sub">The Everything Explained Bundle is perfect for a wide range of business-minded individuals – from hustlers and entrepreneurs to managers and business enthusiasts – and anyone eager to take their business to the next level.</p>
+          <div class="audience-grid">
+            <div class="audience-card">
+              <h4>Hustlers 💪</h4>
+              <p>Driven go-getters seeking practical business tactics.</p>
+            </div>
+            <div class="audience-card">
+              <h4>Self-developers 🧠</h4>
+              <p>Individuals enhancing skills for personal & professional growth.</p>
+            </div>
+            <div class="audience-card">
+              <h4>Entrepreneurs 🏆</h4>
+              <p>Visionaries building businesses from the ground up.</p>
+            </div>
+            <div class="audience-card">
+              <h4>Business Enthusiasts 🔎</h4>
+              <p>Keen learners passionate about business insights.</p>
+            </div>
+            <div class="audience-card">
+              <h4>Managers 📊</h4>
+              <p>Leaders aiming to optimize team performance & strategies.</p>
+            </div>
+            <div class="audience-card">
+              <h4>Fresh Employees 📚</h4>
+              <p>Newcomers keen on mastering business fundamentals.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="bundle-tags" aria-label="What we’ve put together in the bundle">
+          <h3>What we’ve put together 🎁</h3>
+          <p class="sub">Get all 31 business eBooks packed with real-world strategies, frameworks and tools — for the price of just a few eBooks.</p>
+          <div class="tag-strip-outer">
+            <div class="tag-strip">
+              <div class="tag-pill"><span class="icon">✅</span><span>Task Management</span></div>
+              <div class="tag-pill"><span class="icon">🔴</span><span>360-Degree Feedback</span></div>
+              <div class="tag-pill"><span class="icon">🅿️</span><span>7P’s Of Marketing</span></div>
+              <div class="tag-pill"><span class="icon">🧠</span><span>Strategic Management Stages</span></div>
+              <div class="tag-pill"><span class="icon">🌱</span><span>Talent Acquisition</span></div>
+              <div class="tag-pill"><span class="icon">🌊</span><span>Blue Ocean Strategy</span></div>
+              <!-- duplicate set for seamless loop -->
+              <div class="tag-pill"><span class="icon">✅</span><span>Task Management</span></div>
+              <div class="tag-pill"><span class="icon">🔴</span><span>360-Degree Feedback</span></div>
+              <div class="tag-pill"><span class="icon">🅿️</span><span>7P’s Of Marketing</span></div>
+              <div class="tag-pill"><span class="icon">🧠</span><span>Strategic Management Stages</span></div>
+              <div class="tag-pill"><span class="icon">🌱</span><span>Talent Acquisition</span></div>
+              <div class="tag-pill"><span class="icon">🌊</span><span>Blue Ocean Strategy</span></div>
+            </div>
+          </div>
+          <div class="tag-strip-outer" style="margin-top:10px;">
+            <div class="tag-strip">
+              <div class="tag-pill"><span class="icon">📊</span><span>SWOT Analysis</span></div>
+              <div class="tag-pill"><span class="icon">🌱</span><span>Onboarding Process</span></div>
+              <div class="tag-pill"><span class="icon">🐟</span><span>Fishbone Diagram</span></div>
+              <div class="tag-pill"><span class="icon">🏙️</span><span>Business-Level Strategies</span></div>
+              <div class="tag-pill"><span class="icon">💎</span><span>Crystal Methodology</span></div>
+              <div class="tag-pill"><span class="icon">📌</span><span>Product Positioning</span></div>
+              <!-- duplicate set for seamless loop -->
+              <div class="tag-pill"><span class="icon">📊</span><span>SWOT Analysis</span></div>
+              <div class="tag-pill"><span class="icon">🌱</span><span>Onboarding Process</span></div>
+              <div class="tag-pill"><span class="icon">🐟</span><span>Fishbone Diagram</span></div>
+              <div class="tag-pill"><span class="icon">🏙️</span><span>Business-Level Strategies</span></div>
+              <div class="tag-pill"><span class="icon">💎</span><span>Crystal Methodology</span></div>
+              <div class="tag-pill"><span class="icon">📌</span><span>Product Positioning</span></div>
+            </div>
+          </div>
+        </section>
       </section>
     </main>
 
