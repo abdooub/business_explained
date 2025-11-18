@@ -2818,11 +2818,19 @@
 
     var url = location.href;
     var title = name + ' | Business Explique';
-    var desc = (prod && prod.desc) ? (prod.desc + ' Instant access.') : ((prod && prod.features ? prod.features.join('. ') : 'Premium digital product eBook by Business Explique.') + ' Instant access.');
+    var desc = (prod && prod.desc)
+      ? (prod.desc + ' Instant access.')
+      : ((prod && prod.features ? prod.features.join('. ') : 'Premium digital product eBook by Business Explique.') + ' Instant access.');
+
+    if (code === 'pack') {
+      title = 'Everything Explained Bundle — 31 Business eBooks in One Pack | Business Explique';
+      desc = 'Everything Explained Bundle by Business Explique: 31 business eBooks on strategy, leadership, marketing, finance, AI, HR, market research and more — over 3,000 pages of practical business knowledge in a single digital bundle.';
+    }
+
     document.title = title;
     setMeta('description', desc);
-    setMeta('keywords', [name].concat(prod && prod.keywords ? prod.keywords : ['digital product','ebook','business explained','business','explained','pdf ebook']).join(', '));
-    setMetaProp('og:title', name);
+    setMeta('keywords', [name].concat(prod && prod.keywords ? prod.keywords : ['business ebooks','business ebook bundle','strategy','leadership','marketing','finance','AI in business','pdf ebook']).join(', '));
+    setMetaProp('og:title', title);
     setMetaProp('og:description', desc);
     setMetaProp('og:type', 'product');
     setMetaProp('og:url', url);
