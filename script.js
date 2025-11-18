@@ -380,7 +380,7 @@
       products = base.map((p) => {
         // Special image for the bundle
         if (p.id === 'pack' || /everything explained bundle/i.test(p.name)) {
-          return { ...p, img: 'images/ebooks/all_pack0.png', imgFallback: 'images/ebooks/all_pack0.png' };
+          return { ...p, img: 'images/ebooks/all_pack31.png', imgFallback: 'images/ebooks/all_pack31.png' };
         }
         return { ...p, img: imgPng(p.name), imgFallback: imgJpg(p.name) };
       });

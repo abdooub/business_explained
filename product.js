@@ -14,7 +14,7 @@
     pim1:'images/ebooks/pim1.png',
     pm1: 'images/ebooks/pm1.png',
     hr1: 'images/ebooks/hr1.png',
-    pack:'images/ebooks/all_pack.png'
+    pack:'images/ebooks/all_pack31.png'
   };
 
   function candidateImages(name, code){
