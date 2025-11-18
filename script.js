@@ -19,12 +19,12 @@
         </div>
         <div class="sheet-body">
           <ul class="menu-list">
-            <li><a href="/products.html">Homepage</a></li>
-            <li><a href="/products.html">Products</a></li>
-            <li><a href="/about.html">About Us</a></li>
-            <li><a href="/blog.html">Blog</a></li>
-            <li><a href="/support.html">Support</a></li>
-            <li><a href="/faq.html">FAQs</a></li>
+            <li><a href="./index.html">Home</a></li>
+            <li><a href="./products.html">Products</a></li>
+            <li><a href="./about.html">About Us</a></li>
+            <li><a href="./blog.html">Blog</a></li>
+            <li><a href="./support.html">Support</a></li>
+            <li><a href="./faq.html">FAQs</a></li>
           </ul>
         </div>
       </div>
