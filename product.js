@@ -2846,6 +2846,7 @@
       var listEl = document.getElementById('bundle-items');
       var bundleBuy = document.getElementById('bundle-buy');
       var bundleBuyBottom = document.getElementById('bundle-buy-bottom');
+      var galleryEl = document.getElementById('bundle-gallery');
       function localThumbs(title){ return candidateImages(title); }
       var items = [
         'Organizational Management Explained',
@@ -2888,6 +2889,16 @@
           var t = im.getAttribute('data-title') || '';
           setSrcWithFallback(im, localThumbs(t), 'https://images.unsplash.com/photo-1556761175-b413da4baf72?w=160&q=70&auto=format&fit=crop');
         });
+        if (galleryEl) {
+          galleryEl.style.display = 'grid';
+          galleryEl.innerHTML = items.map(function(t){
+            return '<img class="bundle-gallery-item" alt="'+t.replace(/"/g,'&quot;')+'" data-title="'+t.replace(/&/g,'&amp;')+'" />';
+          }).join('');
+          galleryEl.querySelectorAll('img.bundle-gallery-item').forEach(function(im){
+            var t = im.getAttribute('data-title') || '';
+            setSrcWithFallback(im, localThumbs(t), 'https://images.unsplash.com/photo-1556761175-b413da4baf72?w=240&q=70&auto=format&fit=crop');
+          });
+        }
         var noteEl = document.getElementById('bundle-note');
         if (noteEl) noteEl.style.display = 'block';
         var fillBtn = function(btn){ if (!btn) return; btn.setAttribute('data-id', code); btn.setAttribute('data-name', name); btn.setAttribute('data-price', String(finalPrice)); btn.textContent = 'Add to cart  '+finalPrice+''; };
