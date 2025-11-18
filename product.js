@@ -2847,6 +2847,8 @@
       var bundleBuy = document.getElementById('bundle-buy');
       var bundleBuyBottom = document.getElementById('bundle-buy-bottom');
       var galleryEl = document.getElementById('bundle-gallery');
+      var sliderPrev = document.getElementById('bundle-prev');
+      var sliderNext = document.getElementById('bundle-next');
       function localThumbs(title){ return candidateImages(title); }
       var items = [
         'Organizational Management Explained',
@@ -2880,6 +2882,25 @@
         'Machine Learning Explained',
         'Virtual Reality Explained'
       ];
+
+      // Slider over main image for bundle: cycle through ebook covers
+      var currentIndex = 0;
+      function showCover(idx){
+        if (!items.length) return;
+        if (idx < 0) idx = items.length - 1;
+        if (idx >= items.length) idx = 0;
+        currentIndex = idx;
+        try {
+          var title = items[currentIndex] || '';
+          setSrcWithFallback(imgEl, localThumbs(title), imgEl.src);
+        } catch(_) {}
+      }
+      if (sliderPrev) {
+        sliderPrev.addEventListener('click', function(){ showCover(currentIndex - 1); });
+      }
+      if (sliderNext) {
+        sliderNext.addEventListener('click', function(){ showCover(currentIndex + 1); });
+      }
       if (bundleEl && listEl) {
         bundleEl.style.display = 'block';
         listEl.innerHTML = items.map(function(t){
