@@ -13,7 +13,7 @@
   { "id": 12, "code": "fm1x", "name": "Financial Management Explained", "price": 49 },
   { "id": 13, "code": "rk1", "name": "Risk Management Explained", "price": 49 },
   { "id": 14, "code": "ss1", "name": "Soft Skills Explained", "price": 49 },
-  { "id": 15, "code": "cms1", "name": "Change Management Strategies Explained", "price": 49 },
+  { "id": 15, "code": "cms1", "name": "Change Management Strategies Explained", "price": 29 },
   { "id": 16, "code": "ees1", "name": "Employee Engagement Strategies Explained", "price": 49 },
   { "id": 17, "code": "fdb1", "name": "360-Degree Feedback Explained", "price": 49 },
   { "id": 18, "code": "tmo1", "name": "Talent Management & Onboarding Explained", "price": 49 },
