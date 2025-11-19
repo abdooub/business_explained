@@ -81,8 +81,22 @@
           <h1>How can we help you today? 👋</h1>
           <p>To get in touch fill out the form below.</p>
         </div>
-        <div class="hero-media">
-          <img src="images/ebooks/all_pack31.png" alt="Support" loading="lazy" />
+           <div class="hero-media" aria-hidden="true">
+      <div style="
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        padding:18px 26px;
+        border-radius:26px;
+        background:linear-gradient(135deg, #4c1dff 0%, #7c3aed 40%, #a855f7 100%);
+        box-shadow:0 22px 60px rgba(15,23,42,.35);
+        font-size:80px;
+        gap:24px;
+      ">
+        <span>🧑🏻‍💻</span>
+        <span>🧑🏽‍💼</span>
+      </div>
+    </div>
         </div>
       </div>
     </section>
@@ -110,18 +124,26 @@
             <div style="grid-column:span 2; display:grid; gap:6px;">
               <label for="message">Message*</label>
               <textarea id="message" name="message" rows="6" required></textarea>
-            </div>
-            <div style="grid-column:span 2; display:flex; gap:10px; align-items:center;">
-              <button class="btn btn-primary" type="submit">Submit</button>
+            </div>            <!-- Ligne bouton + message de statut -->
+            <div style="grid-column:span 2; display:flex; flex-direction:column; gap:8px; margin-top:12px;">
+              <button class="btn btn-primary" type="submit"
+                style="width:100%; justify-content:center; height:50px; border-radius:999px;
+                       background:linear-gradient(90deg,#4c1dff,#a855f7);">
+                Submit →
+              </button>
               <p class="form-hint" id="support-hint" role="status" aria-live="polite"></p>
             </div>
           </form>
         </div>
       </div>
 
-      <section style="margin:28px auto 0; max-width:860px; display:grid; gap:8px;">
-        <p>Our team will get back to you ASAP.</p>
+      <!-- Texte en dessous du formulaire -->
+      <section style="margin:28px auto 0; max-width:860px; text-align:center; color:#6b7280; font-size:13px; display:grid; gap:6px;">
+        <p>This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.</p>
+        <p>🕒 Our team will get back to you ASAP.</p>
       </section>
+
+
     </main>
 
     <footer class="site-footer" aria-label="Footer">
