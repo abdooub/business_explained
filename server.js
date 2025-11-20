@@ -289,4 +289,3 @@ if (!isVercel) {
 
 // Export pour Vercel
 module.exports = app;
-startServer(PORT);

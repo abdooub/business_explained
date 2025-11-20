@@ -204,18 +204,7 @@ a { color: inherit; text-decoration: none; }
 .nav-toggle .bar:nth-child(2) { top: 19px; }
 .nav-toggle .bar:nth-child(3) { top: 26px; }
 
-.header-actions { display: flex; align-items: center; gap: 10px; }
-.search { display: block; }
-.search input {
-  height: 40px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 0 14px;
-  width: 260px;
-  background: #fff;
-}
-.search input:focus { outline: 3px solid rgba(99,102,241,.25); outline-offset: 0; }
-.icon-link { display: inline-grid; place-items: center; width: 40px; height: 40px; border: 1px solid var(--border); border-radius: 10px; background: #fff; }
+/* Header actions removed */
 
 /* Hero */
 .hero { padding: 88px 0; background: var(--soft); }
@@ -787,7 +776,7 @@ a { color: inherit; text-decoration: none; }
   }
   .brand { gap: 8px; }
   .brand-text { font-size: 13px; line-height: 1; white-space: nowrap; }
-  .header-actions { gap: 6px; }
+  /* Header actions removed */
   /* Use more specific selectors + !important to override per-page styles */
   .site-header .header-search { width: min(180px, 42vw) !important; }
   .site-header .header-search input[type="search"] { height: 30px !important; padding: 4px 10px !important; font-size: 12.5px !important; border-radius: 999px !important; }
