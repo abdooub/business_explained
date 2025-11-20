@@ -13,22 +13,61 @@ const PORT = Number(process.env.PORT || 3000);
 const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY || '';
 const stripe = STRIPE_SECRET_KEY ? new Stripe(STRIPE_SECRET_KEY) : null;
 
-// Basic security headers (very light)
+// Middleware de logging
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl}`);
+  next();
+});
+
+// Configuration de base
 app.disable('x-powered-by');
+
+// Middleware de sécurité
 app.use((req, res, next) => {
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
   next();
 });
 
-// Body parsing for JSON (must come before API endpoints)
+// Body parsing
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// Set products.html as homepage
-app.get(['/', '/index.html'], (req, res) => {
-  res.sendFile(path.join(__dirname, 'products.html'));
+// Middleware de logging
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl}`);
+  next();
 });
-app.get('/home', (req, res) => res.redirect(302, '/products.html'));
+
+// Servir les fichiers statiques
+app.use(express.static(__dirname, {
+  extensions: ['html', 'htm'],
+  index: false
+}));
+
+// Route pour la page d'accueil
+app.get('/', (req, res) => {
+  console.log('Accès à la page d\'accueil, envoi de index.html');
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// Redirections
+app.get('/home', (req, res) => {
+  console.log('Redirection de /home vers /products.html');
+  res.redirect(302, '/products.html');
+});
+
+// Gestion des erreurs 404
+app.use((req, res, next) => {
+  console.log(`Page non trouvée: ${req.originalUrl}`);
+  res.status(404).sendFile(path.join(__dirname, '404.html'));
+});
+
+// Gestion des erreurs globales
+app.use((err, req, res, next) => {
+  console.error('Erreur du serveur:', err);
+  res.status(500).send('Une erreur est survenue sur le serveur');
+});
 
 // Support form endpoint — sends an email to business@business-explique.com
 app.post('/api/support', async (req, res) => {
@@ -160,13 +199,6 @@ app.post('/api/create-checkout-session', async (req, res) => {
   }
 });
 
-// Serve static files from the project root
-app.use(express.static(__dirname, {
-  extensions: ['html'],
-  index: 'index.html',
-  maxAge: '1h'
-}));
-
 // Healthcheck
 app.get('/api/health', (_req, res) => {
   res.json({ ok: true, uptime: process.uptime() });
@@ -187,24 +219,37 @@ app.post('/api/subscribe', (req, res) => {
   }
 });
 
-// Fallback to index.html for unknown routes (optional SPA-like behavior)
-app.get('*', (req, res, next) => {
-  if (req.path.startsWith('/api/')) return next();
-  res.sendFile(path.join(__dirname, 'index.html'));
+// Gestion des routes inconnues (404)
+app.use((req, res, next) => {
+  if (req.path.startsWith('/api/')) {
+    return res.status(404).json({ error: 'API endpoint not found' });
+  }
+  console.log(`Page non trouvée: ${req.originalUrl}`);
+  res.status(404).sendFile(path.join(__dirname, '404.html'));
 });
 
+// Démarrer le serveur
 function startServer(port, maxTries = 5) {
-  const srv = app.listen(port, () => {
-    console.log(`Server running on http://localhost:${port}`);
-  });
-  srv.on('error', (err) => {
-    if (err && err.code === 'EADDRINUSE' && maxTries > 0) {
-      const next = port + 1;
-      console.warn(`Port ${port} in use, retrying on ${next}...`);
-      startServer(next, maxTries - 1);
+  const server = app.listen(port, '0.0.0.0', () => {
+    console.log(`Serveur démarré sur http://localhost:${port}`);
+    console.log(`Page d'accueil: http://localhost:${port}/`);
+    console.log(`Page des produits: http://localhost:${port}/products.html`);
+  }).on('error', (err) => {
+    if (err.code === 'EADDRINUSE' && maxTries > 0) {
+      console.log(`Le port ${port} est déjà utilisé, tentative sur le port ${port + 1}...`);
+      startServer(port + 1, maxTries - 1);
     } else {
-      throw err;
+      console.error('Échec du démarrage du serveur:', err);
+      process.exit(1);
     }
+  });
+  
+  // Gestion de l'arrêt propre du serveur
+  process.on('SIGTERM', () => {
+    console.log('Arrêt du serveur...');
+    server.close(() => {
+      console.log('Serveur arrêté.');
+    });
   });
 }
 

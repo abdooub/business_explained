@@ -101,35 +101,119 @@
       </div>
     </section>
 
-    <main class="container" style="padding:32px 20px 60px;">
+    <main class="container" style="padding:24px 16px 60px;">
       <div class="card" style="max-width:860px; margin:-60px auto 0; border-radius:16px; box-shadow: var(--shadow-2); overflow:hidden;">
-        <div class="card-body" style="padding:20px;">
-          <form id="support-form" class="newsletter-form" style="display:grid; grid-template-columns:1fr 1fr; gap:12px;" novalidate>
-            <div style="grid-column:span 1; display:grid; gap:6px;">
+        <div class="card-body" style="padding:24px 16px;">
+          <style>
+            /* Styles pour le formulaire responsive */
+            .support-form {
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: 16px;
+              width: 100%;
+            }
+            .form-group {
+              display: grid;
+              gap: 8px;
+            }
+            .form-group label {
+              font-size: 14px;
+              font-weight: 500;
+              color: #374151;
+            }
+            .form-group input,
+            .form-group textarea {
+              width: 100%;
+              padding: 12px 16px;
+              border: 1px solid #d1d5db;
+              border-radius: 8px;
+              font-size: 16px;
+              transition: border-color 0.2s;
+            }
+            .form-group input:focus,
+            .form-group textarea:focus {
+              outline: none;
+              border-color: #4c1dff;
+              box-shadow: 0 0 0 3px rgba(76, 29, 255, 0.1);
+            }
+            .form-group textarea {
+              min-height: 120px;
+              resize: vertical;
+            }
+            .form-submit {
+              grid-column: span 2;
+              display: flex;
+              flex-direction: column;
+              gap: 8px;
+              margin-top: 12px;
+            }
+            .submit-btn {
+              width: 100%;
+              height: 50px;
+              border-radius: 999px;
+              background: linear-gradient(90deg, #4c1dff, #a855f7);
+              color: white;
+              font-weight: 600;
+              border: none;
+              cursor: pointer;
+              font-size: 16px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 8px;
+              transition: opacity 0.2s;
+            }
+            .submit-btn:hover {
+              opacity: 0.9;
+            }
+            /* Styles pour mobile */
+            @media (max-width: 768px) {
+              .support-form {
+                grid-template-columns: 1fr;
+              }
+              .form-group {
+                grid-column: span 1 !important;
+              }
+              .form-submit {
+                grid-column: span 1;
+              }
+              .form-group input,
+              .form-group textarea {
+                font-size: 16px; /* Taille de police plus grande pour mobile */
+                padding: 14px 16px; /* Zone de toucher plus grande */
+              }
+            }
+          </style>
+          
+          <form id="support-form" class="support-form" novalidate>
+            <div class="form-group">
               <label for="firstName">First name*</label>
-              <input id="firstName" name="firstName" required />
+              <input id="firstName" name="firstName" type="text" required 
+                     placeholder="Your first name" inputmode="text" />
             </div>
-            <div style="grid-column:span 1; display:grid; gap:6px;">
+            <div class="form-group">
               <label for="lastName">Last name*</label>
-              <input id="lastName" name="lastName" required />
+              <input id="lastName" name="lastName" type="text" required 
+                     placeholder="Your last name" inputmode="text" />
             </div>
-            <div style="grid-column:span 2; display:grid; gap:6px;">
+            <div class="form-group" style="grid-column:span 2">
               <label for="emailSupport">Email address*</label>
-              <input id="emailSupport" name="email" type="email" required />
+              <input id="emailSupport" name="email" type="email" required 
+                     placeholder="your.email@example.com" inputmode="email" />
             </div>
-            <div style="grid-column:span 2; display:grid; gap:6px;">
+            <div class="form-group" style="grid-column:span 2">
               <label for="subject">Subject*</label>
-              <input id="subject" name="subject" required />
+              <input id="subject" name="subject" type="text" required 
+                     placeholder="How can we help you?" />
             </div>
-            <div style="grid-column:span 2; display:grid; gap:6px;">
+            <div class="form-group" style="grid-column:span 2">
               <label for="message">Message*</label>
-              <textarea id="message" name="message" rows="6" required></textarea>
-            </div>            <!-- Ligne bouton + message de statut -->
-            <div style="grid-column:span 2; display:flex; flex-direction:column; gap:8px; margin-top:12px;">
-              <button class="btn btn-primary" type="submit"
-                style="width:100%; justify-content:center; height:50px; border-radius:999px;
-                       background:linear-gradient(90deg,#4c1dff,#a855f7);">
-                Submit →
+              <textarea id="message" name="message" rows="6" required
+                        placeholder="Please describe your issue in detail..."></textarea>
+            </div>
+            <div class="form-submit">
+              <button type="submit" class="submit-btn">
+                Send Message <span aria-hidden="true">→</span>
               </button>
               <p class="form-hint" id="support-hint" role="status" aria-live="polite"></p>
             </div>
