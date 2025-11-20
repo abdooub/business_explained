@@ -1301,38 +1301,78 @@
     }
   }
 
-  // Support form submission
+  // Initialisation d'EmailJS
+  (function() {
+    // Remarque : Dans les nouvelles versions d'EmailJS, on utilise la Public Key (anciennement User ID)
+    // Ne jamais utiliser la Private Key dans le code côté client
+    emailjs.init('9rCrKbba27RcCm_L8'); // Votre Public Key EmailJS (anciennement User ID)
+  })();
+
+  // Support form submission avec EmailJS
   const supportForm = document.getElementById('support-form');
   if (supportForm) {
-    supportForm.addEventListener('submit', (e) => {
+    supportForm.addEventListener('submit', async (e) => {
       e.preventDefault();
+      
+      const submitBtn = supportForm.querySelector('button[type="submit"]');
+      const originalBtnText = submitBtn.innerHTML;
       const hint = document.getElementById('support-hint');
-      const payload = {
-        firstName: supportForm.firstName?.value?.trim(),
-        lastName: supportForm.lastName?.value?.trim(),
-        email: supportForm.email?.value?.trim(),
-        subject: supportForm.subject?.value?.trim(),
-        message: supportForm.message?.value?.trim(),
+      
+      // Vérifier que tous les champs sont remplis
+      const formData = {
+        firstName: supportForm.querySelector('[name="firstName"]')?.value?.trim(),
+        lastName: supportForm.querySelector('[name="lastName"]')?.value?.trim(),
+        email: supportForm.querySelector('[name="email"]')?.value?.trim(),
+        subject: supportForm.querySelector('[name="subject"]')?.value?.trim(),
+        message: supportForm.querySelector('[name="message"]')?.value?.trim()
       };
-      if (!payload.firstName || !payload.lastName || !payload.email || !payload.subject || !payload.message) {
-        if (hint) hint.textContent = 'Please fill all required fields.';
+      
+      if (!formData.firstName || !formData.lastName || !formData.email || !formData.subject || !formData.message) {
+        if (hint) {
+          hint.textContent = 'Veuillez remplir tous les champs obligatoires.';
+          hint.style.color = 'red';
+          setTimeout(() => { if (hint) hint.textContent = ''; }, 5000);
+        }
         return;
       }
-      if (hint) hint.textContent = 'Sending…';
-      fetch(apiBase + '/api/support', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      })
-        .then(async (res) => {
-          const data = await res.json().catch(() => ({}));
-          if (!res.ok) throw new Error(data?.message || 'Could not send your request');
-          if (hint) hint.textContent = data?.message || 'Thanks! We will get back to you ASAP.';
-          supportForm.reset();
-        })
-        .catch((err) => {
-          if (hint) hint.textContent = err?.message || 'Please try again later.';
-        });
+      
+      // Désactiver le bouton pendant l'envoi
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = 'Envoi en cours...';
+      
+      try {
+        // Envoyer l'email via EmailJS
+        await emailjs.sendForm(
+          'service_c25bo6c',  // Votre Service ID
+          'template_y5465lq', // Votre Template ID
+          supportForm
+        );
+        
+        // Afficher le message de succès
+        if (hint) {
+          hint.textContent = 'Message envoyé avec succès !';
+          hint.style.color = 'green';
+        }
+        
+        // Réinitialiser le formulaire
+        supportForm.reset();
+        
+      } catch (error) {
+        console.error('Erreur lors de l\'envoi du message:', error);
+        if (hint) {
+          hint.textContent = 'Erreur lors de l\'envoi du message. Veuillez réessayer plus tard.';
+          hint.style.color = 'red';
+        }
+      } finally {
+        // Réactiver le bouton
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnText;
+        
+        // Effacer le message après 5 secondes
+        setTimeout(() => {
+          if (hint) hint.textContent = '';
+        }, 5000);
+      }
     });
   }
 })();
