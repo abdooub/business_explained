@@ -1,19 +1,26 @@
 {
-  "name": "business-explained-clone",
+  "name": "business-explained",
   "version": "1.0.0",
   "private": true,
-  "description": "Static site with Node.js + Express backend (serve + mock API)",
+  "description": "Business Explained - Site web statique avec backend Express",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "node server.js",
+    "vercel-build": "echo \"Build step\"",
+    "deploy": "vercel --prod"
   },
   "engines": {
-    "node": "22.x"
+    "node": ">=18.x"
   },
   "dependencies": {
     "@sendgrid/mail": "^8.1.6",
+    "@vercel/node": "^3.0.0",
     "express": "^4.19.2",
     "resend": "^6.3.0",
     "stripe": "^14.0.0"
+  },
+  "devDependencies": {
+    "vercel": "^33.0.0"
   }
 }

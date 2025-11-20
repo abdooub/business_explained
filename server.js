@@ -1,4 +1,5 @@
-/* server.js — Minimal Node.js + Express backend to serve the static site and mock APIs */
+/* server.js — Backend pour le site Business Explained */
+const fs = require('fs');
 const path = require('path');
 const express = require('express');
 const Stripe = require('stripe');
@@ -12,6 +13,10 @@ const app = express();
 const PORT = Number(process.env.PORT || 3000);
 const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY || '';
 const stripe = STRIPE_SECRET_KEY ? new Stripe(STRIPE_SECRET_KEY) : null;
+
+// Configuration pour Vercel
+const isVercel = process.env.VERCEL === '1';
+const publicDir = isVercel ? path.join(__dirname, '.vercel/output/static') : __dirname;
 
 // Middleware de logging
 app.use((req, res, next) => {
@@ -40,9 +45,17 @@ app.use((req, res, next) => {
 });
 
 // Servir les fichiers statiques
-app.use(express.static(__dirname, {
+app.use(express.static(publicDir, {
   extensions: ['html', 'htm'],
-  index: false
+  index: false,
+  setHeaders: (res, path) => {
+    // Cache les fichiers statiques pendant 1 an
+    if (express.static.mime.lookup(path) === 'text/html') {
+      res.setHeader('Cache-Control', 'public, max-age=0');
+    } else {
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    }
+  }
 }));
 
 // Route pour la page d'accueil
@@ -219,38 +232,61 @@ app.post('/api/subscribe', (req, res) => {
   }
 });
 
-// Gestion des routes inconnues (404)
-app.use((req, res, next) => {
+// Gestion des routes pour le SPA (Single Page Application)
+app.get('*', (req, res) => {
+  // Si c'est une requête API, on renvoie une 404
   if (req.path.startsWith('/api/')) {
-    return res.status(404).json({ error: 'API endpoint not found' });
+    return res.status(404).json({ error: 'Endpoint non trouvé' });
   }
-  console.log(`Page non trouvée: ${req.originalUrl}`);
-  res.status(404).sendFile(path.join(__dirname, '404.html'));
+  // Vérifier si le fichier existe
+  const filePath = path.join(publicDir, req.path);
+  if (fs.existsSync(filePath) && !fs.lstatSync(filePath).isDirectory()) {
+    return res.sendFile(filePath);
+  }
+  // Sinon, on sert index.html pour le routage côté client
+  res.sendFile(path.join(publicDir, 'index.html'));
 });
 
-// Démarrer le serveur
-function startServer(port, maxTries = 5) {
-  const server = app.listen(port, '0.0.0.0', () => {
-    console.log(`Serveur démarré sur http://localhost:${port}`);
-    console.log(`Page d'accueil: http://localhost:${port}/`);
-    console.log(`Page des produits: http://localhost:${port}/products.html`);
-  }).on('error', (err) => {
-    if (err.code === 'EADDRINUSE' && maxTries > 0) {
-      console.log(`Le port ${port} est déjà utilisé, tentative sur le port ${port + 1}...`);
-      startServer(port + 1, maxTries - 1);
-    } else {
-      console.error('Échec du démarrage du serveur:', err);
+// Gestion des erreurs 404 (doit être après toutes les autres routes)
+app.use((req, res) => {
+  if (req.path.startsWith('/api/')) {
+    return res.status(404).json({ error: 'Endpoint non trouvé' });
+  }
+  res.status(404).sendFile(path.join(publicDir, '404.html'));
+});
+
+// Gestion des erreurs globales
+app.use((err, req, res, next) => {
+  console.error('Erreur non gérée:', err);
+  res.status(500).send('Erreur interne du serveur');
+});
+
+// Démarrer le serveur uniquement si ce n'est pas Vercel
+if (!isVercel) {
+  const startServer = (port, maxTries = 5) => {
+    if (maxTries <= 0) {
+      console.error('Échec du démarrage du serveur après plusieurs tentatives');
       process.exit(1);
     }
-  });
-  
-  // Gestion de l'arrêt propre du serveur
-  process.on('SIGTERM', () => {
-    console.log('Arrêt du serveur...');
-    server.close(() => {
-      console.log('Serveur arrêté.');
+
+    const server = app.listen(port, '0.0.0.0', () => {
+      console.log(`Serveur démarré sur http://localhost:${port}`);
     });
-  });
+
+    server.on('error', (err) => {
+      if (err.code === 'EADDRINUSE') {
+        console.log(`Le port ${port} est occupé, tentative sur le port ${port + 1}...`);
+        startServer(port + 1, maxTries - 1);
+      } else {
+        console.error('Erreur du serveur:', err);
+        process.exit(1);
+      }
+    });
+  };
+
+  startServer(PORT);
 }
 
+// Export pour Vercel
+module.exports = app;
 startServer(PORT);
