@@ -2707,6 +2707,13 @@
     var name = resolved.name || 'Product';
     var price = resolved.price;
     var isBundle = (name === 'Everything Explained Bundle' || code === 'pack');
+    
+    // Add bundle layout class to body for Everything Explained Bundle
+    if (isBundle && document.body) {
+      document.body.classList.add('bundle-layout');
+      // Scroll to top when loading the bundle
+      window.scrollTo(0, 0);
+    }
 
     // Apply per-product theme class on body (e.g. theme-o1, theme-m1)
     try {
