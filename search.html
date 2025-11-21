@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search Results | Business Explique</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    .search-results {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+    }
+    
+    .search-header {
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+    
+    .search-query {
+      color: #5b3df5;
+      font-weight: 600;
+    }
+    
+    .result-item {
+      margin-bottom: 1.5rem;
+      padding: 1.5rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.5rem;
+      transition: all 0.2s ease;
+    }
+    
+    .result-item:hover {
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      transform: translateY(-2px);
+    }
+    
+    .result-title {
+      font-size: 1.25rem;
+      margin: 0 0 0.5rem 0;
+    }
+    
+    .result-link {
+      color: #5b3df5;
+      text-decoration: none;
+    }
+    
+    .result-link:hover {
+      text-decoration: underline;
+    }
+    
+    .result-snippet {
+      color: #4a5568;
+      margin: 0.5rem 0 0 0;
+    }
+    
+    .no-results {
+      text-align: center;
+      color: #718096;
+      margin: 3rem 0;
+    }
+    
+    .search-again {
+      margin-top: 2rem;
+      text-align: center;
+    }
+    
+    .search-again a {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      background-color: #5b3df5;
+      color: white;
+      text-decoration: none;
+      border-radius: 0.375rem;
+      transition: background-color 0.2s;
+    }
+    
+    .search-again a:hover {
+      background-color: #4a2fd4;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar will be loaded here -->
+  <div id="navbar-placeholder"></div>
+
+  <main class="search-results">
+    <div class="search-header">
+      <h1>Search Results</h1>
+      <p>Results for: <span class="search-query" id="search-query"></span></p>
+    </div>
+    
+    <div id="search-results-container">
+      <!-- Results will be inserted here by JavaScript -->
+    </div>
+    
+    <div class="search-again">
+      <a href="#" onclick="history.back(); return false;">← Back to previous page</a>
+    </div>
+  </main>
+
+  <script src="/js/load-navbar.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Get search query from URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const query = urlParams.get('q') || '';
+      
+      // Display the search query
+      document.getElementById('search-query').textContent = `"${query}"`;
+      
+      if (!query) {
+        document.getElementById('search-results-container').innerHTML = `
+          <div class="no-results">
+            <p>Please enter a search term.</p>
+          </div>
+        `;
+        return;
+      }
+      
+      // Perform search
+      const results = performSearch(query);
+      const resultsContainer = document.getElementById('search-results-container');
+      
+      if (results.length === 0) {
+        resultsContainer.innerHTML = `
+          <div class="no-results">
+            <p>No results found for "${query}".</p>
+            <p>Try different keywords or check your spelling.</p>
+          </div>
+        `;
+      } else {
+        let resultsHTML = '';
+        results.forEach(result => {
+          resultsHTML += `
+            <div class="result-item">
+              <h2 class="result-title">
+                <a href="${result.link}" class="result-link">${result.title}</a>
+              </h2>
+              <p class="result-snippet">
+                ${result.description.substring(0, 200)}${result.description.length > 200 ? '...' : ''}
+              </p>
+            </div>
+          `;
+        });
+        resultsContainer.innerHTML = resultsHTML;
+      }
+    });
+    
+    // This function would be defined in search.js, but we need it here too
+    function performSearch(query) {
+      // This is a simplified version - the real implementation is in search.js
+      const config = {
+        'index.html': {
+          selector: '.card-ebook',
+          titleSelector: 'h3',
+          linkSelector: 'a',
+          descriptionSelector: 'p',
+          baseUrl: 'product.html'
+        },
+        'products.html': {
+          selector: '.product-card',
+          titleSelector: 'h3',
+          linkSelector: 'a',
+          descriptionSelector: '.product-description',
+          baseUrl: ''
+        },
+        'blog.html': {
+          selector: '.blog-post',
+          titleSelector: 'h3',
+          linkSelector: 'a',
+          descriptionSelector: '.post-excerpt',
+          baseUrl: ''
+        },
+        'default': {
+          selector: 'a[href^="product.html"]',
+          titleSelector: 'h3, h4',
+          linkSelector: 'a',
+          descriptionSelector: 'p',
+          baseUrl: ''
+        }
+      };
+      
+      // This is a placeholder - the actual implementation would search the site's content
+      // and return matching results with titles, descriptions, and links
+      return [];
+    }
+  </script>
+</body>
+</html>

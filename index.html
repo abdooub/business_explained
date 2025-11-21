@@ -117,6 +117,42 @@
         }
       }
     </script>
+     <style> 
+      /* Header search */
+      .header-actions { display:flex; align-items:center; gap:10px; }
+      .header-search { position: relative; width: min(380px, 42vw); }
+      .header-search input[type="search"] {
+        width: 100%;
+        background: #fff;
+        border: 1px solid var(--pro-border);
+        border-radius: 999px;
+        padding: 10px 14px 10px 14px;
+        outline: none;
+      }
+      .header-search input[type="search"]:focus {
+        border-color: var(--pro-brand);
+        box-shadow: 0 0 0 3px rgba(59,130,246,.2);
+      }
+      .search-panel {
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        width: min(420px, 85vw);
+        max-height: 380px;
+        overflow: auto;
+        background: #fff;
+        border: 1px solid var(--pro-border);
+        border-radius: 14px;
+        box-shadow: 0 14px 34px rgba(15,23,42,.12);
+        padding: 10px;
+        z-index: 1000;
+      }
+      .search-result { display:flex; gap:10px; align-items:center; padding:10px; border-bottom:1px solid #f1f5fb; text-decoration:none; color:inherit; }
+      .search-result:last-child { border-bottom: 0; }
+      .search-result:hover { background:#f8fafc; }
+      .search-thumb { width:54px; height:54px; border-radius:10px; object-fit:cover; background:#f3f4f6; }
+      .search-title { font-weight:600; }
+     </style>
   </head>
   <body>
     <a class="sr-only" href="#main">Skip to main content</a>
@@ -150,22 +186,22 @@
             <li><a href="./about.html">About us</a></li>
             <li><a href="./blog.html">Blog</a></li>
             <li class="has-dropdown">
-              <a href="./support.html">Support</a>
-              <div class="dropdown" role="menu" aria-label="Support submenu">
-                <ul>
+             
+                          
                   <li><a href="./support.html">Contact Us</a></li>
                   <li><a href="./faq.html">FAQs</a></li>
-                </ul>
-              </div>
-            </li>
+            
+             
+      
             
           </ul>
         </nav>
 
         <div class="header-actions">
-          <form class="search" role="search" aria-label="Search" action="#" method="get">
-            <input type="search" name="q" placeholder="Search for products" autocomplete="off" />
-          </form>
+          <div class="header-search" role="search">
+            <input id="hdr-search" type="search" placeholder="Search for products" aria-label="Search for products" autocomplete="off" />
+            <div id="hdr-search-results" class="search-panel" hidden></div>
+          </div>
         </div>
       </div>
     </header>
@@ -476,5 +512,7 @@
     </main>
     <!-- JS -->
     <script src="./script.js" defer></script>
+    <script src="./script.js?v=13" defer></script>
+    <script src="./product.js?v=1" defer></script>
   </body>
 </html>
