@@ -166,13 +166,15 @@
   <body>
     <a class="sr-only" href="#main">Skip to main content</a>
     <!-- Bandeau d'annonce -->
-    <div class="announcement" role="region" aria-label="Promotion">
-      <div class="container announcement-inner">
-        <span class="badge">Offre limitée</span>
-        <span class="announcement-text">Pack complet — prix le plus bas aujourd’hui</span>
-        <span class="timer" aria-live="polite">00h 29m 36s</span>
+    <a href="./products.html" class="announcement-link" style="text-decoration: none; color: inherit; display: block;">
+      <div class="announcement" role="region" aria-label="Promotion">
+        <div class="container announcement-inner">
+          <span class="badge">Offre limitée</span>
+          <span class="announcement-text">Pack complet — prix le plus bas aujourd'hui</span>
+          <span id="countdown" class="timer" aria-live="polite">00h 29m 59s</span>
+        </div>
       </div>
-    </div>
+    </a>
 
     <!-- En-tête de navigation -->
     <header class="site-header" id="top">
@@ -513,14 +515,56 @@
         </div>
       </div>
       <div class="container footer-bottom">
-        <p class="small">© <span id="year"></span>, Business Explique</p>
+        <p class="small"> 2024, Business Explique</p>
         <ul class="social"><li><a href="https://instagram.com/" rel="me noopener" target="_blank">Instagram</a></li><li><a href="https://www.tiktok.com/" rel="me noopener" target="_blank">TikTok</a></li><li><a href="https://facebook.com/" rel="me noopener" target="_blank">Facebook</a></li></ul>
       </div>
     </footer>
 
     </main>
     <!-- JS -->
-    <script src="./script.js" defer></script>
+    <script>
+      // Countdown Timer
+      document.addEventListener('DOMContentLoaded', function() {
+        const countdownElement = document.getElementById('countdown');
+        if (!countdownElement) return;
+        
+        // Set the target time to 30 minutes from now
+        const now = new Date();
+        const targetTime = new Date(now.getTime() + 30 * 60 * 1000); // 30 minutes from now
+        
+        function updateCountdown() {
+          const now = new Date();
+          let diff = targetTime - now;
+          
+          // Reset the timer for another 30 minutes if it reaches zero
+          if (diff <= 0) {
+            targetTime.setTime(now.getTime() + 30 * 60 * 1000);
+            diff = targetTime - now;
+          }
+          
+          // Calculate hours, minutes, seconds
+          const hours = Math.floor(diff / (1000 * 60 * 60));
+          const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+          
+          // Format the time
+          let formattedTime = '';
+          if (hours > 0) {
+            formattedTime = `${hours.toString().padStart(2, '0')}h ${minutes.toString().padStart(2, '0')}m`;
+          } else {
+            formattedTime = `${minutes.toString().padStart(2, '0')}m ${seconds.toString().padStart(2, '0')}s`;
+          }
+          
+          // Update the countdown element
+          countdownElement.textContent = formattedTime;
+        }
+        
+        // Update immediately and then every second
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+      });
+    </script>
+    <script src="/script.js"></script>
     <script src="./script.js?v=13" defer></script>
     <script src="./product.js?v=1" defer></script>
   </body>
