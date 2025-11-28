@@ -47,10 +47,10 @@
       .perk-badges { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:8px; color: var(--pro-dim); font-size: 13px; }
       .perk-badges .pill { background: var(--pro-soft); border: 1px solid var(--pro-border); border-radius: 999px; padding: 4px 10px; }
 
-      .shop-layout { padding-top: 16px; }
-      .pro-hero { display: grid; gap: 16px; margin-bottom: 20px; }
-      .pro-hero h2 { margin: 0; font-size: 28px; letter-spacing: .2px; }
-      .pro-hero p { margin: 0; color: var(--pro-dim); }
+      .shop-layout { padding: 24px 0; }
+      .pro-hero { display: grid; gap: 20px; margin-bottom: 30px; }
+      .pro-hero h2 { margin: 0; font-size: 28px; letter-spacing: .2px; color: #1e40af; }
+      .pro-hero p { margin: 0; color: #4b5563; line-height: 1.6; }
       .pro-controls { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
       .pro-controls .field { flex: 1 1 260px; min-width: 220px; }
       .pro-controls input[type="search"], .pro-controls select { width: 100%; background: var(--pro-soft); color: var(--pro-text); border: 1px solid var(--pro-border); padding: 10px 12px; border-radius: 10px; outline: none; appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--pro-dim) 50%), linear-gradient(135deg, var(--pro-dim) 50%, transparent 50%); background-position: calc(100% - 18px) 50%, calc(100% - 13px) 50%; background-size: 6px 6px, 6px 6px; background-repeat: no-repeat; }
@@ -60,7 +60,7 @@
 
       .shop-grid { display: block; }
       .shop-products { width: 100%; }
-      .pro-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+      .pro-grid { display: grid; gap: 24px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); margin-top: 30px; }
       .product-card { background: var(--pro-card); border: 1px solid var(--pro-border); border-radius: 14px; overflow: hidden; transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
       .product-card:hover { transform: translateY(-2px); border-color: #cbd5e1; box-shadow: 0 10px 20px rgba(15,23,42,.08);
       }
@@ -243,17 +243,16 @@
           <div class="pro-hero">
             <div>
               <h2>Business Explained Products</h2>
-              <p>Curated eBooks, Checklists and Tools to grow your business. Discover expert resources on brand implementation planning, achieving business goals, and effective brand identity management.</p>
+              <p>Curated eBooks, Checklists and Tools to grow your business. Discover expert resources on business strategy, management frameworks, and operational excellence.</p>
               
-              <div class="card" style="margin: 20px 0; padding: 20px; background: #f8f9ff; border-left: 4px solid #3b82f6;">
-                <h3 style="margin-top: 0;">Master Your Business Strategy</h3>
-                <p>Our collection includes comprehensive guides on:</p>
-                <ul style="margin: 10px 0 0 20px; padding: 0;">
-                  <li>Brand implementation planning and execution</li>
-                  <li>Setting and achieving business goals and milestones</li>
-                  <li>Effective brand identity implementation management</li>
-                  <li>Strategic brand implementation management</li>
-                  <li>Essential business knowledge through our expert ebooks</li>
+              <div class="card" style="margin: 20px 0 30px; padding: 24px; background: #f8f9ff; border-left: 4px solid #3b82f6; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                <h3 style="margin: 0 0 12px 0; color: #1e40af; font-size: 20px; font-weight: 600; letter-spacing: 0.3px;">Master Your Business Strategy</h3>
+                <p style="color: #4b5563; margin: 0 0 12px 0; line-height: 1.6; font-weight: 500;">Our collection includes comprehensive guides on:</p>
+                <ul style="margin: 10px 0 0 0; padding: 0 0 0 22px; color: #4b5563; line-height: 1.8; font-weight: 400;">
+                  <li style="margin-bottom: 6px; color: #1e40af;">Organizational management and business frameworks</li>
+                  <li style="margin-bottom: 6px; color: #3b82f6;">Marketing strategies and implementation</li>
+                  <li style="margin-bottom: 6px; color: #1e40af;">Strategic planning and execution</li>
+                  <li style="color: #3b82f6;">Process improvement and operational excellence</li>
                 </ul>
               </div>
             </div>
@@ -263,12 +262,11 @@
             <!-- Example products; structure mirrors your index cards, with sale styles -->
             
 
-            <article class="product-card" data-id="o1" data-name="Organizational Management Explained" data-price="49">
+            <article class="product-card" data-id="o1" data-name="Organizational Management Explained" data-price="29">
               <img src="images/ebooks/Organizational_Management_Explained.png" alt="Organizational Management Explained" loading="lazy" decoding="async" />
               <div class="product-body">
                 <h3>Organizational Management Explained</h3>
-                <div class="price-range">$49–$247</div>
-                <div class="product-meta"><span class="price">$49</span><div style="display:flex; gap:8px; flex-wrap:wrap;"><button class="btn btn-primary add-to-cart">Add</button></div></div>
+                <div class="product-meta"><span class="price">$29</span><div style="display:flex; gap:8px; flex-wrap:wrap;"><a class="btn btn-primary gumroad-button" href="https://businessexplique.gumroad.com/l/OrganizationalManagementExplained">Buy Now</a></div></div>
               </div>
             </article>
 
@@ -276,12 +274,11 @@
 
             
 
-            <article class="product-card" data-id="m1" data-name="Marketing Frameworks Explained" data-price="49">
+            <article class="product-card" data-id="m1" data-name="Marketing Frameworks Explained" data-price="29">
               <img src="images/ebooks/Marketing_Frameworks_Explained.png" alt="Marketing Frameworks Explained" loading="lazy" decoding="async" />
               <div class="product-body">
                 <h3>Marketing Frameworks Explained</h3>
-                <div class="price-range">$49–$247</div>
-                <div class="product-meta"><span class="price">49€</span><div style="display:flex; gap:8px; flex-wrap:wrap;"><button class="btn btn-primary add-to-cart">Add</button></div></div>
+                <div class="product-meta"><span class="price">$29</span><div style="display:flex; gap:8px; flex-wrap:wrap;"><a class="btn btn-primary gumroad-button" href="https://businessexplique.gumroad.com/l/MarketingFrameworksExplained">Buy Now</a></div></div>
               </div>
             </article>
 
@@ -289,21 +286,19 @@
 
             
 
-            <article class="product-card" data-id="sm1" data-name="Strategic Management Explained" data-price="49">
+            <article class="product-card" data-id="sm1" data-name="Strategic Management Explained" data-price="29">
               <img src="images/ebooks/Strategic_Management_Explained.png" alt="Strategic Management Explained" loading="lazy" decoding="async" />
               <div class="product-body">
                 <h3>Strategic Management Explained</h3>
-                <div class="price-range">$49–$247</div>
-                <div class="product-meta"><span class="price">49€</span><div style="display:flex; gap:8px; flex-wrap:wrap;"><button class="btn btn-primary add-to-cart">Add</button></div></div>
+                <div class="product-meta"><span class="price">$29</span><div style="display:flex; gap:8px; flex-wrap:wrap;"><a class="btn btn-primary gumroad-button" href="https://businessexplique.gumroad.com/l/StrategicManagementExplained">Buy Now</a></div></div>
               </div>
             </article>
 
-            <article class="product-card" data-id="pim1" data-name="Process Improvement Strategies Explained" data-price="49">
+            <article class="product-card" data-id="pim1" data-name="Process Improvement Strategies Explained" data-price="29">
               <img src="images/ebooks/Process_Improvement_Strategies_Explained.png" alt="Process Improvement Strategies Explained" loading="lazy" decoding="async" />
               <div class="product-body">
-                <h3>Process Improvement Strategies Explained</h3>
-                <div class="price-range">$49–$247</div>
-                <div class="product-meta"><span class="price">49€</span><div style="display:flex; gap:8px; flex-wrap:wrap;"><button class="btn btn-primary add-to-cart">Add</button></div></div>
+                <h3>Process Improvement Strategies</h3>
+                <div class="product-meta"><span class="price">$29</span><div style="display:flex; gap:8px; flex-wrap:wrap;"><a class="btn btn-primary gumroad-button" href="https://businessexplique.gumroad.com/l/ProcessImprovementExplained">Buy Now</a></div></div>
               </div>
             </article>
 
