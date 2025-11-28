@@ -82,13 +82,13 @@ app.use((err, req, res, next) => {
   res.status(500).send('Une erreur est survenue sur le serveur');
 });
 
-// Support form endpoint — sends an email to business@business-explique.com
+// Support form endpoint — sends an email to contact@business-explique.com
 app.post('/api/support', async (req, res) => {
   const { firstName, lastName, email, subject, message } = req.body || {};
   if (!firstName || !lastName || !email || !subject || !message) {
     return res.status(400).json({ ok: false, message: 'Missing required fields' });
   }
-  const to = 'business@business-explique.com';
+  const to = 'contact@business-explique.com';
   const subj = `[Support] ${subject} — ${firstName} ${lastName}`;
   const text = `New support request\n\nFrom: ${firstName} ${lastName}\nEmail: ${email}\nSubject: ${subject}\n\nMessage:\n${message}`;
   try {
